@@ -1,0 +1,397 @@
+<title>Balança Comercial</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57; --good-soft:rgba(47,125,87,.10);
+  --wine:#8E2547; --blue:#3F6DA6; --wine-fill:rgba(142,37,71,.10);
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 6px 28px rgba(36,30,41,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.14);
+  --wine:#D0567A; --blue:#5E8FD0; --wine-fill:rgba(208,86,122,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.14);
+  --wine:#D0567A; --blue:#5E8FD0; --wine-fill:rgba(208,86,122,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px; margin:0 auto; padding:22px clamp(14px,3vw,30px) 40px}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+header.top{display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:14px}
+.brand{display:flex; flex-direction:column; gap:5px}
+.eyebrow{font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(27px,4.4vw,40px); line-height:1.02; margin:0; letter-spacing:-.01em; text-wrap:balance}
+.sub{color:var(--muted); max-width:62ch; font-size:14.5px}
+.head-right{display:flex; align-items:center; gap:12px}
+.fresh{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:7px 11px; border-radius:999px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--good)}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+.tbtn:hover{border-color:var(--line-strong)}
+
+.nav{display:inline-flex; gap:3px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; box-shadow:var(--shadow); margin-bottom:18px; flex-wrap:wrap}
+.nav a{font:600 13.5px "Hanken Grotesk",sans-serif; color:var(--muted); text-decoration:none; padding:8px 14px; border-radius:8px; white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .nav a[aria-current="page"], :root:not([data-theme="light"]) .nav a[aria-current="page"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .nav a[aria-current="page"]{color:#fff}}
+.nav a:not([aria-current]):hover{color:var(--ink); background:var(--surface-2)}
+.nav a.brandtab{font-weight:700; color:var(--ink)}
+.nav a.brandtab:hover{background:var(--accent-soft)}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); margin-bottom:18px}
+.card-h{display:flex; align-items:center; justify-content:space-between; gap:12px 16px; flex-wrap:wrap; padding:15px 18px 6px}
+.card-t{font-family:"Spectral",serif; font-weight:600; font-size:18px}
+.card-t small{display:block; font-family:"Hanken Grotesk",sans-serif; font-weight:400; font-size:12.5px; color:var(--muted); margin-top:2px}
+
+.info-btn{appearance:none; border:1px solid var(--line-strong); background:var(--surface-2); color:var(--muted); width:20px; height:20px; border-radius:50%; font:700 12px "Hanken Grotesk",sans-serif; cursor:pointer; margin-left:8px; vertical-align:middle; display:inline-grid; place-items:center; line-height:1}
+.info-btn:hover{color:var(--ink); border-color:var(--accent)}
+.info-btn[aria-expanded="true"]{background:var(--accent); color:#fff; border-color:var(--accent)}
+:root[data-theme="dark"] .info-btn[aria-expanded="true"], :root:not([data-theme="light"]) .info-btn[aria-expanded="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .info-btn[aria-expanded="true"]{color:#fff}}
+.info-panel{margin:6px 18px 2px; padding:13px 15px; background:var(--surface-2); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; font-size:13px; line-height:1.55; color:var(--muted); max-width:70ch}
+.info-panel h4{margin:0 0 6px; font-family:"Spectral",serif; font-size:14.5px; color:var(--ink); font-weight:600}
+.info-panel b{color:var(--ink); font-weight:600}
+
+.seg{display:inline-flex; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px}
+.seg button{appearance:none; border:0; background:transparent; color:var(--muted); font:600 13px "IBM Plex Mono",monospace; padding:7px 12px; border-radius:7px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"], :root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .seg button[aria-pressed="true"]{color:#fff}}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+.kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:10px 18px 4px}
+@media (max-width:640px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:11px 13px}
+.kpi .k{font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.kpi .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:20px; letter-spacing:-.02em; margin-top:4px}
+.kpi .d{font-size:12px; color:var(--muted); margin-top:1px}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; padding:8px 18px 0; font-size:12.5px; color:var(--muted)}
+.legend .lg{display:inline-flex; align-items:center; gap:7px}
+.legend .sw{width:14px; height:3px; border-radius:2px; display:inline-block}
+
+.figwrap{position:relative; padding:6px 12px 14px}
+svg.chart{width:100%; height:auto; display:block}
+.grid-l{stroke:var(--line)}
+.tick-t{fill:var(--faint); font:500 10.5px "IBM Plex Mono",monospace}
+.cross{stroke:var(--line-strong); stroke-dasharray:3 4}
+.tip{position:absolute; pointer-events:none; z-index:6; background:var(--surface); border:1px solid var(--line-strong); border-radius:11px; box-shadow:var(--shadow-pop); padding:10px 12px; min-width:170px; opacity:0; transform:translateY(4px); transition:opacity .12s, transform .12s}
+.tip.on{opacity:1; transform:translateY(0)}
+.tip .ty{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:12.5px; margin-bottom:6px; color:var(--muted)}
+.tip .row{display:flex; justify-content:space-between; gap:16px; font-size:12.5px; padding:2px 0; align-items:center}
+.tip .nm{display:inline-flex; align-items:center; gap:6px; color:var(--muted)}
+.tip .sw{width:9px; height:9px; border-radius:50%; display:inline-block}
+.pk{fill:var(--wine); stroke:var(--surface); stroke-width:2}
+.pk-t{fill:var(--wine); font:600 11px "Hanken Grotesk",sans-serif; text-anchor:middle}
+
+.readline{color:var(--muted); font-size:12.5px; padding:0 18px 14px; display:flex; gap:14px; flex-wrap:wrap}
+.readline b{color:var(--ink); font-weight:600}
+.readline.warn{color:var(--accent-strong)}
+.readline.warn b{color:var(--accent-strong)}
+
+.bl-name{fill:var(--ink); font:600 12.5px "Hanken Grotesk",sans-serif}
+.bl-val{fill:var(--muted); font:600 12px "IBM Plex Mono",monospace}
+.axis0{stroke:var(--line-strong)}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+
+.tbl-scroll{overflow:auto; padding:6px 6px 10px}
+table{width:100%; border-collapse:collapse; font-size:13px}
+thead th{text-align:right; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); font-weight:600; padding:8px 10px; white-space:nowrap; border-bottom:1px solid var(--line)}
+thead th:first-child{text-align:left}
+tbody td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap}
+tbody td:first-child{text-align:left; font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--accent-soft)}
+.rank{display:inline-grid; place-items:center; min-width:22px; height:20px; padding:0 5px; border-radius:6px; background:var(--surface-2); border:1px solid var(--line); font:600 11px "IBM Plex Mono",monospace; color:var(--muted); margin-right:8px}
+.barcell{width:110px}
+.barcell .bg{background:var(--line); border-radius:4px; height:7px; overflow:hidden}
+.barcell .fg{height:100%; border-radius:4px; background:var(--wine)}
+
+footer{margin-top:22px; color:var(--faint); font-size:12px; line-height:1.6; border-top:1px solid var(--line); padding-top:14px}
+footer b{color:var(--muted); font-weight:600}
+a{color:var(--accent-strong)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="eyebrow">VineAtlas · Vinho de Portugal</div>
+      <h1>Balança Comercial</h1>
+      <div class="sub">Portugal exporta muito mais vinho do que importa — em valor. Em peso, a distância já foi bem mais pequena. Esta ficha mostra o que entra, de onde vem, e porquê os dois números contam histórias diferentes.</div>
+    </div>
+    <div class="head-right">
+      <div class="fresh"><span class="dot"></span> INE + IVV · <b>&nbsp;até 2025</b></div>
+      <button class="tbtn" id="theme" title="Alternar tema" aria-label="Alternar tema">◐</button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Ecrãs">
+    <a class="brandtab" href="index.html">🍷 VineAtlas</a>
+    <a href="radar.html">Radar de Mercados</a>
+    <a href="onde-vender.html">Onde vender o meu tipo de vinho</a>
+    <a href="premiumizacao.html">Premiumização &amp; termos reais</a>
+    <a href="ficha.html">Ficha de mercado</a>
+    <a href="#" aria-current="page">Balança comercial</a>
+  </nav>
+
+  <div class="card">
+    <div class="card-h">
+      <div class="card-t">Exportação vs. importação <button class="info-btn" id="infoBalBtn" aria-expanded="false" aria-controls="infoBal" title="Porquê duas histórias diferentes?">?</button><small>Portugal, 2010–2025 · fonte INE</small></div>
+      <div class="seg" id="metricBal" role="group" aria-label="Métrica"></div>
+    </div>
+    <div class="info-panel" id="infoBal" hidden>
+      <h4>Peso e valor contam histórias diferentes</h4>
+      Em <b>quilos</b>, a importação chegou a rondar 87–99% do volume exportado entre 2019 e 2023 — quase um empate. Em <b>euros</b>, nunca passou de 22% no mesmo período. A razão: o vinho importado é sobretudo granel barato (~€0,5–0,9/kg), enquanto o exportado é maioritariamente engarrafado premium (~€2,8/kg em 2025) — não são o mesmo produto, só partilham a unidade.
+    </div>
+    <div class="kpis" id="kpisBal"></div>
+    <div class="legend" id="legBal"></div>
+    <div class="figwrap"><svg class="chart" id="svgBal" viewBox="0 0 760 340" role="img" aria-label="Exportação vs importação ao longo do tempo"></svg><div class="tip" id="tipBal"></div></div>
+    <div class="readline" id="readBal"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">
+      <div class="card-t">Espanha: granel vs. engarrafado <button class="info-btn" id="infoEsBtn" aria-expanded="false" aria-controls="infoEs" title="O que é isto?">?</button><small>Espanha é ~9 em cada 10 litros que entram · fonte IVV</small></div>
+    </div>
+    <div class="info-panel" id="infoEs" hidden>
+      <h4>Espanha domina — e é sobretudo granel</h4>
+      Espanha representa 88–95% de todo o vinho importado por Portugal, todos os anos desde 2010. Cerca de 70–79% desse volume vem em recipientes de <b>mais de 10 litros</b> — granel para engarrafar ou lotear cá. Só Espanha, França e Itália têm este detalhe na fonte (IVV); os restantes países não são decompostos por tamanho de recipiente.
+    </div>
+    <div class="legend" id="legEs"></div>
+    <div class="figwrap"><svg class="chart" id="svgEs" viewBox="0 0 760 300" role="img" aria-label="Espanha, granel vs engarrafado"></svg><div class="tip" id="tipEs"></div></div>
+    <div class="readline warn">
+      <span><b>2024:</b> o granel caiu 44% num só ano (2,19M → 1,23M HL) — o engarrafado, no mesmo ano, até subiu ligeiramente. A causa da retração não é conhecida a partir destes dados.</span>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">O que se importa, por categoria<small>Portugal, 2025 · fonte IVV</small></div>
+      </div>
+      <div class="figwrap"><svg class="chart" id="svgCat" viewBox="0 0 760 260" role="img" aria-label="Importação por categoria"></svg></div>
+      <div class="readline"><span>«Não alocado» agrega sobretudo «Outros Vinhos/Mostos», não decomposto por categoria nesta fonte.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">
+        <div class="card-t">De onde vem<small>Top 10 por valor, 2025 · fonte INE</small></div>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>País</th><th>Valor</th><th></th></tr></thead>
+          <tbody id="tbodyPaises"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const nf=new Intl.NumberFormat('pt-PT');
+const eur=v=>{ if(v>=1e6) return '€'+(v/1e6).toLocaleString('pt-PT',{maximumFractionDigits:1})+'M'; if(v>=1e3) return '€'+(v/1e3).toLocaleString('pt-PT',{maximumFractionDigits:0})+'k'; return '€'+nf.format(Math.round(v)); };
+const kgM=v=>(v/1e6).toLocaleString('pt-PT',{maximumFractionDigits:1})+'M kg';
+const price=v=>'€'+v.toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+const themeBtn=$('#theme');
+try{const t=localStorage.getItem('radar-theme'); if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+themeBtn.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');const md=matchMedia('(prefers-color-scheme:dark)').matches;
+  const next=cur?(cur==='dark'?'light':'dark'):(md?'light':'dark');document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('radar-theme',next);}catch(e){} renderAll();};
+
+function wireInfo(btnId, panelId){ const b=$('#'+btnId), p=$('#'+panelId);
+  b.onclick=()=>{ const open=p.hasAttribute('hidden'); if(open) p.removeAttribute('hidden'); else p.setAttribute('hidden',''); b.setAttribute('aria-expanded',open); }; }
+wireInfo('infoBalBtn','infoBal'); wireInfo('infoEsBtn','infoEs');
+
+const NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const niceTicks=(mn,mx,n)=>{const s=(mx-mn)/n,mag=Math.pow(10,Math.floor(Math.log10(s))),nn=s/mag,st=(nn<1.5?1:nn<3?2:nn<7?5:10)*mag,t=[];for(let v=Math.ceil(mn/st)*st;v<=mx+1e-9;v+=st)t.push(+v.toFixed(6));return t;};
+const YMIN=2010, YMAX=2025;
+const W=760,mL=58,mR=20,mT=20,mB=32;
+const X=a=>mL+(a-YMIN)/(YMAX-YMIN)*(W-mL-mR);
+
+function drawChart(svg, tip, cfg){
+  svg.innerHTML='';
+  const H2=+svg.getAttribute('viewBox').split(' ')[3];
+  const Y=v=>mT+(cfg.ymax-v)/(cfg.ymax-cfg.ymin)*(H2-mT-mB);
+  const g=el('g',{}); svg.appendChild(g);
+  niceTicks(cfg.ymin,cfg.ymax,5).forEach(t=>{ const y=Y(t); g.appendChild(el('line',{class:'grid-l',x1:mL,y1:y,x2:W-mR,y2:y}));
+    const tx=el('text',{class:'tick-t',x:mL-8,y:y+3.5,'text-anchor':'end'}); tx.textContent=cfg.yfmt(t); g.appendChild(tx); });
+  for(let a=YMIN;a<=YMAX;a+=3){ const tx=el('text',{class:'tick-t',x:X(a),y:H2-10,'text-anchor':'middle'}); tx.textContent="'"+String(a).slice(2); g.appendChild(tx); }
+  const lx=el('text',{class:'tick-t',x:X(YMAX),y:H2-10,'text-anchor':'middle'}); lx.textContent="'25"; g.appendChild(lx);
+  cfg.series.forEach(s=>{
+    const pts=cfg.data.filter(d=>d[s.key]!=null).map(d=>[X(d.ano),Y(d[s.key])]);
+    g.appendChild(el('polyline',{points:pts.map(p=>p.join(',')).join(' '), fill:'none', stroke:css(s.color), 'stroke-width':s.w||2.4, 'stroke-linejoin':'round','stroke-linecap':'round'}));
+    const last=pts[pts.length-1]; if(last) g.appendChild(el('circle',{cx:last[0],cy:last[1],r:3.2,fill:css(s.color)}));
+  });
+  if(cfg.peak){ const d=cfg.data.find(x=>x.ano===cfg.peak.ano); if(d&&d[cfg.peak.key]!=null){ const px=X(d.ano),py=Y(d[cfg.peak.key]);
+    g.appendChild(el('circle',{class:'pk',cx:px,cy:py,r:4}));
+    const t=el('text',{class:'pk-t',x:px,y:py-9}); t.textContent=cfg.peak.label; g.appendChild(t); } }
+  const cg=el('g',{style:'display:none'}); const vline=el('line',{class:'cross',y1:mT,y2:H2-mB}); cg.appendChild(vline);
+  const dots=cfg.series.map(s=>{const c=el('circle',{r:4,fill:css('--surface'),stroke:css(s.color),'stroke-width':2}); cg.appendChild(c); return c;});
+  g.appendChild(cg);
+  const rect=el('rect',{x:mL,y:mT,width:W-mL-mR,height:H2-mT-mB,fill:'transparent',style:'cursor:crosshair'}); g.appendChild(rect);
+  const move=ev=>{ const r=svg.getBoundingClientRect(); const sx=(ev.clientX-r.left)/r.width*W;
+    let a=Math.round(YMIN+(sx-mL)/(W-mL-mR)*(YMAX-YMIN)); a=Math.max(YMIN,Math.min(YMAX,a));
+    const d=cfg.data.find(x=>x.ano===a); if(!d){cg.style.display='none';tip.classList.remove('on');return;}
+    cg.style.display=''; vline.setAttribute('x1',X(a)); vline.setAttribute('x2',X(a));
+    cfg.series.forEach((s,i)=>{ if(d[s.key]!=null){ dots[i].style.display=''; dots[i].setAttribute('cx',X(a)); dots[i].setAttribute('cy',Y(d[s.key])); } else dots[i].style.display='none'; });
+    tip.innerHTML=`<div class="ty">${a}</div>`+cfg.series.map(s=>`<div class="row"><span class="nm"><span class="sw" style="background:${css(s.color)}"></span>${s.name}</span><b>${cfg.tfmt(d[s.key])}</b></div>`).join('');
+    tip.classList.add('on');
+    const wrp=tip.parentElement.getBoundingClientRect(); let tx=ev.clientX-wrp.left+14, ty=ev.clientY-wrp.top+14;
+    if(tx+tip.offsetWidth>wrp.width)tx=ev.clientX-wrp.left-tip.offsetWidth-14; if(ty+tip.offsetHeight>wrp.height)ty=wrp.height-tip.offsetHeight-6;
+    tip.style.left=Math.max(4,tx)+'px'; tip.style.top=Math.max(4,ty)+'px';
+  };
+  rect.addEventListener('mousemove',move);
+  rect.addEventListener('mouseleave',()=>{cg.style.display='none'; tip.classList.remove('on');});
+}
+function legend(elm, series){ elm.innerHTML=series.map(s=>`<span class="lg"><span class="sw" style="background:${css(s.color)}"></span>${s.name}</span>`).join(''); }
+
+const BAL = [
+ {ano:2010,exp_kg:267388599,imp_kg:181074279,exp_eur:611504283,imp_eur:89311069},
+ {ano:2011,exp_kg:308651885,imp_kg:163482840,exp_eur:653456254,imp_eur:81914569},
+ {ano:2012,exp_kg:337133598,imp_kg:130461774,exp_eur:699746806,imp_eur:86371300},
+ {ano:2013,exp_kg:304449361,imp_kg:160669784,exp_eur:716060846,imp_eur:122399001},
+ {ano:2014,exp_kg:283545805,imp_kg:233141072,exp_eur:721522552,imp_eur:125153991},
+ {ano:2015,exp_kg:279825704,imp_kg:216970865,exp_eur:730688872,imp_eur:116754909},
+ {ano:2016,exp_kg:278047133,imp_kg:181166198,exp_eur:718579892,imp_eur:110190536},
+ {ano:2017,exp_kg:298003788,imp_kg:215726695,exp_eur:770874182,imp_eur:137205926},
+ {ano:2018,exp_kg:295667922,imp_kg:202561296,exp_eur:793467656,imp_eur:158104392},
+ {ano:2019,exp_kg:296101614,imp_kg:293568124,exp_eur:810591476,imp_eur:169208338},
+ {ano:2020,exp_kg:315750628,imp_kg:274603898,exp_eur:853195469,imp_eur:166254713},
+ {ano:2021,exp_kg:329613587,imp_kg:296922786,exp_eur:923002625,imp_eur:172866039},
+ {ano:2022,exp_kg:325693890,imp_kg:297647983,exp_eur:927094290,imp_eur:205343675},
+ {ano:2023,exp_kg:319248867,imp_kg:289375249,exp_eur:911033334,imp_eur:197575767},
+ {ano:2024,exp_kg:344425840,imp_kg:194886290,exp_eur:948913506,imp_eur:153578532},
+ {ano:2025,exp_kg:339250516,imp_kg:187082315,exp_eur:935326265,imp_eur:165001320}
+];
+const ES = [
+ {ano:2010,granel:1274492.81,eng:450625.32},{ano:2011,granel:1180829.93,eng:365747.11},
+ {ano:2012,granel:917060.39,eng:290943.72},{ano:2013,granel:1211236.86,eng:303554.83},
+ {ano:2014,granel:1824428.54,eng:389136.19},{ano:2015,granel:1689414.4,eng:378463.31},
+ {ano:2016,granel:1353740.15,eng:359896.05},{ano:2017,granel:1462829.12,eng:420412.03},
+ {ano:2018,granel:1395170.29,eng:399077.08},{ano:2019,granel:2184660.98,eng:439524.43},
+ {ano:2020,granel:2103886.35,eng:470904.64},{ano:2021,granel:2211968.31,eng:561724.91},
+ {ano:2022,granel:2257810.61,eng:519694.52},{ano:2023,granel:2187088.32,eng:531242.61},
+ {ano:2024,granel:1225643.9,eng:547185.57},{ano:2025,granel:1325755.42,eng:508829.96}
+];
+const CATS=[
+  {nome:'Sem DO/IG (granel/mesa)', hl:1694598.15},
+  {nome:'Não alocado', hl:131694.88},
+  {nome:'Espumantes', hl:67701.23},
+  {nome:'IG', hl:46947.21},
+  {nome:'DO', hl:38858.28},
+  {nome:'Licoroso', hl:5994.55}
+];
+const PAISES=[
+  {nome:'Espanha', eur:109220273},{nome:'França', eur:30185584},{nome:'Itália', eur:14940679},
+  {nome:'Alemanha', eur:4072591},{nome:'Países Baixos', eur:1593844},{nome:'Dinamarca', eur:1150703},
+  {nome:'Bélgica', eur:1036449},{nome:'Reino Unido', eur:988764},{nome:'Estados Unidos', eur:482457},
+  {nome:'Nova Zelândia', eur:185895}
+];
+
+const stateBal={metric:'kg'};
+const mBEl=$('#metricBal');
+[['kg','Peso'],['eur','Valor']].forEach(([k,t])=>{const b=document.createElement('button');b.textContent=t;b.dataset.k=k;b.setAttribute('aria-pressed',k===stateBal.metric);
+  b.onclick=()=>{stateBal.metric=k;[...mBEl.children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.k===k));renderBal();};mBEl.appendChild(b);});
+
+function renderBal(){
+  const isKg=stateBal.metric==='kg';
+  const kExp=isKg?'exp_kg':'exp_eur', kImp=isKg?'imp_kg':'imp_eur';
+  const vals=BAL.flatMap(d=>[d[kExp],d[kImp]]);
+  const series=[{name:'Exportado',key:kExp,color:'--good',w:2.6},{name:'Importado',key:kImp,color:'--wine',w:2.6}];
+  const yfmt=isKg?(v=>(v/1e6).toFixed(0)+'M kg'):(v=>'€'+(v/1e6).toFixed(0)+'M');
+  const tfmt=isKg?kgM:eur;
+  legend($('#legBal'),series);
+  drawChart($('#svgBal'),$('#tipBal'),{data:BAL,series,ymin:0,ymax:Math.max(...vals)*1.08,yfmt,tfmt});
+  const cur=BAL[BAL.length-1];
+  const pctKg=(cur.imp_kg/cur.exp_kg*100).toFixed(0);
+  const pctEur=(cur.imp_eur/cur.exp_eur*100).toFixed(0);
+  const items=[
+    ['Exportado 2025', isKg?kgM(cur.exp_kg):eur(cur.exp_eur), isKg?'quilogramas':'euros'],
+    ['Importado 2025', isKg?kgM(cur.imp_kg):eur(cur.imp_eur), isKg?'quilogramas':'euros'],
+    ['€/kg exportado', price(cur.exp_eur/cur.exp_kg), '2025'],
+    ['€/kg importado', price(cur.imp_eur/cur.imp_kg), '2025']
+  ];
+  $('#kpisBal').innerHTML=items.map(([k,v,d])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+  $('#readBal').innerHTML = isKg
+    ? `<span>Em peso, importado = <b>${pctKg}%</b> do exportado em 2025 — chegou a rondar 87–99% entre 2019–2023.</span>`
+    : `<span>Em valor, importado = só <b>${pctEur}%</b> do exportado em 2025 — nunca passou de ~22%, mesmo nos anos de "quase empate" em peso.</span>`;
+}
+renderBal();
+
+function renderEs(){
+  const series=[{name:'Granel (>10L)',key:'granel',color:'--wine',w:2.6},{name:'Engarrafado (≤2L)',key:'eng',color:'--blue',w:2.2}];
+  legend($('#legEs'),series);
+  const vals=ES.flatMap(d=>[d.granel,d.eng]);
+  drawChart($('#svgEs'),$('#tipEs'),{data:ES,series,ymin:0,ymax:Math.max(...vals)*1.08,
+    yfmt:v=>(v/1000).toFixed(0)+'k', tfmt:v=>(v).toLocaleString('pt-PT',{maximumFractionDigits:0})+' HL',
+    peak:{ano:2024,key:'granel',label:'quebra 2024'}});
+}
+renderEs();
+
+function renderCat(){
+  const svg=$('#svgCat'); svg.innerHTML='';
+  const PL=150, PR=706, TOP=14, band=38;
+  const total=CATS.reduce((a,c)=>a+c.hl,0);
+  const max=Math.max(...CATS.map(c=>c.hl));
+  const X2=v=>PL+(v/max)*(PR-PL);
+  const cores=['--wine','--accent-strong','--blue','--good','--faint','--muted'];
+  const g=el('g',{}); svg.appendChild(g);
+  g.appendChild(el('line',{class:'axis0',x1:PL,y1:TOP-6,x2:PL,y2:TOP+band*CATS.length}));
+  CATS.forEach((c,i)=>{
+    const y=TOP+band*i+8, bh=20;
+    g.appendChild(el('rect',{x:PL,y,width:Math.max(2,X2(c.hl)-PL),height:bh,rx:4,fill:css(cores[i]||'--wine'),'fill-opacity':.85}));
+    const nm=el('text',{class:'bl-name',x:PL-10,y:y+bh/2+4,'text-anchor':'end'}); nm.textContent=c.nome; g.appendChild(nm);
+    const pct=(c.hl/total*100).toFixed(1)+'%';
+    const vl=el('text',{class:'bl-val',x:X2(c.hl)+8,y:y+bh/2+4}); vl.textContent=pct; g.appendChild(vl);
+  });
+  svg.setAttribute('viewBox',`0 0 760 ${TOP+band*CATS.length+10}`);
+}
+renderCat();
+
+function renderPaises(){
+  const max=PAISES[0].eur;
+  $('#tbodyPaises').innerHTML = PAISES.map((p,i)=>`<tr>
+    <td><span class="rank">${i+1}</span>${p.nome}</td>
+    <td>${eur(p.eur)}</td>
+    <td class="barcell"><div class="bg"><div class="fg" style="width:${(p.eur/max*100).toFixed(1)}%"></div></div></td>
+  </tr>`).join('');
+}
+renderPaises();
+
+function renderAll(){ renderBal(); renderEs(); renderCat(); renderPaises(); }
+
+$('#foot').innerHTML = `<b>Fontes:</b> INE (Comércio Internacional, HS 2204) e IVV (Instituto da Vinha e do Vinho). `+
+  `Espanha representa 88–95% de todo o vinho importado por Portugal, todos os anos desde 2010 — as restantes origens são residuais em comparação. `+
+  `Espanha, França e Itália são os únicos países com detalhe de granel/engarrafado na fonte. INE e IVV divergem ~1–6% entre si por metodologias diferentes. `+
+  `Protótipo para validação · dados reais, verificados.`;
+</script>

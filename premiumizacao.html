@@ -1,0 +1,322 @@
+<title>Premiumização e Termos Reais</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57;
+  --wine:#8E2547; --blue:#3F6DA6; --wine-fill:rgba(142,37,71,.10);
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 6px 28px rgba(36,30,41,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E;
+  --wine:#D0567A; --blue:#5E8FD0; --wine-fill:rgba(208,86,122,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E;
+  --wine:#D0567A; --blue:#5E8FD0; --wine-fill:rgba(208,86,122,.14);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px; margin:0 auto; padding:22px clamp(14px,3vw,30px) 40px}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+header.top{display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:14px}
+.brand{display:flex; flex-direction:column; gap:5px}
+.eyebrow{font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(27px,4.4vw,40px); line-height:1.02; margin:0; letter-spacing:-.01em; text-wrap:balance}
+.sub{color:var(--muted); max-width:62ch; font-size:14.5px}
+.head-right{display:flex; align-items:center; gap:12px}
+.fresh{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:7px 11px; border-radius:999px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--good)}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+
+.nav{display:inline-flex; gap:3px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; box-shadow:var(--shadow); margin-bottom:18px; flex-wrap:wrap}
+.nav a{font:600 13.5px "Hanken Grotesk",sans-serif; color:var(--muted); text-decoration:none; padding:8px 14px; border-radius:8px; white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .nav a[aria-current="page"], :root:not([data-theme="light"]) .nav a[aria-current="page"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .nav a[aria-current="page"]{color:#fff}}
+.nav a:not([aria-current]):hover{color:var(--ink); background:var(--surface-2)}
+.nav a.brandtab{font-weight:700; color:var(--ink)}
+.nav a.brandtab:hover{background:var(--accent-soft)}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); margin-bottom:18px}
+.card-h{display:flex; align-items:center; justify-content:space-between; gap:12px 16px; flex-wrap:wrap; padding:15px 18px 6px}
+.card-t{font-family:"Spectral",serif; font-weight:600; font-size:18px}
+.card-t small{display:block; font-family:"Hanken Grotesk",sans-serif; font-weight:400; font-size:12.5px; color:var(--muted); margin-top:2px}
+.seg{display:inline-flex; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px}
+.seg button{appearance:none; border:0; background:transparent; color:var(--muted); font:600 13px "IBM Plex Mono",monospace; padding:7px 12px; border-radius:7px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"], :root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .seg button[aria-pressed="true"]{color:#fff}}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+.chips{display:flex; flex-wrap:wrap; gap:6px; padding:0 18px 6px}
+.chip{appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 12.5px "Hanken Grotesk",sans-serif; padding:6px 12px; border-radius:999px; cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+:root[data-theme="dark"] .chip[aria-pressed="true"], :root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .chip[aria-pressed="true"]{color:#fff}}
+.chip:hover:not([aria-pressed="true"]){border-color:var(--line-strong)}
+
+.kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:10px 18px 4px}
+@media (max-width:640px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:11px 13px}
+.kpi .k{font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.kpi .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:20px; letter-spacing:-.02em; margin-top:4px}
+.kpi .d{font-size:12px; color:var(--muted); margin-top:1px}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; padding:8px 18px 0; font-size:12.5px; color:var(--muted)}
+.legend .lg{display:inline-flex; align-items:center; gap:7px}
+.legend .sw{width:14px; height:3px; border-radius:2px; display:inline-block}
+.legend .sw.d{height:0; border-top:2px dashed currentColor; width:16px}
+
+.info-btn{appearance:none; border:1px solid var(--line-strong); background:var(--surface-2); color:var(--muted); width:20px; height:20px; border-radius:50%; font:700 12px "Hanken Grotesk",sans-serif; cursor:pointer; margin-left:8px; vertical-align:middle; display:inline-grid; place-items:center; line-height:1}
+.info-btn:hover{color:var(--ink); border-color:var(--accent)}
+.info-btn[aria-expanded="true"]{background:var(--accent); color:#fff; border-color:var(--accent)}
+:root[data-theme="dark"] .info-btn[aria-expanded="true"], :root:not([data-theme="light"]) .info-btn[aria-expanded="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .info-btn[aria-expanded="true"]{color:#fff}}
+.info-panel{margin:6px 18px 2px; padding:13px 15px; background:var(--surface-2); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; font-size:13px; line-height:1.55; color:var(--muted); max-width:70ch}
+.info-panel h4{margin:0 0 6px; font-family:"Spectral",serif; font-size:14.5px; color:var(--ink); font-weight:600}
+.info-panel b{color:var(--ink); font-weight:600}
+[hidden]{display:none!important}
+.figwrap{position:relative; padding:2px 12px 12px}
+svg.chart{width:100%; height:auto; display:block; touch-action:none}
+.grid-l{stroke:var(--line)} .axis0{stroke:var(--line-strong)}
+.tick-t{fill:var(--faint); font:500 10px "IBM Plex Mono",monospace}
+.cross{stroke:var(--line-strong); stroke-dasharray:3 3}
+.readline{color:var(--muted); font-size:12.5px; padding:0 18px 14px; display:flex; gap:16px; flex-wrap:wrap}
+.readline b{color:var(--ink); font-weight:600}
+.pk{fill:var(--wine)} .pk-t{fill:var(--ink); font:600 10.5px "Hanken Grotesk",sans-serif}
+
+.tip{position:absolute; pointer-events:none; z-index:6; background:var(--surface); border:1px solid var(--line-strong); border-radius:11px; box-shadow:var(--shadow-pop); padding:10px 12px; min-width:150px; opacity:0; transform:translateY(4px); transition:opacity .1s,transform .1s}
+.tip.on{opacity:1; transform:translateY(0)}
+.tip .ty{font:700 13px "IBM Plex Mono",monospace; margin-bottom:6px; color:var(--ink)}
+.tip .row{display:flex; align-items:center; gap:10px; font-size:12.5px; padding:2px 0; justify-content:space-between}
+.tip .row .nm{display:inline-flex; align-items:center; gap:6px; color:var(--muted)}
+.tip .row .sw{width:10px; height:3px; border-radius:2px}
+.tip .row b{font-weight:600}
+
+footer{margin-top:22px; color:var(--faint); font-size:12px; line-height:1.6; border-top:1px solid var(--line); padding-top:14px}
+footer b{color:var(--muted); font-weight:600}
+a{color:var(--accent-strong)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="eyebrow">VineAtlas · Vinho de Portugal</div>
+      <h1>Premiumização e termos reais</h1>
+      <div class="sub">O recorde de exportação é real ou é inflação? E o vinho com denominação vende-se mesmo mais caro? Duas leituras que os números nominais escondem.</div>
+    </div>
+    <div class="head-right">
+      <div class="fresh"><span class="dot"></span> INE + IVV · <b>&nbsp;até 2025</b></div>
+      <button class="tbtn" id="theme" title="Alternar tema" aria-label="Alternar tema">◐</button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Ecrãs">
+    <a class="brandtab" href="index.html">🍷 VineAtlas</a>
+    <a href="radar.html">Radar de Mercados</a>
+    <a href="onde-vender.html">Onde vender o meu tipo de vinho</a>
+    <a href="#" aria-current="page">Premiumização &amp; termos reais</a>
+    <a href="ficha.html">Ficha de mercado</a>
+    <a href="balanca.html">Balança comercial</a>
+  </nav>
+
+  <!-- CARD A: termos reais -->
+  <div class="card">
+    <div class="card-h">
+      <div class="card-t">Nominal vs. real <button class="info-btn" id="infoBtn" aria-expanded="false" aria-controls="infoReal" title="O que são termos reais?">?</button><small>Valor total exportado (MUNDO), em euros de 2025 · fonte INE</small></div>
+      <div class="seg" id="metricA" role="group" aria-label="Métrica"></div>
+    </div>
+    <div class="info-panel" id="infoReal" hidden>
+      <h4>O que são «termos reais»?</h4>
+      Os preços sobem com o tempo (inflação), por isso €1 de há dez anos comprava mais do que €1 hoje. Pôr em <b>termos reais</b> é medir todos os anos na mesma régua — o poder de compra de <b>2025</b> — para a comparação ser justa. Os anos antigos sobem: os €614M exportados em 2010 equivalem a <b>€823M</b> em euros de 2025.<br><br>
+      É isto que o número nominal esconde: de 2021 para 2025 o valor <b>nominal</b> até subiu (€927M&nbsp;→&nbsp;€950M), mas em euros de 2025 <b>caiu ~14%</b> — a inflação recente comeu o crescimento. É como um aumento de 3% num ano em que os preços sobem 5%: o número sobe, mas ficas mais pobre.<br><br>
+      <span style="color:var(--faint)">Régua usada: IHPC de Portugal (Eurostat) — inflação do consumidor. É a escolha habitual, mas uma aproximação: não mede os custos do vinho nem os preços de exportação.</span>
+    </div>
+    <div class="kpis" id="kpisA"></div>
+    <div class="legend" id="legA"></div>
+    <div class="figwrap"><svg class="chart" id="svgA" viewBox="0 0 760 340" role="img" aria-label="Valor nominal vs real ao longo do tempo"></svg><div class="tip" id="tipA"></div></div>
+    <div class="readline" id="readA"></div>
+  </div>
+
+  <!-- CARD B: premiumização -->
+  <div class="card">
+    <div class="card-h">
+      <div class="card-t">Premiumização<small>Peso do vinho certificado (DOP, IGP, Porto, Madeira…) no valor vs. no volume · fonte IVV</small></div>
+    </div>
+    <div class="chips" id="paises" role="group" aria-label="Mercado"></div>
+    <div class="kpis" id="kpisB"></div>
+    <div class="legend" id="legB"></div>
+    <div class="figwrap"><svg class="chart" id="svgB" viewBox="0 0 760 340" role="img" aria-label="Quota de certificado no valor vs volume"></svg><div class="tip" id="tipB"></div></div>
+    <div class="readline" id="readB"></div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D = {"nat": [{"ano": 2010, "vn": 614.4, "vr": 822.7, "pn": 2.295, "pr": 3.074}, {"ano": 2011, "vn": 656.9, "vr": 849.4, "pn": 2.126, "pr": 2.749}, {"ano": 2012, "vn": 703.5, "vr": 885.1, "pn": 2.085, "pr": 2.623}, {"ano": 2013, "vn": 720.8, "vr": 902.9, "pn": 2.364, "pr": 2.961}, {"ano": 2014, "vn": 726.3, "vr": 911.2, "pn": 2.555, "pr": 3.205}, {"ano": 2015, "vn": 735.5, "vr": 918.2, "pn": 2.622, "pr": 3.273}, {"ano": 2016, "vn": 724.0, "vr": 898.0, "pn": 2.598, "pr": 3.222}, {"ano": 2017, "vn": 778.0, "vr": 950.3, "pn": 2.603, "pr": 3.179}, {"ano": 2018, "vn": 801.2, "vr": 967.3, "pn": 2.701, "pr": 3.261}, {"ano": 2019, "vn": 819.4, "vr": 986.2, "pn": 2.758, "pr": 3.319}, {"ano": 2020, "vn": 856.2, "vr": 1031.9, "pn": 2.709, "pr": 3.265}, {"ano": 2021, "vn": 927.4, "vr": 1107.4, "pn": 2.812, "pr": 3.357}, {"ano": 2022, "vn": 939.0, "vr": 1037.0, "pn": 2.878, "pr": 3.179}, {"ano": 2023, "vn": 924.6, "vr": 970.1, "pn": 2.891, "pr": 3.034}, {"ano": 2024, "vn": 964.0, "vr": 985.1, "pn": 2.794, "pr": 2.855}, {"ano": 2025, "vn": 950.4, "vr": 950.4, "pn": 2.797, "pr": 2.797}], "prem": [{"ano": 2010, "m": "Alemanha", "pl": 1.714, "cv": 77.4, "cvol": 46.2}, {"ano": 2011, "m": "Alemanha", "pl": 1.66, "cv": 81.7, "cvol": 46.7}, {"ano": 2012, "m": "Alemanha", "pl": 1.695, "cv": 75.5, "cvol": 44.9}, {"ano": 2013, "m": "Alemanha", "pl": 2.013, "cv": 78.7, "cvol": 53.7}, {"ano": 2014, "m": "Alemanha", "pl": 1.97, "cv": 81.2, "cvol": 54.9}, {"ano": 2015, "m": "Alemanha", "pl": 2.004, "cv": 84.8, "cvol": 57.8}, {"ano": 2016, "m": "Alemanha", "pl": 1.931, "cv": 85.4, "cvol": 58.4}, {"ano": 2017, "m": "Alemanha", "pl": 1.832, "cv": 83.6, "cvol": 53.2}, {"ano": 2018, "m": "Alemanha", "pl": 1.895, "cv": 78.0, "cvol": 49.1}, {"ano": 2019, "m": "Alemanha", "pl": 2.09, "cv": 82.8, "cvol": 55.6}, {"ano": 2020, "m": "Alemanha", "pl": 2.486, "cv": 87.5, "cvol": 71.9}, {"ano": 2021, "m": "Alemanha", "pl": 2.504, "cv": 86.5, "cvol": 67.8}, {"ano": 2022, "m": "Alemanha", "pl": 2.47, "cv": 86.1, "cvol": 65.2}, {"ano": 2023, "m": "Alemanha", "pl": 2.357, "cv": 84.1, "cvol": 60.5}, {"ano": 2024, "m": "Alemanha", "pl": 2.303, "cv": 83.6, "cvol": 61.3}, {"ano": 2025, "m": "Alemanha", "pl": 2.304, "cv": 85.9, "cvol": 63.3}, {"ano": 2010, "m": "Bélgica", "pl": 3.177, "cv": 89.3, "cvol": 87.2}, {"ano": 2011, "m": "Bélgica", "pl": 3.181, "cv": 94.9, "cvol": 90.8}, {"ano": 2012, "m": "Bélgica", "pl": 3.194, "cv": 90.1, "cvol": 81.5}, {"ano": 2013, "m": "Bélgica", "pl": 3.217, "cv": 90.5, "cvol": 82.7}, {"ano": 2014, "m": "Bélgica", "pl": 3.278, "cv": 89.0, "cvol": 80.2}, {"ano": 2015, "m": "Bélgica", "pl": 3.258, "cv": 89.5, "cvol": 80.0}, {"ano": 2016, "m": "Bélgica", "pl": 3.272, "cv": 89.2, "cvol": 79.9}, {"ano": 2017, "m": "Bélgica", "pl": 3.305, "cv": 89.7, "cvol": 80.1}, {"ano": 2018, "m": "Bélgica", "pl": 3.331, "cv": 89.7, "cvol": 80.1}, {"ano": 2019, "m": "Bélgica", "pl": 3.395, "cv": 88.3, "cvol": 79.4}, {"ano": 2020, "m": "Bélgica", "pl": 3.352, "cv": 87.3, "cvol": 78.0}, {"ano": 2021, "m": "Bélgica", "pl": 3.534, "cv": 90.2, "cvol": 83.4}, {"ano": 2022, "m": "Bélgica", "pl": 3.466, "cv": 89.4, "cvol": 83.2}, {"ano": 2023, "m": "Bélgica", "pl": 3.713, "cv": 92.2, "cvol": 86.6}, {"ano": 2024, "m": "Bélgica", "pl": 3.834, "cv": 92.1, "cvol": 86.9}, {"ano": 2025, "m": "Bélgica", "pl": 3.672, "cv": 92.7, "cvol": 86.8}, {"ano": 2010, "m": "Brasil", "pl": 2.924, "cv": 91.8, "cvol": 86.0}, {"ano": 2011, "m": "Brasil", "pl": 3.017, "cv": 94.5, "cvol": 88.8}, {"ano": 2012, "m": "Brasil", "pl": 2.978, "cv": 93.2, "cvol": 86.8}, {"ano": 2013, "m": "Brasil", "pl": 2.969, "cv": 90.9, "cvol": 83.4}, {"ano": 2014, "m": "Brasil", "pl": 2.949, "cv": 92.7, "cvol": 86.3}, {"ano": 2015, "m": "Brasil", "pl": 2.918, "cv": 92.8, "cvol": 86.0}, {"ano": 2016, "m": "Brasil", "pl": 2.476, "cv": 88.8, "cvol": 79.7}, {"ano": 2017, "m": "Brasil", "pl": 2.58, "cv": 88.5, "cvol": 80.3}, {"ano": 2018, "m": "Brasil", "pl": 2.805, "cv": 90.0, "cvol": 81.8}, {"ano": 2019, "m": "Brasil", "pl": 2.724, "cv": 88.2, "cvol": 79.9}, {"ano": 2020, "m": "Brasil", "pl": 2.682, "cv": 86.1, "cvol": 76.7}, {"ano": 2021, "m": "Brasil", "pl": 2.76, "cv": 85.8, "cvol": 74.9}, {"ano": 2022, "m": "Brasil", "pl": 2.99, "cv": 86.3, "cvol": 75.4}, {"ano": 2023, "m": "Brasil", "pl": 3.091, "cv": 85.9, "cvol": 76.2}, {"ano": 2024, "m": "Brasil", "pl": 3.002, "cv": 85.1, "cvol": 76.6}, {"ano": 2025, "m": "Brasil", "pl": 3.083, "cv": 87.1, "cvol": 78.6}, {"ano": 2010, "m": "Canadá", "pl": 4.519, "cv": 94.3, "cvol": 89.5}, {"ano": 2011, "m": "Canadá", "pl": 4.362, "cv": 95.2, "cvol": 88.5}, {"ano": 2012, "m": "Canadá", "pl": 4.388, "cv": 94.8, "cvol": 87.7}, {"ano": 2013, "m": "Canadá", "pl": 4.299, "cv": 95.6, "cvol": 90.5}, {"ano": 2014, "m": "Canadá", "pl": 3.855, "cv": 95.2, "cvol": 88.4}, {"ano": 2015, "m": "Canadá", "pl": 3.834, "cv": 95.9, "cvol": 90.4}, {"ano": 2016, "m": "Canadá", "pl": 3.872, "cv": 96.5, "cvol": 90.7}, {"ano": 2017, "m": "Canadá", "pl": 3.962, "cv": 96.4, "cvol": 91.3}, {"ano": 2018, "m": "Canadá", "pl": 3.703, "cv": 94.2, "cvol": 88.5}, {"ano": 2019, "m": "Canadá", "pl": 3.692, "cv": 93.7, "cvol": 87.6}, {"ano": 2020, "m": "Canadá", "pl": 3.657, "cv": 93.7, "cvol": 88.5}, {"ano": 2021, "m": "Canadá", "pl": 3.637, "cv": 92.2, "cvol": 86.7}, {"ano": 2022, "m": "Canadá", "pl": 3.839, "cv": 91.7, "cvol": 84.8}, {"ano": 2023, "m": "Canadá", "pl": 4.171, "cv": 92.6, "cvol": 87.5}, {"ano": 2024, "m": "Canadá", "pl": 3.986, "cv": 91.1, "cvol": 84.3}, {"ano": 2025, "m": "Canadá", "pl": 4.062, "cv": 91.7, "cvol": 85.4}, {"ano": 2010, "m": "E.U.A.", "pl": 3.618, "cv": 93.3, "cvol": 88.3}, {"ano": 2011, "m": "E.U.A.", "pl": 3.67, "cv": 95.6, "cvol": 88.9}, {"ano": 2012, "m": "E.U.A.", "pl": 3.731, "cv": 95.1, "cvol": 88.1}, {"ano": 2013, "m": "E.U.A.", "pl": 3.913, "cv": 95.5, "cvol": 88.1}, {"ano": 2014, "m": "E.U.A.", "pl": 3.7, "cv": 95.1, "cvol": 87.7}, {"ano": 2015, "m": "E.U.A.", "pl": 4.0, "cv": 95.3, "cvol": 88.2}, {"ano": 2016, "m": "E.U.A.", "pl": 3.99, "cv": 94.9, "cvol": 87.6}, {"ano": 2017, "m": "E.U.A.", "pl": 3.917, "cv": 94.2, "cvol": 87.1}, {"ano": 2018, "m": "E.U.A.", "pl": 3.892, "cv": 94.2, "cvol": 87.8}, {"ano": 2019, "m": "E.U.A.", "pl": 3.941, "cv": 93.8, "cvol": 87.9}, {"ano": 2020, "m": "E.U.A.", "pl": 3.583, "cv": 92.7, "cvol": 88.6}, {"ano": 2021, "m": "E.U.A.", "pl": 3.794, "cv": 90.2, "cvol": 83.8}, {"ano": 2022, "m": "E.U.A.", "pl": 4.275, "cv": 89.9, "cvol": 85.9}, {"ano": 2023, "m": "E.U.A.", "pl": 4.288, "cv": 91.0, "cvol": 87.5}, {"ano": 2024, "m": "E.U.A.", "pl": 4.34, "cv": 89.8, "cvol": 86.7}, {"ano": 2025, "m": "E.U.A.", "pl": 4.005, "cv": 91.7, "cvol": 88.2}, {"ano": 2010, "m": "França", "pl": 2.154, "cv": 87.8, "cvol": 58.9}, {"ano": 2011, "m": "França", "pl": 1.911, "cv": 90.7, "cvol": 52.7}, {"ano": 2012, "m": "França", "pl": 1.89, "cv": 87.1, "cvol": 50.7}, {"ano": 2013, "m": "França", "pl": 2.2, "cv": 86.2, "cvol": 58.6}, {"ano": 2014, "m": "França", "pl": 3.033, "cv": 92.8, "cvol": 82.0}, {"ano": 2015, "m": "França", "pl": 3.009, "cv": 92.7, "cvol": 81.6}, {"ano": 2016, "m": "França", "pl": 2.915, "cv": 91.5, "cvol": 78.7}, {"ano": 2017, "m": "França", "pl": 2.866, "cv": 91.1, "cvol": 76.3}, {"ano": 2018, "m": "França", "pl": 2.694, "cv": 87.2, "cvol": 67.9}, {"ano": 2019, "m": "França", "pl": 2.761, "cv": 87.1, "cvol": 70.7}, {"ano": 2020, "m": "França", "pl": 2.788, "cv": 87.9, "cvol": 73.7}, {"ano": 2021, "m": "França", "pl": 2.745, "cv": 85.9, "cvol": 69.4}, {"ano": 2022, "m": "França", "pl": 2.801, "cv": 85.9, "cvol": 71.9}, {"ano": 2023, "m": "França", "pl": 2.953, "cv": 85.5, "cvol": 71.1}, {"ano": 2024, "m": "França", "pl": 3.14, "cv": 86.6, "cvol": 72.5}, {"ano": 2025, "m": "França", "pl": 3.205, "cv": 87.5, "cvol": 74.4}, {"ano": 2010, "m": "Países Baixos", "pl": 3.053, "cv": 89.9, "cvol": 82.4}, {"ano": 2011, "m": "Países Baixos", "pl": 3.016, "cv": 96.4, "cvol": 86.7}, {"ano": 2012, "m": "Países Baixos", "pl": 3.046, "cv": 95.6, "cvol": 86.9}, {"ano": 2013, "m": "Países Baixos", "pl": 3.317, "cv": 96.4, "cvol": 91.5}, {"ano": 2014, "m": "Países Baixos", "pl": 3.435, "cv": 96.8, "cvol": 91.2}, {"ano": 2015, "m": "Países Baixos", "pl": 3.375, "cv": 96.6, "cvol": 89.7}, {"ano": 2016, "m": "Países Baixos", "pl": 3.446, "cv": 97.5, "cvol": 92.4}, {"ano": 2017, "m": "Países Baixos", "pl": 3.403, "cv": 96.8, "cvol": 90.0}, {"ano": 2018, "m": "Países Baixos", "pl": 3.545, "cv": 96.5, "cvol": 89.4}, {"ano": 2019, "m": "Países Baixos", "pl": 3.538, "cv": 95.9, "cvol": 90.5}, {"ano": 2020, "m": "Países Baixos", "pl": 3.43, "cv": 94.3, "cvol": 87.4}, {"ano": 2021, "m": "Países Baixos", "pl": 3.704, "cv": 96.0, "cvol": 91.4}, {"ano": 2022, "m": "Países Baixos", "pl": 3.688, "cv": 95.5, "cvol": 89.9}, {"ano": 2023, "m": "Países Baixos", "pl": 3.471, "cv": 95.7, "cvol": 87.5}, {"ano": 2024, "m": "Países Baixos", "pl": 3.534, "cv": 93.5, "cvol": 89.3}, {"ano": 2025, "m": "Países Baixos", "pl": 3.59, "cv": 92.6, "cvol": 86.5}, {"ano": 2010, "m": "Reino Unido", "pl": 3.429, "cv": 59.7, "cvol": 52.1}, {"ano": 2011, "m": "Reino Unido", "pl": 3.158, "cv": 84.5, "cvol": 68.6}, {"ano": 2012, "m": "Reino Unido", "pl": 3.35, "cv": 84.8, "cvol": 68.2}, {"ano": 2013, "m": "Reino Unido", "pl": 3.609, "cv": 87.6, "cvol": 71.3}, {"ano": 2014, "m": "Reino Unido", "pl": 3.672, "cv": 85.7, "cvol": 70.6}, {"ano": 2015, "m": "Reino Unido", "pl": 4.023, "cv": 87.9, "cvol": 74.2}, {"ano": 2016, "m": "Reino Unido", "pl": 3.706, "cv": 86.9, "cvol": 73.6}, {"ano": 2017, "m": "Reino Unido", "pl": 3.642, "cv": 88.2, "cvol": 76.4}, {"ano": 2018, "m": "Reino Unido", "pl": 3.475, "cv": 86.2, "cvol": 73.2}, {"ano": 2019, "m": "Reino Unido", "pl": 3.588, "cv": 85.0, "cvol": 71.5}, {"ano": 2020, "m": "Reino Unido", "pl": 3.28, "cv": 83.7, "cvol": 71.5}, {"ano": 2021, "m": "Reino Unido", "pl": 3.561, "cv": 90.9, "cvol": 81.8}, {"ano": 2022, "m": "Reino Unido", "pl": 3.562, "cv": 90.4, "cvol": 81.5}, {"ano": 2023, "m": "Reino Unido", "pl": 3.792, "cv": 91.8, "cvol": 85.2}, {"ano": 2024, "m": "Reino Unido", "pl": 3.717, "cv": 91.3, "cvol": 85.1}, {"ano": 2025, "m": "Reino Unido", "pl": 3.79, "cv": 93.6, "cvol": 88.8}, {"ano": 2010, "m": "Suíça", "pl": 2.672, "cv": 78.3, "cvol": 60.3}, {"ano": 2011, "m": "Suíça", "pl": 2.726, "cv": 78.4, "cvol": 61.4}, {"ano": 2012, "m": "Suíça", "pl": 2.738, "cv": 78.2, "cvol": 62.5}, {"ano": 2013, "m": "Suíça", "pl": 2.896, "cv": 79.5, "cvol": 63.6}, {"ano": 2014, "m": "Suíça", "pl": 2.717, "cv": 79.6, "cvol": 62.8}, {"ano": 2015, "m": "Suíça", "pl": 2.831, "cv": 81.1, "cvol": 63.2}, {"ano": 2016, "m": "Suíça", "pl": 3.015, "cv": 85.7, "cvol": 68.2}, {"ano": 2017, "m": "Suíça", "pl": 3.026, "cv": 86.6, "cvol": 70.3}, {"ano": 2018, "m": "Suíça", "pl": 3.088, "cv": 88.7, "cvol": 74.9}, {"ano": 2019, "m": "Suíça", "pl": 3.195, "cv": 89.2, "cvol": 74.8}, {"ano": 2020, "m": "Suíça", "pl": 3.092, "cv": 83.2, "cvol": 68.3}, {"ano": 2021, "m": "Suíça", "pl": 3.313, "cv": 80.8, "cvol": 63.9}, {"ano": 2022, "m": "Suíça", "pl": 3.53, "cv": 80.1, "cvol": 63.7}, {"ano": 2023, "m": "Suíça", "pl": 3.587, "cv": 79.6, "cvol": 61.8}, {"ano": 2024, "m": "Suíça", "pl": 3.612, "cv": 80.3, "cvol": 63.2}, {"ano": 2025, "m": "Suíça", "pl": 3.732, "cv": 82.3, "cvol": 65.0}, {"ano": 2010, "m": "Total Nacional", "pl": 2.311, "cv": 79.4, "cvol": 55.2}, {"ano": 2011, "m": "Total Nacional", "pl": 2.136, "cv": 83.5, "cvol": 53.5}, {"ano": 2012, "m": "Total Nacional", "pl": 2.114, "cv": 80.2, "cvol": 48.9}, {"ano": 2013, "m": "Total Nacional", "pl": 2.372, "cv": 80.2, "cvol": 53.1}, {"ano": 2014, "m": "Total Nacional", "pl": 2.561, "cv": 81.8, "cvol": 57.6}, {"ano": 2015, "m": "Total Nacional", "pl": 2.629, "cv": 83.0, "cvol": 59.2}, {"ano": 2016, "m": "Total Nacional", "pl": 2.608, "cv": 84.6, "cvol": 61.0}, {"ano": 2017, "m": "Total Nacional", "pl": 2.613, "cv": 84.5, "cvol": 60.8}, {"ano": 2018, "m": "Total Nacional", "pl": 2.707, "cv": 82.8, "cvol": 60.9}, {"ano": 2019, "m": "Total Nacional", "pl": 2.771, "cv": 82.7, "cvol": 62.2}, {"ano": 2020, "m": "Total Nacional", "pl": 2.728, "cv": 82.4, "cvol": 64.8}, {"ano": 2021, "m": "Total Nacional", "pl": 2.821, "cv": 83.6, "cvol": 65.4}, {"ano": 2022, "m": "Total Nacional", "pl": 2.886, "cv": 83.2, "cvol": 64.5}, {"ano": 2023, "m": "Total Nacional", "pl": 2.899, "cv": 83.5, "cvol": 64.7}, {"ano": 2024, "m": "Total Nacional", "pl": 2.861, "cv": 83.1, "cvol": 63.5}, {"ano": 2025, "m": "Total Nacional", "pl": 2.8, "cv": 83.2, "cvol": 63.7}]};
+const NAT=D.nat, PREM=D.prem;
+const $=(s,r=document)=>r.querySelector(s);
+const meur=v=>'€'+v.toLocaleString('pt-PT',{maximumFractionDigits:0})+'M';
+const kg=v=>'€'+v.toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pc=v=>v==null?'—':v.toLocaleString('pt-PT',{maximumFractionDigits:1})+'%';
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const YMIN=2010, YMAX=2025;
+
+/* theme */
+const themeBtn=$('#theme');
+try{const t=localStorage.getItem('radar-theme'); if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+themeBtn.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');const md=matchMedia('(prefers-color-scheme:dark)').matches;
+  const next=cur?(cur==='dark'?'light':'dark'):(md?'light':'dark');document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('radar-theme',next);}catch(e){} renderAll();};
+
+/* info popover: o que são termos reais */
+const infoBtn=$('#infoBtn'), infoReal=$('#infoReal');
+infoBtn.onclick=()=>{ const willOpen=infoReal.hasAttribute('hidden');
+  if(willOpen) infoReal.removeAttribute('hidden'); else infoReal.setAttribute('hidden','');
+  infoBtn.setAttribute('aria-expanded', willOpen); };
+
+const NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const niceTicks=(mn,mx,n)=>{const s=(mx-mn)/n,mag=Math.pow(10,Math.floor(Math.log10(s))),nn=s/mag,st=(nn<1.5?1:nn<3?2:nn<7?5:10)*mag,t=[];for(let v=Math.ceil(mn/st)*st;v<=mx+1e-9;v+=st)t.push(+v.toFixed(6));return t;};
+const W=760,H=340,mL=54,mR=54,mT=26,mB=32;
+const X=a=>mL+(a-YMIN)/(YMAX-YMIN)*(W-mL-mR);
+
+/* generic line chart with crosshair */
+function drawChart(svg, tip, cfg){
+  svg.innerHTML='';
+  const data=cfg.data.filter(d=>cfg.series.some(s=>d[s.key]!=null));
+  const vals=[]; cfg.series.forEach(s=>cfg.data.forEach(d=>{ if(d[s.key]!=null) vals.push(d[s.key]); }));
+  const ymin=cfg.ymin!=null?cfg.ymin:0;
+  const ymax=cfg.ymax!=null?cfg.ymax:Math.max(...vals)*1.08;
+  const Y=v=>mT+(ymax-v)/(ymax-ymin)*(H-mT-mB);
+  const g=el('g',{}); svg.appendChild(g);
+  // y grid + labels
+  niceTicks(ymin,ymax,5).forEach(t=>{ const y=Y(t); g.appendChild(el('line',{class:'grid-l',x1:mL,y1:y,x2:W-mR,y2:y}));
+    const tx=el('text',{class:'tick-t',x:mL-8,y:y+3.5,'text-anchor':'end'}); tx.textContent=cfg.yfmt(t); g.appendChild(tx); });
+  // x labels
+  for(let a=YMIN;a<=YMAX;a+=3){ const tx=el('text',{class:'tick-t',x:X(a),y:H-12,'text-anchor':'middle'}); tx.textContent="'"+String(a).slice(2); g.appendChild(tx); }
+  const lx=el('text',{class:'tick-t',x:X(YMAX),y:H-12,'text-anchor':'middle'}); lx.textContent="'25"; g.appendChild(lx);
+  // fill between two series
+  if(cfg.fill){ const [k1,k2]=cfg.fill; const top=[],bot=[];
+    data.forEach(d=>{ if(d[k1]!=null&&d[k2]!=null){ top.push([X(d.ano),Y(d[k1])]); bot.push([X(d.ano),Y(d[k2])]); } });
+    if(top.length){ const pts=top.concat(bot.reverse()).map(p=>p.join(',')).join(' ');
+      g.appendChild(el('polygon',{points:pts, fill:css('--wine-fill'), stroke:'none'})); } }
+  // lines
+  cfg.series.forEach(s=>{
+    const pts=data.filter(d=>d[s.key]!=null).map(d=>[X(d.ano),Y(d[s.key])]);
+    g.appendChild(el('polyline',{points:pts.map(p=>p.join(',')).join(' '), fill:'none', stroke:css(s.color), 'stroke-width':s.w||2.4, 'stroke-dasharray':s.dash||'', 'stroke-linejoin':'round','stroke-linecap':'round'}));
+    const last=pts[pts.length-1]; if(last) g.appendChild(el('circle',{cx:last[0],cy:last[1],r:3.2,fill:css(s.color)}));
+  });
+  // peak marker
+  if(cfg.peak){ const d=cfg.data.find(x=>x.ano===cfg.peak.ano); if(d&&d[cfg.peak.key]!=null){ const px=X(d.ano),py=Y(d[cfg.peak.key]);
+    g.appendChild(el('circle',{class:'pk',cx:px,cy:py,r:4}));
+    const t=el('text',{class:'pk-t',x:px,y:py-9,'text-anchor':'middle'}); t.textContent=cfg.peak.label; g.appendChild(t); } }
+  // crosshair overlay
+  const cg=el('g',{style:'display:none'}); const vline=el('line',{class:'cross',y1:mT,y2:H-mB}); cg.appendChild(vline);
+  const dots=cfg.series.map(s=>{const c=el('circle',{r:4,fill:css('--surface'),stroke:css(s.color),'stroke-width':2}); cg.appendChild(c); return c;});
+  g.appendChild(cg);
+  const rect=el('rect',{x:mL,y:mT,width:W-mL-mR,height:H-mT-mB,fill:'transparent',style:'cursor:crosshair'}); g.appendChild(rect);
+  const move=ev=>{ const r=svg.getBoundingClientRect(); const sx=(ev.clientX-r.left)/r.width*W;
+    let a=Math.round(YMIN+(sx-mL)/(W-mL-mR)*(YMAX-YMIN)); a=Math.max(YMIN,Math.min(YMAX,a));
+    const d=cfg.data.find(x=>x.ano===a); if(!d){cg.style.display='none';tip.classList.remove('on');return;}
+    cg.style.display=''; vline.setAttribute('x1',X(a)); vline.setAttribute('x2',X(a));
+    cfg.series.forEach((s,i)=>{ if(d[s.key]!=null){ dots[i].style.display=''; dots[i].setAttribute('cx',X(a)); dots[i].setAttribute('cy',Y(d[s.key])); } else dots[i].style.display='none'; });
+    tip.innerHTML=`<div class="ty">${a}</div>`+cfg.series.map(s=>`<div class="row"><span class="nm"><span class="sw" style="background:${css(s.color)}"></span>${s.name}</span><b>${cfg.tfmt(d[s.key])}</b></div>`).join('');
+    tip.classList.add('on');
+    const wrp=tip.parentElement.getBoundingClientRect(); let tx=ev.clientX-wrp.left+14, ty=ev.clientY-wrp.top+14;
+    if(tx+tip.offsetWidth>wrp.width)tx=ev.clientX-wrp.left-tip.offsetWidth-14; if(ty+tip.offsetHeight>wrp.height)ty=wrp.height-tip.offsetHeight-6;
+    tip.style.left=Math.max(4,tx)+'px'; tip.style.top=Math.max(4,ty)+'px';
+  };
+  rect.addEventListener('mousemove',move);
+  rect.addEventListener('mouseleave',()=>{cg.style.display='none'; tip.classList.remove('on');});
+}
+
+/* legend builder */
+function legend(elm, series){ elm.innerHTML=series.map(s=>`<span class="lg"><span class="sw${s.dash?' d':''}" style="${s.dash?'color:'+css(s.color):'background:'+css(s.color)}"></span>${s.name}</span>`).join(''); }
+
+/* ---- Card A: termos reais ---- */
+const stateA={metric:'v'};
+const mAEl=$('#metricA');
+[['v','Valor'],['p','Preço']].forEach(([k,t])=>{const b=document.createElement('button');b.textContent=t;b.dataset.k=k;b.setAttribute('aria-pressed',k===stateA.metric);
+  b.onclick=()=>{stateA.metric=k;[...mAEl.children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.k===k));renderA();};mAEl.appendChild(b);});
+
+function renderA(){
+  const isV=stateA.metric==='v';
+  const kNom=isV?'vn':'pn', kReal=isV?'vr':'pr';
+  const series=[{name:'Nominal',key:kNom,color:'--muted',dash:'5 4',w:2},{name:'Real (€ de 2025)',key:kReal,color:'--wine',w:2.6}];
+  const yfmt=isV?(v=>'€'+v.toLocaleString('pt-PT',{maximumFractionDigits:0})+'M'):(v=>'€'+v.toFixed(1));
+  const tfmt=isV?(v=>meur(v)):(v=>kg(v)+'/kg');
+  const peakRow=[...NAT].sort((a,b)=>b[kReal]-a[kReal])[0];
+  legend($('#legA'),series);
+  drawChart($('#svgA'),$('#tipA'),{data:NAT,series,ymin:0,yfmt,tfmt,peak:{ano:peakRow.ano,key:kReal,label:'pico '+peakRow.ano}});
+  // KPIs
+  const cur=NAT[NAT.length-1], peak=peakRow, drop=(cur[kReal]/peak[kReal]-1)*100;
+  // year whose real ~ current (before peak)
+  let eqYear=null,best=1e9; NAT.filter(d=>d.ano<peak.ano).forEach(d=>{const df=Math.abs(d[kReal]-cur[kReal]); if(df<best){best=df;eqYear=d.ano;}});
+  const items=isV?[
+    ['Pico real', meur(peak[kReal]), peak.ano],
+    ['Real 2025', meur(cur[kReal]), 'euros de 2025'],
+    ['Desde o pico', drop.toFixed(1)+'%', 'em termos reais'],
+    ['Recuou para', eqYear||'—', 'o nível real de '+(eqYear||'')],
+  ]:[
+    ['Pico real', kg(peak[kReal])+'/kg', peak.ano],
+    ['Real 2025', kg(cur[kReal])+'/kg', 'euros de 2025'],
+    ['Desde o pico', drop.toFixed(1)+'%', 'preço real por kg'],
+    ['Nominal 2025', kg(cur[kNom])+'/kg', 'o número "recorde"'],
+  ];
+  $('#kpisA').innerHTML=items.map(([k,v,d])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+  $('#readA').innerHTML=`<span>O número nominal continua a subir, mas <b>em euros de 2025 o ${isV?'valor':'preço'} caiu ${Math.abs(drop).toFixed(0)}% desde o pico de ${peak.ano}</b> — o "recorde" é inflação a mascarar erosão real.</span>`;
+}
+
+/* ---- Card B: premiumização ---- */
+const PAISES=[...new Set(PREM.map(d=>d.m))].sort((a,b)=> a==='Total Nacional'?-1 : b==='Total Nacional'?1 : a.localeCompare(b));
+const stateB={pais:'Total Nacional'};
+const pEl=$('#paises');
+PAISES.forEach(p=>{const b=document.createElement('button');b.className='chip';b.textContent=p;b.dataset.p=p;b.setAttribute('aria-pressed',p===stateB.pais);
+  b.onclick=()=>{stateB.pais=p;[...pEl.children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.p===p));renderB();};pEl.appendChild(b);});
+
+function renderB(){
+  const rows=PREM.filter(d=>d.m===stateB.pais).sort((a,b)=>a.ano-b.ano);
+  const series=[{name:'% do valor',key:'cv',color:'--wine',w:2.6},{name:'% do volume',key:'cvol',color:'--blue',w:2.6}];
+  legend($('#legB'),series);
+  drawChart($('#svgB'),$('#tipB'),{data:rows,series,ymin:0,ymax:100,fill:['cv','cvol'],yfmt:v=>v+'%',tfmt:v=>pc(v)});
+  const cur=rows[rows.length-1], gap=cur.cv-cur.cvol;
+  const items=[
+    ['Preço médio', kg(cur.pl)+'/L', stateB.pais+' · 2025'],
+    ['Certificado (valor)', pc(cur.cv), 'do que rende'],
+    ['Certificado (volume)', pc(cur.cvol), 'do que sai'],
+    ['Prémio', '+'+gap.toFixed(0)+' pp', 'valor acima do volume'],
+  ];
+  $('#kpisB').innerHTML=items.map(([k,v,d])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+  $('#readB').innerHTML=`<span>O vinho certificado vale <b>${pc(cur.cv)} do valor</b> mas só <b>${pc(cur.cvol)} do volume</b> — a diferença (<b>+${gap.toFixed(0)} pontos</b>) é o prémio da denominação: rende mais por litro.</span>`;
+}
+
+function renderAll(){ renderA(); renderB(); $('#foot').innerHTML=`<b>Fontes:</b> INE (valor/preço nacional, HS 2204) e IVV (peso do certificado por mercado). `+
+  `<b>Termos reais</b> = valores nominais deflacionados pelo IHPC de Portugal (Eurostat, base 2015), a euros de 2025 — é preço no consumidor, não preço de exportação (aproximação). `+
+  `"Certificado" = DOP, IGP, Porto, Madeira, licorosos e espumantes; exclui "Sem DO/IG". Protótipo · dados reais, verificados.`; }
+renderAll();
+addEventListener('resize',()=>{});
+</script>

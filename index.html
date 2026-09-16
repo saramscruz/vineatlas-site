@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<title>VineAtlas — Vinho de Portugal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Painéis interativos sobre a exportação de vinho português: onde há mercado, para onde vender cada tipo, premiumização e fichas de mercado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57;
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 10px 34px rgba(36,30,41,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 12px 40px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 12px 40px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box} html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,sans-serif; font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1000px; margin:0 auto; padding:32px clamp(16px,4vw,32px) 48px}
+.top{display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:44px}
+.mark{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.02em}
+.mark .glass{font-size:22px}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:40px; height:40px; border-radius:11px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+.tbtn:hover{border-color:var(--line-strong)}
+
+.hero{max-width:40ch; margin-bottom:38px}
+.eyebrow{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:14px}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(38px,7vw,62px); line-height:1.0; margin:0 0 16px; letter-spacing:-.02em; text-wrap:balance}
+.lede{font-size:clamp(16px,2.4vw,19px); color:var(--muted); max-width:52ch; text-wrap:pretty}
+
+.cards{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:680px){.cards{grid-template-columns:1fr}}
+.card{position:relative; display:flex; flex-direction:column; gap:8px; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:22px 22px 20px; text-decoration:none; color:inherit; box-shadow:var(--shadow); transition:transform .14s, box-shadow .14s, border-color .14s}
+.card:hover{transform:translateY(-3px); box-shadow:var(--shadow-pop); border-color:var(--line-strong)}
+.card .n{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--accent); font-weight:600; letter-spacing:.02em}
+.card h2{font-family:"Spectral",serif; font-weight:600; font-size:21px; margin:2px 0 0; letter-spacing:-.01em}
+.card p{margin:0; color:var(--muted); font-size:14.5px; line-height:1.5}
+.card .go{margin-top:auto; padding-top:12px; color:var(--accent-strong); font-weight:600; font-size:14px; display:inline-flex; align-items:center; gap:6px}
+.card .go .ar{transition:transform .14s}
+.card:hover .go .ar{transform:translateX(3px)}
+
+footer{margin-top:40px; color:var(--faint); font-size:12.5px; line-height:1.6; border-top:1px solid var(--line); padding-top:16px}
+footer b{color:var(--muted); font-weight:600}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="mark"><span class="glass">🍷</span> VineAtlas</div>
+    <button class="tbtn" id="theme" title="Alternar tema" aria-label="Alternar tema claro/escuro">◐</button>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Vinho de Portugal · Exportação</div>
+    <h1>Onde está o mercado do seu vinho.</h1>
+    <p class="lede">Quatro painéis interativos, com os dados oficiais do INE e do IVV, para decidir onde vender, a que preço e em que altura.</p>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="radar.html">
+      <span class="n">01 · Radar</span>
+      <h2>Radar de Mercados</h2>
+      <p>Onde há dinheiro e onde há crescimento: cada mercado por preço, crescimento e valor.</p>
+      <span class="go">Abrir <span class="ar">→</span></span>
+    </a>
+    <a class="card" href="onde-vender.html">
+      <span class="n">02 · Tipo</span>
+      <h2>Onde vender o meu tipo de vinho</h2>
+      <p>Escolha o seu tipo — Porto, DOP, IGP… — e veja quem o compra, quanto paga e quem cresce.</p>
+      <span class="go">Abrir <span class="ar">→</span></span>
+    </a>
+    <a class="card" href="premiumizacao.html">
+      <span class="n">03 · Valor</span>
+      <h2>Premiumização &amp; termos reais</h2>
+      <p>O recorde é real ou é inflação? E o certificado vende-se mesmo mais caro?</p>
+      <span class="go">Abrir <span class="ar">→</span></span>
+    </a>
+    <a class="card" href="ficha.html">
+      <span class="n">04 · Ficha</span>
+      <h2>Ficha de Mercado</h2>
+      <p>O retrato de um destino: valor, preço, prémio, evolução mensal e sazonalidade.</p>
+      <span class="go">Abrir <span class="ar">→</span></span>
+    </a>
+    <a class="card" href="balanca.html">
+      <span class="n">05 · Balança</span>
+      <h2>Balança Comercial</h2>
+      <p>O que Portugal importa, de onde vem, e porquê o "quase empate" em peso desaparece em valor.</p>
+      <span class="go">Abrir <span class="ar">→</span></span>
+    </a>
+  </div>
+
+  <footer>
+    <b>Fontes:</b> INE (Comércio Internacional, HS 2204) e IVV (Instituto da Vinha e do Vinho). Valores nominais salvo indicação. Protótipo · dados reais, verificados.
+  </footer>
+</div>
+<script>
+  const b=document.getElementById('theme');
+  try{const t=localStorage.getItem('radar-theme'); if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+  b.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');const md=matchMedia('(prefers-color-scheme:dark)').matches;
+    const next=cur?(cur==='dark'?'light':'dark'):(md?'light':'dark');document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('radar-theme',next);}catch(e){}};
+</script>
+</body>
+</html>

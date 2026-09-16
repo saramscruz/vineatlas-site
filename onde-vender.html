@@ -1,0 +1,349 @@
+<title>Onde Vender o Meu Tipo de Vinho</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57; --good-soft:rgba(47,125,87,.10);
+  --mark:#8E2547; --mark-line:#7C1F3E;
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 6px 28px rgba(36,30,41,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.14);
+  --mark:#D0567A; --mark-line:#E07E9B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.14);
+  --mark:#D0567A; --mark-line:#E07E9B;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px; margin:0 auto; padding:22px clamp(14px,3vw,30px) 40px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+header.top{display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:14px}
+.brand{display:flex; flex-direction:column; gap:5px}
+.eyebrow{font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:600}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(27px,4.4vw,40px); line-height:1.02; margin:0; letter-spacing:-.01em; text-wrap:balance}
+.sub{color:var(--muted); max-width:62ch; font-size:14.5px}
+.head-right{display:flex; align-items:center; gap:12px}
+.fresh{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:7px 11px; border-radius:999px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px var(--good-soft)}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+.tbtn:hover{border-color:var(--line-strong)}
+
+/* screen nav */
+.nav{display:inline-flex; flex-wrap:wrap; gap:3px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; box-shadow:var(--shadow); margin-bottom:18px}
+.nav a{font:600 13.5px "Hanken Grotesk",sans-serif; color:var(--muted); text-decoration:none; padding:8px 14px; border-radius:8px; white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .nav a[aria-current="page"], :root:not([data-theme="light"]) .nav a[aria-current="page"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .nav a[aria-current="page"]{color:#fff}}
+.nav a:not([aria-current]):hover{color:var(--ink); background:var(--surface-2)}
+.nav a.brandtab{font-weight:700; color:var(--ink)}
+.nav a.brandtab:hover{background:var(--accent-soft)}
+
+/* type picker */
+.picker{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 15px; box-shadow:var(--shadow); margin-bottom:16px}
+.pk-lab{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--faint); font-weight:600; margin-bottom:9px}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 14px "Hanken Grotesk",sans-serif; padding:9px 15px; border-radius:999px; cursor:pointer; transition:transform .08s}
+.chip small{color:var(--faint); font-weight:500; margin-left:6px; font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+.chip[aria-pressed="true"] small{color:rgba(255,255,255,.75)}
+:root[data-theme="dark"] .chip[aria-pressed="true"], :root:not([data-theme="light"]) .chip[aria-pressed="true"]{color:#1a121f}
+:root[data-theme="dark"] .chip[aria-pressed="true"] small, :root:not([data-theme="light"]) .chip[aria-pressed="true"] small{color:rgba(26,18,31,.6)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .chip[aria-pressed="true"]{color:#fff}}
+.chip:hover:not([aria-pressed="true"]){border-color:var(--line-strong)}
+
+.controls{display:flex; align-items:center; gap:14px 22px; flex-wrap:wrap; margin-bottom:18px; padding:0 3px}
+.ctl{display:flex; align-items:center; gap:9px}
+.ctl-lab{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.seg{display:inline-flex; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px; box-shadow:var(--shadow)}
+.seg button{appearance:none; border:0; background:transparent; color:var(--muted); font:600 13px "IBM Plex Mono",monospace; padding:7px 12px; border-radius:7px; cursor:pointer; white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"], :root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .seg button[aria-pressed="true"]{color:#fff}}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+.grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:18px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow)}
+.card-h{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:15px 18px 4px}
+.card-t{font-family:"Spectral",serif; font-weight:600; font-size:17px}
+.card-s{font-size:12.5px; color:var(--muted)}
+
+.figwrap{position:relative; padding:6px 12px 12px}
+svg.chart{width:100%; height:auto; display:block}
+.bl-name{fill:var(--ink); font:600 12.5px "Hanken Grotesk",sans-serif}
+.bl-val{fill:var(--muted); font:600 12px "IBM Plex Mono",monospace}
+.bar{cursor:pointer; transition:opacity .12s}
+.bar.dim{opacity:.28}
+.axis0{stroke:var(--line-strong)}
+.grid-l{stroke:var(--line)}
+.tick-t{fill:var(--faint); font:500 10px "IBM Plex Mono",monospace}
+.readline{color:var(--muted); font-size:12.5px; padding:2px 18px 2px; display:flex; gap:16px; flex-wrap:wrap}
+.readline b{color:var(--ink); font-weight:600}
+.up{color:var(--good)!important} .dn{color:var(--accent-strong)!important}
+
+.tip{position:absolute; pointer-events:none; z-index:6; background:var(--surface); border:1px solid var(--line-strong); border-radius:11px; box-shadow:var(--shadow-pop); padding:11px 13px; min-width:170px; opacity:0; transform:translateY(4px); transition:opacity .12s,transform .12s}
+.tip.on{opacity:1; transform:translateY(0)}
+.tip .tn{font-family:"Spectral",serif; font-weight:700; font-size:15px; margin-bottom:7px}
+.tip .row{display:flex; justify-content:space-between; gap:16px; font-size:12.5px; padding:2px 0}
+.tip .row span{color:var(--muted)}
+
+.kpis{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px}
+.kpi{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:13px 15px; box-shadow:var(--shadow)}
+.kpi .k{font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); font-weight:600}
+.kpi .v{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:21px; letter-spacing:-.02em; margin-top:5px}
+.kpi .d{font-size:12px; color:var(--muted); margin-top:2px}
+
+.tbl-scroll{overflow:auto; padding:4px 6px 10px}
+table{width:100%; border-collapse:collapse; font-size:13px}
+thead th{text-align:right; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); font-weight:600; padding:8px 10px; cursor:pointer; white-space:nowrap; border-bottom:1px solid var(--line)}
+thead th:first-child{text-align:left}
+thead th.sorted{color:var(--accent)}
+tbody td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; font-variant-numeric:tabular-nums}
+tbody td:first-child{text-align:left; font-weight:600}
+tbody tr{cursor:pointer}
+tbody tr:hover, tbody tr.hot{background:var(--accent-soft)}
+tbody tr.hot td:first-child{color:var(--accent-strong)}
+.pill{display:inline-block; padding:1px 7px; border-radius:999px; font:600 11px "IBM Plex Mono",monospace}
+.pill.u{color:var(--good); background:var(--good-soft)} .pill.d{color:var(--accent-strong); background:var(--accent-soft)}
+
+footer{margin-top:22px; color:var(--faint); font-size:12px; line-height:1.6; border-top:1px solid var(--line); padding-top:14px}
+footer b{color:var(--muted); font-weight:600}
+a{color:var(--accent-strong)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="eyebrow">VineAtlas · Vinho de Portugal</div>
+      <h1>Onde vender o meu tipo de vinho</h1>
+      <div class="sub">Escolha o seu tipo de vinho e veja que mercados o compram, quanto pagam por litro e para onde a procura está a virar-se.</div>
+    </div>
+    <div class="head-right">
+      <div class="fresh"><span class="dot"></span> Dados IVV · <b>&nbsp;2021–2025</b></div>
+      <button class="tbtn" id="theme" title="Alternar tema" aria-label="Alternar tema claro/escuro">◐</button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Ecrãs">
+    <a class="brandtab" href="index.html">🍷 VineAtlas</a>
+    <a href="radar.html">Radar de Mercados</a>
+    <a href="#" aria-current="page">Onde vender o meu tipo de vinho</a>
+    <a href="premiumizacao.html">Premiumização &amp; termos reais</a>
+    <a href="ficha.html">Ficha de mercado</a>
+    <a href="balanca.html">Balança comercial</a>
+  </nav>
+
+  <div class="picker">
+    <div class="pk-lab">O meu tipo de vinho</div>
+    <div class="chips" id="chips" role="group" aria-label="Tipo de vinho"></div>
+  </div>
+
+  <div class="controls">
+    <div class="ctl"><span class="ctl-lab">Ano</span><div class="seg" id="years" role="group" aria-label="Ano"></div></div>
+    <div class="ctl"><span class="ctl-lab">Ordenar por</span><div class="seg" id="metric" role="group" aria-label="Métrica"></div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h"><div class="card-t" id="chartT">Mercados</div><div class="card-s" id="chartSub"></div></div>
+      <div class="figwrap">
+        <svg class="chart" id="svg" viewBox="0 0 720 400" role="img" aria-label="Mercados por tipo de vinho"></svg>
+        <div class="tip" id="tip"></div>
+      </div>
+      <div class="readline" id="readline"></div>
+    </div>
+    <div>
+      <div class="kpis" id="kpis"></div>
+      <div class="card">
+        <div class="card-h"><div class="card-t">Detalhe por mercado</div><div class="card-s">toca para ordenar</div></div>
+        <div class="tbl-scroll"><table><thead><tr id="thead"></tr></thead><tbody id="tbody"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const RAW = [{"ano": 2021, "cat": "DO", "m": "Brasil", "v": 31245.0, "pl": 3.88, "q": 19.3, "rk": 1, "yoy": 5.0, "cagr": 12.5}, {"ano": 2021, "cat": "DO", "m": "E.U.A.", "v": 31087.0, "pl": 3.19, "q": 19.2, "rk": 2, "yoy": 8.0, "cagr": 4.9}, {"ano": 2021, "cat": "DO", "m": "Canadá", "v": 23860.0, "pl": 3.47, "q": 14.7, "rk": 3, "yoy": 0.0, "cagr": 4.8}, {"ano": 2021, "cat": "DO", "m": "Alemanha", "v": 22631.0, "pl": 2.54, "q": 14.0, "rk": 4, "yoy": 4.2, "cagr": 2.3}, {"ano": 2021, "cat": "DO", "m": "Suíça", "v": 15306.0, "pl": 4.14, "q": 9.4, "rk": 5, "yoy": 7.4, "cagr": 6.5}, {"ano": 2021, "cat": "DO", "m": "França", "v": 14520.0, "pl": 2.26, "q": 9.0, "rk": 6, "yoy": 2.5, "cagr": 2.0}, {"ano": 2021, "cat": "DO", "m": "Reino Unido", "v": 14374.0, "pl": 3.33, "q": 8.9, "rk": 7, "yoy": -14.5, "cagr": 8.7}, {"ano": 2021, "cat": "DO", "m": "Bélgica", "v": 4625.0, "pl": 3.72, "q": 2.9, "rk": 8, "yoy": -0.4, "cagr": -4.5}, {"ano": 2021, "cat": "DO", "m": "Países Baixos", "v": 4441.0, "pl": 3.44, "q": 2.7, "rk": 9, "yoy": 10.1, "cagr": 8.7}, {"ano": 2022, "cat": "DO", "m": "E.U.A.", "v": 33244.0, "pl": 3.52, "q": 20.6, "rk": 1, "yoy": 6.9, "cagr": 7.3}, {"ano": 2022, "cat": "DO", "m": "Brasil", "v": 29890.0, "pl": 4.36, "q": 18.5, "rk": 2, "yoy": -4.3, "cagr": 7.3}, {"ano": 2022, "cat": "DO", "m": "Canadá", "v": 23821.0, "pl": 3.75, "q": 14.8, "rk": 3, "yoy": -0.2, "cagr": 3.0}, {"ano": 2022, "cat": "DO", "m": "Alemanha", "v": 18048.0, "pl": 2.67, "q": 11.2, "rk": 4, "yoy": -20.3, "cagr": -3.1}, {"ano": 2022, "cat": "DO", "m": "Reino Unido", "v": 16563.0, "pl": 3.5, "q": 10.3, "rk": 5, "yoy": 15.2, "cagr": 5.2}, {"ano": 2022, "cat": "DO", "m": "França", "v": 14557.0, "pl": 2.24, "q": 9.0, "rk": 6, "yoy": 0.3, "cagr": 3.9}, {"ano": 2022, "cat": "DO", "m": "Suíça", "v": 14083.0, "pl": 4.51, "q": 8.7, "rk": 7, "yoy": -8.0, "cagr": 3.1}, {"ano": 2022, "cat": "DO", "m": "Bélgica", "v": 6306.0, "pl": 3.66, "q": 3.9, "rk": 8, "yoy": 36.3, "cagr": 5.3}, {"ano": 2022, "cat": "DO", "m": "Países Baixos", "v": 4718.0, "pl": 3.46, "q": 2.9, "rk": 9, "yoy": 6.2, "cagr": 7.9}, {"ano": 2023, "cat": "DO", "m": "Brasil", "v": 34015.0, "pl": 4.29, "q": 20.8, "rk": 1, "yoy": 13.8, "cagr": 8.9}, {"ano": 2023, "cat": "DO", "m": "E.U.A.", "v": 32707.0, "pl": 3.69, "q": 20.0, "rk": 2, "yoy": -1.6, "cagr": 4.2}, {"ano": 2023, "cat": "DO", "m": "Canadá", "v": 24419.0, "pl": 4.07, "q": 14.9, "rk": 3, "yoy": 2.5, "cagr": 2.6}, {"ano": 2023, "cat": "DO", "m": "Reino Unido", "v": 17784.0, "pl": 3.72, "q": 10.9, "rk": 4, "yoy": 7.4, "cagr": 14.0}, {"ano": 2023, "cat": "DO", "m": "Alemanha", "v": 17635.0, "pl": 2.77, "q": 10.8, "rk": 5, "yoy": -2.3, "cagr": -3.3}, {"ano": 2023, "cat": "DO", "m": "Suíça", "v": 14754.0, "pl": 4.86, "q": 9.0, "rk": 6, "yoy": 4.8, "cagr": 2.9}, {"ano": 2023, "cat": "DO", "m": "França", "v": 12360.0, "pl": 2.56, "q": 7.5, "rk": 7, "yoy": -15.1, "cagr": -0.2}, {"ano": 2023, "cat": "DO", "m": "Países Baixos", "v": 5622.0, "pl": 3.57, "q": 3.4, "rk": 8, "yoy": 19.2, "cagr": 14.3}, {"ano": 2023, "cat": "DO", "m": "Bélgica", "v": 4458.0, "pl": 3.77, "q": 2.7, "rk": 9, "yoy": -29.3, "cagr": -3.8}, {"ano": 2024, "cat": "DO", "m": "Brasil", "v": 36409.0, "pl": 4.15, "q": 22.6, "rk": 1, "yoy": 7.0, "cagr": 5.2}, {"ano": 2024, "cat": "DO", "m": "E.U.A.", "v": 33983.0, "pl": 3.61, "q": 21.1, "rk": 2, "yoy": 3.9, "cagr": 4.2}, {"ano": 2024, "cat": "DO", "m": "Canadá", "v": 23513.0, "pl": 4.17, "q": 14.6, "rk": 3, "yoy": -3.7, "cagr": -0.4}, {"ano": 2024, "cat": "DO", "m": "Reino Unido", "v": 20135.0, "pl": 3.8, "q": 12.5, "rk": 4, "yoy": 13.2, "cagr": 4.6}, {"ano": 2024, "cat": "DO", "m": "Alemanha", "v": 15528.0, "pl": 2.58, "q": 9.6, "rk": 5, "yoy": -11.9, "cagr": -8.0}, {"ano": 2024, "cat": "DO", "m": "Suíça", "v": 12892.0, "pl": 4.82, "q": 8.0, "rk": 6, "yoy": -12.6, "cagr": -2.5}, {"ano": 2024, "cat": "DO", "m": "França", "v": 9846.0, "pl": 2.79, "q": 6.1, "rk": 7, "yoy": -20.3, "cagr": -8.7}, {"ano": 2024, "cat": "DO", "m": "Países Baixos", "v": 5928.0, "pl": 3.39, "q": 3.7, "rk": 8, "yoy": 5.4, "cagr": 10.1}, {"ano": 2024, "cat": "DO", "m": "Bélgica", "v": 3177.0, "pl": 3.6, "q": 2.0, "rk": 9, "yoy": -28.7, "cagr": -9.1}, {"ano": 2025, "cat": "DO", "m": "Brasil", "v": 38956.0, "pl": 4.43, "q": 23.6, "rk": 1, "yoy": 7.0, "cagr": 5.7}, {"ano": 2025, "cat": "DO", "m": "E.U.A.", "v": 32756.0, "pl": 3.34, "q": 19.8, "rk": 2, "yoy": -3.6, "cagr": 1.3}, {"ano": 2025, "cat": "DO", "m": "Canadá", "v": 24173.0, "pl": 4.22, "q": 14.6, "rk": 3, "yoy": 2.8, "cagr": 0.3}, {"ano": 2025, "cat": "DO", "m": "Reino Unido", "v": 21580.0, "pl": 3.77, "q": 13.1, "rk": 4, "yoy": 7.2, "cagr": 10.7}, {"ano": 2025, "cat": "DO", "m": "Alemanha", "v": 15309.0, "pl": 2.59, "q": 9.3, "rk": 5, "yoy": -1.4, "cagr": -9.3}, {"ano": 2025, "cat": "DO", "m": "Suíça", "v": 13071.0, "pl": 5.23, "q": 7.9, "rk": 6, "yoy": 1.4, "cagr": -3.9}, {"ano": 2025, "cat": "DO", "m": "França", "v": 10685.0, "pl": 2.89, "q": 6.5, "rk": 7, "yoy": 8.5, "cagr": -7.4}, {"ano": 2025, "cat": "DO", "m": "Países Baixos", "v": 4695.0, "pl": 3.54, "q": 2.8, "rk": 8, "yoy": -20.8, "cagr": 1.4}, {"ano": 2025, "cat": "DO", "m": "Bélgica", "v": 3815.0, "pl": 2.98, "q": 2.3, "rk": 9, "yoy": 20.1, "cagr": -4.7}, {"ano": 2021, "cat": "Espumantes", "m": "Países Baixos", "v": 1396.0, "pl": 15.51, "q": 31.7, "rk": 1, "yoy": 584.3, "cagr": 138.7}, {"ano": 2021, "cat": "Espumantes", "m": "Brasil", "v": 1220.0, "pl": 10.66, "q": 27.7, "rk": 2, "yoy": 46.8, "cagr": 12.1}, {"ano": 2021, "cat": "Espumantes", "m": "França", "v": 661.0, "pl": 4.25, "q": 15.0, "rk": 3, "yoy": -37.8, "cagr": 26.3}, {"ano": 2021, "cat": "Espumantes", "m": "Suíça", "v": 394.0, "pl": 6.02, "q": 8.9, "rk": 4, "yoy": 38.7, "cagr": 14.7}, {"ano": 2021, "cat": "Espumantes", "m": "Canadá", "v": 207.0, "pl": 3.98, "q": 4.7, "rk": 5, "yoy": 0.0, "cagr": 3.0}, {"ano": 2021, "cat": "Espumantes", "m": "Alemanha", "v": 202.0, "pl": 4.99, "q": 4.6, "rk": 6, "yoy": -18.2, "cagr": 9.8}, {"ano": 2021, "cat": "Espumantes", "m": "Reino Unido", "v": 200.0, "pl": 2.86, "q": 4.5, "rk": 7, "yoy": -59.8, "cagr": -16.3}, {"ano": 2021, "cat": "Espumantes", "m": "Bélgica", "v": 126.0, "pl": 4.63, "q": 2.9, "rk": 8, "yoy": -55.5, "cagr": 51.4}, {"ano": 2021, "cat": "Espumantes", "m": "E.U.A.", "v": 0.0, "pl": null, "q": 0.0, "rk": 9, "yoy": -100.0, "cagr": -100.0}, {"ano": 2022, "cat": "Espumantes", "m": "Brasil", "v": 1440.0, "pl": 10.55, "q": 35.5, "rk": 1, "yoy": 18.0, "cagr": 2.9}, {"ano": 2022, "cat": "Espumantes", "m": "Países Baixos", "v": 1191.0, "pl": 16.82, "q": 29.3, "rk": 2, "yoy": -14.7, "cagr": 2.3}, {"ano": 2022, "cat": "Espumantes", "m": "França", "v": 474.0, "pl": 3.63, "q": 11.7, "rk": 3, "yoy": -28.3, "cagr": -12.5}, {"ano": 2022, "cat": "Espumantes", "m": "Suíça", "v": 356.0, "pl": 5.6, "q": 8.8, "rk": 4, "yoy": -9.6, "cagr": 3.8}, {"ano": 2022, "cat": "Espumantes", "m": "Canadá", "v": 261.0, "pl": 4.42, "q": 6.4, "rk": 5, "yoy": 26.1, "cagr": 8.0}, {"ano": 2022, "cat": "Espumantes", "m": "Bélgica", "v": 177.0, "pl": 4.76, "q": 4.4, "rk": 6, "yoy": 40.5, "cagr": 24.4}, {"ano": 2022, "cat": "Espumantes", "m": "Alemanha", "v": 160.0, "pl": 6.13, "q": 3.9, "rk": 7, "yoy": -20.8, "cagr": -19.6}, {"ano": 2022, "cat": "Espumantes", "m": "E.U.A.", "v": 1.0, "pl": 5.0, "q": 0.0, "rk": 8, "yoy": null, "cagr": -80.1}, {"ano": 2022, "cat": "Espumantes", "m": "Reino Unido", "v": 0.0, "pl": null, "q": 0.0, "rk": 9, "yoy": -100.0, "cagr": -100.0}, {"ano": 2023, "cat": "Espumantes", "m": "Brasil", "v": 1580.0, "pl": 12.89, "q": 40.2, "rk": 1, "yoy": 9.7, "cagr": 9.2}, {"ano": 2023, "cat": "Espumantes", "m": "Países Baixos", "v": 600.0, "pl": 6.74, "q": 15.3, "rk": 2, "yoy": -49.6, "cagr": 10.7}, {"ano": 2023, "cat": "Espumantes", "m": "Bélgica", "v": 422.0, "pl": 4.4, "q": 10.7, "rk": 3, "yoy": 138.4, "cagr": 46.3}, {"ano": 2023, "cat": "Espumantes", "m": "França", "v": 414.0, "pl": 2.77, "q": 10.5, "rk": 4, "yoy": -12.7, "cagr": -21.5}, {"ano": 2023, "cat": "Espumantes", "m": "Suíça", "v": 373.0, "pl": 6.73, "q": 9.5, "rk": 5, "yoy": 4.8, "cagr": 6.2}, {"ano": 2023, "cat": "Espumantes", "m": "Canadá", "v": 351.0, "pl": 4.56, "q": 8.9, "rk": 6, "yoy": 34.5, "cagr": 13.2}, {"ano": 2023, "cat": "Espumantes", "m": "Alemanha", "v": 169.0, "pl": 3.44, "q": 4.3, "rk": 7, "yoy": 5.6, "cagr": -11.5}, {"ano": 2023, "cat": "Espumantes", "m": "Reino Unido", "v": 17.0, "pl": 11.33, "q": 0.4, "rk": 8, "yoy": null, "cagr": -44.1}, {"ano": 2023, "cat": "Espumantes", "m": "E.U.A.", "v": 0.0, "pl": null, "q": 0.0, "rk": 9, "yoy": -100.0, "cagr": -100.0}, {"ano": 2024, "cat": "Espumantes", "m": "Países Baixos", "v": 1626.0, "pl": 2.12, "q": 40.6, "rk": 1, "yoy": 171.0, "cagr": 68.0}, {"ano": 2024, "cat": "Espumantes", "m": "Brasil", "v": 1070.0, "pl": 10.45, "q": 26.7, "rk": 2, "yoy": -32.3, "cagr": 6.5}, {"ano": 2024, "cat": "Espumantes", "m": "Suíça", "v": 336.0, "pl": 6.82, "q": 8.4, "rk": 3, "yoy": -9.9, "cagr": 4.3}, {"ano": 2024, "cat": "Espumantes", "m": "Canadá", "v": 334.0, "pl": 4.81, "q": 8.3, "rk": 4, "yoy": -4.8, "cagr": 12.7}, {"ano": 2024, "cat": "Espumantes", "m": "França", "v": 244.0, "pl": 2.78, "q": 6.1, "rk": 5, "yoy": -41.1, "cagr": -30.8}, {"ano": 2024, "cat": "Espumantes", "m": "Bélgica", "v": 202.0, "pl": 3.97, "q": 5.0, "rk": 6, "yoy": -52.1, "cagr": -8.1}, {"ano": 2024, "cat": "Espumantes", "m": "Alemanha", "v": 148.0, "pl": 3.34, "q": 3.7, "rk": 7, "yoy": -12.4, "cagr": -12.0}, {"ano": 2024, "cat": "Espumantes", "m": "E.U.A.", "v": 39.0, "pl": 3.82, "q": 1.0, "rk": 8, "yoy": null, "cagr": -51.5}, {"ano": 2024, "cat": "Espumantes", "m": "Reino Unido", "v": 4.0, "pl": 1.91, "q": 0.1, "rk": 9, "yoy": -76.5, "cagr": -70.0}, {"ano": 2025, "cat": "Espumantes", "m": "Brasil", "v": 827.0, "pl": 12.84, "q": 30.0, "rk": 1, "yoy": -22.7, "cagr": -9.3}, {"ano": 2025, "cat": "Espumantes", "m": "Países Baixos", "v": 794.0, "pl": 1.35, "q": 28.8, "rk": 2, "yoy": -51.2, "cagr": -13.2}, {"ano": 2025, "cat": "Espumantes", "m": "Canadá", "v": 374.0, "pl": 4.34, "q": 13.6, "rk": 3, "yoy": 12.0, "cagr": 15.9}, {"ano": 2025, "cat": "Espumantes", "m": "Suíça", "v": 362.0, "pl": 6.96, "q": 13.1, "rk": 4, "yoy": 7.7, "cagr": -2.1}, {"ano": 2025, "cat": "Espumantes", "m": "França", "v": 201.0, "pl": 2.94, "q": 7.3, "rk": 5, "yoy": -17.6, "cagr": -25.7}, {"ano": 2025, "cat": "Espumantes", "m": "Alemanha", "v": 144.0, "pl": 2.93, "q": 5.2, "rk": 6, "yoy": -2.7, "cagr": -8.1}, {"ano": 2025, "cat": "Espumantes", "m": "Bélgica", "v": 52.0, "pl": 4.86, "q": 1.9, "rk": 7, "yoy": -74.3, "cagr": -19.8}, {"ano": 2025, "cat": "Espumantes", "m": "Reino Unido", "v": 5.0, "pl": 25.0, "q": 0.2, "rk": 8, "yoy": 25.0, "cagr": -60.2}, {"ano": 2025, "cat": "Espumantes", "m": "E.U.A.", "v": 0.0, "pl": null, "q": 0.0, "rk": 9, "yoy": -100.0, "cagr": null}, {"ano": 2021, "cat": "IG", "m": "Brasil", "v": 26234.0, "pl": 2.39, "q": 25.0, "rk": 1, "yoy": 7.8, "cagr": 13.8}, {"ano": 2021, "cat": "IG", "m": "E.U.A.", "v": 21431.0, "pl": 2.42, "q": 20.4, "rk": 2, "yoy": -9.3, "cagr": 11.6}, {"ano": 2021, "cat": "IG", "m": "Reino Unido", "v": 21077.0, "pl": 2.36, "q": 20.1, "rk": 3, "yoy": 56.8, "cagr": 30.2}, {"ano": 2021, "cat": "IG", "m": "Canadá", "v": 10440.0, "pl": 2.86, "q": 9.9, "rk": 4, "yoy": 0.0, "cagr": 2.6}, {"ano": 2021, "cat": "IG", "m": "Suíça", "v": 7446.0, "pl": 3.35, "q": 7.1, "rk": 5, "yoy": -12.7, "cagr": -1.9}, {"ano": 2021, "cat": "IG", "m": "Alemanha", "v": 5779.0, "pl": 2.85, "q": 5.5, "rk": 6, "yoy": 31.6, "cagr": 11.1}, {"ano": 2021, "cat": "IG", "m": "França", "v": 4562.0, "pl": 1.91, "q": 4.3, "rk": 7, "yoy": 3.7, "cagr": -0.1}, {"ano": 2021, "cat": "IG", "m": "Bélgica", "v": 4289.0, "pl": 2.64, "q": 4.1, "rk": 8, "yoy": 2.4, "cagr": 7.4}, {"ano": 2021, "cat": "IG", "m": "Países Baixos", "v": 3675.0, "pl": 2.4, "q": 3.5, "rk": 9, "yoy": 12.6, "cagr": 8.3}, {"ano": 2022, "cat": "IG", "m": "Brasil", "v": 25505.0, "pl": 2.5, "q": 24.2, "rk": 1, "yoy": -2.8, "cagr": 8.9}, {"ano": 2022, "cat": "IG", "m": "E.U.A.", "v": 20926.0, "pl": 2.59, "q": 19.9, "rk": 2, "yoy": -2.4, "cagr": 6.2}, {"ano": 2022, "cat": "IG", "m": "Reino Unido", "v": 20535.0, "pl": 2.49, "q": 19.5, "rk": 3, "yoy": -2.6, "cagr": 28.3}, {"ano": 2022, "cat": "IG", "m": "Canadá", "v": 10369.0, "pl": 3.02, "q": 9.8, "rk": 4, "yoy": -0.7, "cagr": 0.9}, {"ano": 2022, "cat": "IG", "m": "Suíça", "v": 7250.0, "pl": 3.44, "q": 6.9, "rk": 5, "yoy": -2.6, "cagr": -5.5}, {"ano": 2022, "cat": "IG", "m": "Alemanha", "v": 6520.0, "pl": 2.66, "q": 6.2, "rk": 6, "yoy": 12.8, "cagr": 17.9}, {"ano": 2022, "cat": "IG", "m": "Bélgica", "v": 5140.0, "pl": 2.53, "q": 4.9, "rk": 7, "yoy": 19.8, "cagr": 10.5}, {"ano": 2022, "cat": "IG", "m": "Países Baixos", "v": 4843.0, "pl": 2.41, "q": 4.6, "rk": 8, "yoy": 31.8, "cagr": 18.8}, {"ano": 2022, "cat": "IG", "m": "França", "v": 4295.0, "pl": 1.86, "q": 4.1, "rk": 9, "yoy": -5.9, "cagr": 1.4}, {"ano": 2023, "cat": "IG", "m": "Brasil", "v": 28452.0, "pl": 2.6, "q": 25.9, "rk": 1, "yoy": 11.6, "cagr": 10.5}, {"ano": 2023, "cat": "IG", "m": "E.U.A.", "v": 21238.0, "pl": 2.59, "q": 19.3, "rk": 2, "yoy": 1.5, "cagr": 3.0}, {"ano": 2023, "cat": "IG", "m": "Reino Unido", "v": 20006.0, "pl": 2.53, "q": 18.2, "rk": 3, "yoy": -2.6, "cagr": 24.4}, {"ano": 2023, "cat": "IG", "m": "Canadá", "v": 11266.0, "pl": 3.13, "q": 10.2, "rk": 4, "yoy": 8.7, "cagr": 1.3}, {"ano": 2023, "cat": "IG", "m": "Países Baixos", "v": 8920.0, "pl": 2.38, "q": 8.1, "rk": 5, "yoy": 84.2, "cagr": 38.8}, {"ano": 2023, "cat": "IG", "m": "Suíça", "v": 7130.0, "pl": 3.56, "q": 6.5, "rk": 6, "yoy": -1.7, "cagr": -6.8}, {"ano": 2023, "cat": "IG", "m": "Alemanha", "v": 5481.0, "pl": 2.66, "q": 5.0, "rk": 7, "yoy": -15.9, "cagr": 10.8}, {"ano": 2023, "cat": "IG", "m": "França", "v": 4416.0, "pl": 1.79, "q": 4.0, "rk": 8, "yoy": 2.8, "cagr": -1.7}, {"ano": 2023, "cat": "IG", "m": "Bélgica", "v": 3050.0, "pl": 2.57, "q": 2.8, "rk": 9, "yoy": -40.7, "cagr": -4.1}, {"ano": 2024, "cat": "IG", "m": "Brasil", "v": 31222.0, "pl": 2.52, "q": 28.5, "rk": 1, "yoy": 9.7, "cagr": 6.4}, {"ano": 2024, "cat": "IG", "m": "Reino Unido", "v": 21163.0, "pl": 2.56, "q": 19.3, "rk": 2, "yoy": 5.8, "cagr": 12.0}, {"ano": 2024, "cat": "IG", "m": "E.U.A.", "v": 19942.0, "pl": 2.61, "q": 18.2, "rk": 3, "yoy": -6.1, "cagr": -4.2}, {"ano": 2024, "cat": "IG", "m": "Canadá", "v": 10849.0, "pl": 2.98, "q": 9.9, "rk": 4, "yoy": -3.7, "cagr": 1.0}, {"ano": 2024, "cat": "IG", "m": "Países Baixos", "v": 7716.0, "pl": 2.28, "q": 7.0, "rk": 5, "yoy": -13.5, "cagr": 24.0}, {"ano": 2024, "cat": "IG", "m": "Suíça", "v": 6343.0, "pl": 3.48, "q": 5.8, "rk": 6, "yoy": -11.0, "cagr": -7.1}, {"ano": 2024, "cat": "IG", "m": "Alemanha", "v": 6273.0, "pl": 2.63, "q": 5.7, "rk": 7, "yoy": 14.4, "cagr": 9.3}, {"ano": 2024, "cat": "IG", "m": "França", "v": 3807.0, "pl": 2.1, "q": 3.5, "rk": 8, "yoy": -13.8, "cagr": -3.5}, {"ano": 2024, "cat": "IG", "m": "Bélgica", "v": 2410.0, "pl": 2.7, "q": 2.2, "rk": 9, "yoy": -21.0, "cagr": -12.9}, {"ano": 2025, "cat": "IG", "m": "Brasil", "v": 31560.0, "pl": 2.47, "q": 29.1, "rk": 1, "yoy": 1.1, "cagr": 4.7}, {"ano": 2025, "cat": "IG", "m": "Reino Unido", "v": 21055.0, "pl": 2.48, "q": 19.4, "rk": 2, "yoy": -0.5, "cagr": 0.0}, {"ano": 2025, "cat": "IG", "m": "E.U.A.", "v": 15644.0, "pl": 2.46, "q": 14.4, "rk": 3, "yoy": -21.6, "cagr": -7.6}, {"ano": 2025, "cat": "IG", "m": "Canadá", "v": 12163.0, "pl": 3.13, "q": 11.2, "rk": 4, "yoy": 12.1, "cagr": 3.9}, {"ano": 2025, "cat": "IG", "m": "Alemanha", "v": 7493.0, "pl": 2.61, "q": 6.9, "rk": 5, "yoy": 19.4, "cagr": 6.7}, {"ano": 2025, "cat": "IG", "m": "Países Baixos", "v": 6531.0, "pl": 2.45, "q": 6.0, "rk": 6, "yoy": -15.4, "cagr": 15.5}, {"ano": 2025, "cat": "IG", "m": "Suíça", "v": 6291.0, "pl": 3.38, "q": 5.8, "rk": 7, "yoy": -0.8, "cagr": -4.1}, {"ano": 2025, "cat": "IG", "m": "França", "v": 4259.0, "pl": 1.85, "q": 3.9, "rk": 8, "yoy": 11.9, "cagr": -1.7}, {"ano": 2025, "cat": "IG", "m": "Bélgica", "v": 3424.0, "pl": 2.65, "q": 3.2, "rk": 9, "yoy": 42.1, "cagr": -5.5}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "E.U.A.", "v": 2770.0, "pl": 11.56, "q": 24.4, "rk": 1, "yoy": 70.1, "cagr": -0.2}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "França", "v": 2568.0, "pl": 3.77, "q": 22.6, "rk": 2, "yoy": -2.5, "cagr": 3.0}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Reino Unido", "v": 2443.0, "pl": 7.98, "q": 21.5, "rk": 3, "yoy": 31.4, "cagr": -3.7}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Alemanha", "v": 1508.0, "pl": 4.47, "q": 13.3, "rk": 4, "yoy": 8.2, "cagr": -1.7}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Bélgica", "v": 911.0, "pl": 4.67, "q": 8.0, "rk": 5, "yoy": 4.4, "cagr": -5.8}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Suíça", "v": 354.0, "pl": 4.36, "q": 3.1, "rk": 6, "yoy": -0.8, "cagr": 5.3}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Canadá", "v": 325.0, "pl": 8.09, "q": 2.9, "rk": 7, "yoy": 0.0, "cagr": -4.5}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Países Baixos", "v": 310.0, "pl": 5.4, "q": 2.7, "rk": 8, "yoy": -22.5, "cagr": -15.4}, {"ano": 2021, "cat": "Licoroso Madeira", "m": "Brasil", "v": 156.0, "pl": 5.69, "q": 1.4, "rk": 9, "yoy": 54.5, "cagr": 9.9}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "E.U.A.", "v": 3632.0, "pl": 16.78, "q": 31.4, "rk": 1, "yoy": 31.1, "cagr": 9.1}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "França", "v": 2662.0, "pl": 4.05, "q": 23.0, "rk": 2, "yoy": 3.7, "cagr": -3.9}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Reino Unido", "v": 1546.0, "pl": 9.24, "q": 13.4, "rk": 3, "yoy": -36.7, "cagr": -2.2}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Alemanha", "v": 1334.0, "pl": 4.5, "q": 11.5, "rk": 4, "yoy": -11.5, "cagr": 5.5}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Bélgica", "v": 795.0, "pl": 6.51, "q": 6.9, "rk": 5, "yoy": -12.7, "cagr": -13.7}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Suíça", "v": 620.0, "pl": 7.0, "q": 5.4, "rk": 6, "yoy": 75.1, "cagr": 15.3}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Países Baixos", "v": 395.0, "pl": 5.27, "q": 3.4, "rk": 7, "yoy": 27.4, "cagr": -1.6}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Canadá", "v": 387.0, "pl": 8.6, "q": 3.3, "rk": 8, "yoy": 19.1, "cagr": -0.3}, {"ano": 2022, "cat": "Licoroso Madeira", "m": "Brasil", "v": 183.0, "pl": 5.37, "q": 1.6, "rk": 9, "yoy": 17.3, "cagr": 3.6}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "E.U.A.", "v": 3410.0, "pl": 17.0, "q": 29.9, "rk": 1, "yoy": -6.1, "cagr": 3.8}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "França", "v": 2511.0, "pl": 3.67, "q": 22.1, "rk": 2, "yoy": -5.7, "cagr": -0.8}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Reino Unido", "v": 2022.0, "pl": 9.35, "q": 17.8, "rk": 3, "yoy": 30.8, "cagr": -2.6}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Alemanha", "v": 1161.0, "pl": 4.79, "q": 10.2, "rk": 4, "yoy": -13.0, "cagr": -4.1}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Bélgica", "v": 931.0, "pl": 6.51, "q": 8.2, "rk": 5, "yoy": 17.1, "cagr": -4.4}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Suíça", "v": 417.0, "pl": 5.21, "q": 3.7, "rk": 6, "yoy": -32.7, "cagr": -1.3}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Canadá", "v": 407.0, "pl": 7.87, "q": 3.6, "rk": 7, "yoy": 5.2, "cagr": 2.8}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Países Baixos", "v": 352.0, "pl": 6.03, "q": 3.1, "rk": 8, "yoy": -10.9, "cagr": -5.7}, {"ano": 2023, "cat": "Licoroso Madeira", "m": "Brasil", "v": 176.0, "pl": 5.38, "q": 1.5, "rk": 9, "yoy": -3.8, "cagr": 4.1}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "E.U.A.", "v": 2672.0, "pl": 12.43, "q": 26.9, "rk": 1, "yoy": -21.6, "cagr": 13.2}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "França", "v": 2318.0, "pl": 3.61, "q": 23.3, "rk": 2, "yoy": -7.7, "cagr": -3.1}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Reino Unido", "v": 1728.0, "pl": 7.53, "q": 17.4, "rk": 3, "yoy": -14.5, "cagr": -1.8}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Alemanha", "v": 1121.0, "pl": 5.02, "q": 11.3, "rk": 4, "yoy": -3.4, "cagr": -5.3}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Bélgica", "v": 936.0, "pl": 6.99, "q": 9.4, "rk": 5, "yoy": 0.5, "cagr": 1.8}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Países Baixos", "v": 492.0, "pl": 6.0, "q": 5.0, "rk": 6, "yoy": 39.8, "cagr": 5.3}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Suíça", "v": 307.0, "pl": 5.14, "q": 3.1, "rk": 7, "yoy": -26.4, "cagr": -3.7}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Canadá", "v": 223.0, "pl": 8.81, "q": 2.2, "rk": 8, "yoy": -45.2, "cagr": -9.0}, {"ano": 2024, "cat": "Licoroso Madeira", "m": "Brasil", "v": 135.0, "pl": 5.65, "q": 1.4, "rk": 9, "yoy": -23.3, "cagr": 7.5}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "E.U.A.", "v": 2503.0, "pl": 11.9, "q": 26.7, "rk": 1, "yoy": -6.3, "cagr": -2.5}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "França", "v": 2018.0, "pl": 3.61, "q": 21.6, "rk": 2, "yoy": -12.9, "cagr": -5.8}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Reino Unido", "v": 1902.0, "pl": 8.29, "q": 20.3, "rk": 3, "yoy": 10.1, "cagr": -6.1}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Bélgica", "v": 895.0, "pl": 6.49, "q": 9.6, "rk": 4, "yoy": -4.4, "cagr": -0.4}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Alemanha", "v": 893.0, "pl": 4.54, "q": 9.5, "rk": 5, "yoy": -20.3, "cagr": -12.3}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Países Baixos", "v": 403.0, "pl": 6.16, "q": 4.3, "rk": 6, "yoy": -18.1, "cagr": 6.8}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Canadá", "v": 354.0, "pl": 8.06, "q": 3.8, "rk": 7, "yoy": 58.7, "cagr": 2.2}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Suíça", "v": 312.0, "pl": 4.73, "q": 3.3, "rk": 8, "yoy": 1.6, "cagr": -3.1}, {"ano": 2025, "cat": "Licoroso Madeira", "m": "Brasil", "v": 84.0, "pl": 6.13, "q": 0.9, "rk": 9, "yoy": -37.8, "cagr": -14.3}, {"ano": 2021, "cat": "Licoroso Porto", "m": "França", "v": 75226.0, "pl": 4.02, "q": 27.5, "rk": 1, "yoy": 4.8, "cagr": -0.5}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Reino Unido", "v": 50637.0, "pl": 5.78, "q": 18.5, "rk": 2, "yoy": 8.1, "cagr": 1.2}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Países Baixos", "v": 39663.0, "pl": 4.07, "q": 14.5, "rk": 3, "yoy": 7.2, "cagr": 0.8}, {"ano": 2021, "cat": "Licoroso Porto", "m": "E.U.A.", "v": 38697.0, "pl": 9.31, "q": 14.1, "rk": 4, "yoy": 25.8, "cagr": 5.4}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Bélgica", "v": 33640.0, "pl": 4.05, "q": 12.3, "rk": 5, "yoy": 9.2, "cagr": 1.8}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Alemanha", "v": 16227.0, "pl": 5.13, "q": 5.9, "rk": 6, "yoy": 26.7, "cagr": 8.6}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Canadá", "v": 11077.0, "pl": 8.87, "q": 4.0, "rk": 7, "yoy": 0.0, "cagr": -2.2}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Suíça", "v": 4987.0, "pl": 6.61, "q": 1.8, "rk": 8, "yoy": 17.3, "cagr": 5.7}, {"ano": 2021, "cat": "Licoroso Porto", "m": "Brasil", "v": 3372.0, "pl": 4.54, "q": 1.2, "rk": 9, "yoy": 8.1, "cagr": 2.9}, {"ano": 2022, "cat": "Licoroso Porto", "m": "França", "v": 70509.0, "pl": 4.03, "q": 28.4, "rk": 1, "yoy": -6.3, "cagr": -2.2}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Reino Unido", "v": 37653.0, "pl": 6.1, "q": 15.2, "rk": 2, "yoy": -25.6, "cagr": -2.2}, {"ano": 2022, "cat": "Licoroso Porto", "m": "E.U.A.", "v": 37120.0, "pl": 10.61, "q": 14.9, "rk": 3, "yoy": -4.1, "cagr": 4.4}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Países Baixos", "v": 35618.0, "pl": 4.23, "q": 14.3, "rk": 4, "yoy": -10.2, "cagr": 1.7}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Bélgica", "v": 31481.0, "pl": 4.0, "q": 12.7, "rk": 5, "yoy": -6.4, "cagr": -2.2}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Alemanha", "v": 16813.0, "pl": 4.68, "q": 6.8, "rk": 6, "yoy": 3.6, "cagr": 9.2}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Canadá", "v": 11431.0, "pl": 9.17, "q": 4.6, "rk": 7, "yoy": 3.2, "cagr": -0.2}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Suíça", "v": 4703.0, "pl": 6.6, "q": 1.9, "rk": 8, "yoy": -5.7, "cagr": 4.4}, {"ano": 2022, "cat": "Licoroso Porto", "m": "Brasil", "v": 3183.0, "pl": 4.91, "q": 1.3, "rk": 9, "yoy": -5.6, "cagr": 0.3}, {"ano": 2023, "cat": "Licoroso Porto", "m": "França", "v": 66927.0, "pl": 4.26, "q": 28.1, "rk": 1, "yoy": -5.1, "cagr": -3.1}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Reino Unido", "v": 40364.0, "pl": 6.0, "q": 16.9, "rk": 2, "yoy": 7.2, "cagr": -2.3}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Países Baixos", "v": 33860.0, "pl": 4.49, "q": 14.2, "rk": 3, "yoy": -4.9, "cagr": -2.3}, {"ano": 2023, "cat": "Licoroso Porto", "m": "E.U.A.", "v": 33465.0, "pl": 10.84, "q": 14.0, "rk": 4, "yoy": -9.8, "cagr": 0.0}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Bélgica", "v": 28134.0, "pl": 4.2, "q": 11.8, "rk": 5, "yoy": -10.6, "cagr": -2.1}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Alemanha", "v": 16305.0, "pl": 4.39, "q": 6.8, "rk": 6, "yoy": -3.0, "cagr": 5.5}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Canadá", "v": 11578.0, "pl": 10.22, "q": 4.9, "rk": 7, "yoy": 1.3, "cagr": 2.4}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Suíça", "v": 4473.0, "pl": 6.38, "q": 1.9, "rk": 8, "yoy": -4.9, "cagr": 0.0}, {"ano": 2023, "cat": "Licoroso Porto", "m": "Brasil", "v": 3177.0, "pl": 5.04, "q": 1.3, "rk": 9, "yoy": -0.2, "cagr": -1.5}, {"ano": 2024, "cat": "Licoroso Porto", "m": "França", "v": 68833.0, "pl": 4.3, "q": 29.8, "rk": 1, "yoy": 2.8, "cagr": -1.0}, {"ano": 2024, "cat": "Licoroso Porto", "m": "E.U.A.", "v": 34780.0, "pl": 11.27, "q": 15.1, "rk": 2, "yoy": 3.9, "cagr": 3.1}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Reino Unido", "v": 33495.0, "pl": 6.23, "q": 14.5, "rk": 3, "yoy": -17.0, "cagr": -8.0}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Países Baixos", "v": 33482.0, "pl": 4.56, "q": 14.5, "rk": 4, "yoy": -1.1, "cagr": -2.5}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Bélgica", "v": 28131.0, "pl": 4.28, "q": 12.2, "rk": 5, "yoy": 0.0, "cagr": -2.3}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Alemanha", "v": 14542.0, "pl": 4.42, "q": 6.3, "rk": 6, "yoy": -10.8, "cagr": 3.2}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Canadá", "v": 9910.0, "pl": 9.57, "q": 4.3, "rk": 7, "yoy": -14.4, "cagr": -2.7}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Suíça", "v": 4413.0, "pl": 6.45, "q": 1.9, "rk": 8, "yoy": -1.3, "cagr": 0.9}, {"ano": 2024, "cat": "Licoroso Porto", "m": "Brasil", "v": 3116.0, "pl": 5.39, "q": 1.4, "rk": 9, "yoy": -1.9, "cagr": 0.0}, {"ano": 2025, "cat": "Licoroso Porto", "m": "França", "v": 69006.0, "pl": 4.32, "q": 30.2, "rk": 1, "yoy": 0.3, "cagr": -2.1}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Reino Unido", "v": 36311.0, "pl": 6.28, "q": 15.9, "rk": 2, "yoy": 8.4, "cagr": -8.0}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Países Baixos", "v": 35125.0, "pl": 4.54, "q": 15.4, "rk": 3, "yoy": 4.9, "cagr": -3.0}, {"ano": 2025, "cat": "Licoroso Porto", "m": "E.U.A.", "v": 29420.0, "pl": 10.13, "q": 12.9, "rk": 4, "yoy": -15.4, "cagr": -6.6}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Bélgica", "v": 27397.0, "pl": 4.31, "q": 12.0, "rk": 5, "yoy": -2.6, "cagr": -5.0}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Alemanha", "v": 13948.0, "pl": 4.53, "q": 6.1, "rk": 6, "yoy": -4.1, "cagr": -3.7}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Canadá", "v": 9831.0, "pl": 9.56, "q": 4.3, "rk": 7, "yoy": -0.8, "cagr": -2.9}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Suíça", "v": 3969.0, "pl": 6.71, "q": 1.7, "rk": 8, "yoy": -10.1, "cagr": -5.5}, {"ano": 2025, "cat": "Licoroso Porto", "m": "Brasil", "v": 3283.0, "pl": 5.99, "q": 1.4, "rk": 9, "yoy": 5.4, "cagr": -0.7}, {"ano": 2021, "cat": "Outros Licorosos", "m": "França", "v": 1364.0, "pl": 1.84, "q": 41.4, "rk": 1, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Brasil", "v": 953.0, "pl": 24.82, "q": 28.9, "rk": 2, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Suíça", "v": 504.0, "pl": 4.98, "q": 15.3, "rk": 3, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Alemanha", "v": 214.0, "pl": 2.62, "q": 6.5, "rk": 4, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Países Baixos", "v": 109.0, "pl": 3.62, "q": 3.3, "rk": 5, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Reino Unido", "v": 82.0, "pl": 3.49, "q": 2.5, "rk": 6, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Bélgica", "v": 40.0, "pl": 1.65, "q": 1.2, "rk": 7, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "Canadá", "v": 32.0, "pl": 12.31, "q": 1.0, "rk": 8, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros Licorosos", "m": "E.U.A.", "v": 0.0, "pl": null, "q": 0.0, "rk": 9, "yoy": null, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "França", "v": 1915.0, "pl": 1.7, "q": 51.2, "rk": 1, "yoy": 40.4, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Brasil", "v": 1039.0, "pl": 26.85, "q": 27.8, "rk": 2, "yoy": 9.0, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Suíça", "v": 450.0, "pl": 4.58, "q": 12.0, "rk": 3, "yoy": -10.7, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Alemanha", "v": 190.0, "pl": 2.63, "q": 5.1, "rk": 4, "yoy": -11.2, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Países Baixos", "v": 50.0, "pl": 13.51, "q": 1.3, "rk": 5, "yoy": -54.1, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Bélgica", "v": 44.0, "pl": 1.69, "q": 1.2, "rk": 6, "yoy": 10.0, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Canadá", "v": 35.0, "pl": 7.29, "q": 0.9, "rk": 7, "yoy": 9.4, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "E.U.A.", "v": 16.0, "pl": 3.9, "q": 0.4, "rk": 8, "yoy": null, "cagr": null}, {"ano": 2022, "cat": "Outros Licorosos", "m": "Reino Unido", "v": 4.0, "pl": null, "q": 0.1, "rk": 9, "yoy": -95.1, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "França", "v": 1814.0, "pl": 1.7, "q": 44.9, "rk": 1, "yoy": -5.3, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Brasil", "v": 1270.0, "pl": 33.51, "q": 31.4, "rk": 2, "yoy": 22.2, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Suíça", "v": 540.0, "pl": 4.76, "q": 13.4, "rk": 3, "yoy": 20.0, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Alemanha", "v": 164.0, "pl": 2.47, "q": 4.1, "rk": 4, "yoy": -13.7, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Bélgica", "v": 89.0, "pl": 1.25, "q": 2.2, "rk": 5, "yoy": 102.3, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Países Baixos", "v": 83.0, "pl": 9.54, "q": 2.1, "rk": 6, "yoy": 66.0, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "E.U.A.", "v": 30.0, "pl": 4.17, "q": 0.7, "rk": 7, "yoy": 87.5, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Canadá", "v": 28.0, "pl": 9.33, "q": 0.7, "rk": 8, "yoy": -20.0, "cagr": null}, {"ano": 2023, "cat": "Outros Licorosos", "m": "Reino Unido", "v": 23.0, "pl": 7.42, "q": 0.6, "rk": 9, "yoy": 475.0, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "França", "v": 2038.0, "pl": 1.8, "q": 47.0, "rk": 1, "yoy": 12.3, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Brasil", "v": 1068.0, "pl": 26.31, "q": 24.6, "rk": 2, "yoy": -15.9, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Suíça", "v": 659.0, "pl": 4.39, "q": 15.2, "rk": 3, "yoy": 22.0, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Alemanha", "v": 212.0, "pl": 2.96, "q": 4.9, "rk": 4, "yoy": 29.3, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Reino Unido", "v": 188.0, "pl": 3.61, "q": 4.3, "rk": 5, "yoy": 717.4, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Bélgica", "v": 63.0, "pl": 1.1, "q": 1.5, "rk": 6, "yoy": -29.2, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Países Baixos", "v": 44.0, "pl": 18.33, "q": 1.0, "rk": 7, "yoy": -47.0, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "Canadá", "v": 34.0, "pl": 11.72, "q": 0.8, "rk": 8, "yoy": 21.4, "cagr": null}, {"ano": 2024, "cat": "Outros Licorosos", "m": "E.U.A.", "v": 30.0, "pl": 4.17, "q": 0.7, "rk": 9, "yoy": 0.0, "cagr": null}, {"ano": 2025, "cat": "Outros Licorosos", "m": "França", "v": 1339.0, "pl": 2.2, "q": 38.3, "rk": 1, "yoy": -34.3, "cagr": -0.5}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Brasil", "v": 1284.0, "pl": 31.24, "q": 36.7, "rk": 2, "yoy": 20.2, "cagr": 7.7}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Suíça", "v": 435.0, "pl": 4.29, "q": 12.4, "rk": 3, "yoy": -34.0, "cagr": -3.6}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Alemanha", "v": 142.0, "pl": 10.52, "q": 4.1, "rk": 4, "yoy": -33.0, "cagr": -9.7}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Reino Unido", "v": 97.0, "pl": 3.35, "q": 2.8, "rk": 5, "yoy": -48.4, "cagr": 4.3}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Países Baixos", "v": 96.0, "pl": 20.0, "q": 2.7, "rk": 6, "yoy": 118.2, "cagr": -3.1}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Bélgica", "v": 43.0, "pl": 10.49, "q": 1.2, "rk": 7, "yoy": -31.7, "cagr": 1.8}, {"ano": 2025, "cat": "Outros Licorosos", "m": "Canadá", "v": 34.0, "pl": 10.0, "q": 1.0, "rk": 8, "yoy": 0.0, "cagr": 1.5}, {"ano": 2025, "cat": "Outros Licorosos", "m": "E.U.A.", "v": 30.0, "pl": 4.17, "q": 0.9, "rk": 9, "yoy": 0.0, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "França", "v": 2148.0, "pl": 2.18, "q": 33.4, "rk": 1, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Alemanha", "v": 1489.0, "pl": 2.47, "q": 23.1, "rk": 2, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "E.U.A.", "v": 861.0, "pl": 5.52, "q": 13.4, "rk": 3, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Canadá", "v": 767.0, "pl": 2.65, "q": 11.9, "rk": 4, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Suíça", "v": 550.0, "pl": 1.73, "q": 8.5, "rk": 5, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Reino Unido", "v": 304.0, "pl": 4.63, "q": 4.7, "rk": 6, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Brasil", "v": 269.0, "pl": 1.61, "q": 4.2, "rk": 7, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Bélgica", "v": 31.0, "pl": 3.65, "q": 0.5, "rk": 8, "yoy": null, "cagr": null}, {"ano": 2021, "cat": "Outros/Mostos", "m": "Países Baixos", "v": 17.0, "pl": 3.54, "q": 0.3, "rk": 9, "yoy": null, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "França", "v": 1471.0, "pl": 2.23, "q": 23.8, "rk": 1, "yoy": -31.5, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "E.U.A.", "v": 1396.0, "pl": 5.7, "q": 22.6, "rk": 2, "yoy": 62.1, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Alemanha", "v": 1100.0, "pl": 2.73, "q": 17.8, "rk": 3, "yoy": -26.1, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Canadá", "v": 865.0, "pl": 2.65, "q": 14.0, "rk": 4, "yoy": 12.8, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Suíça", "v": 530.0, "pl": 1.91, "q": 8.6, "rk": 5, "yoy": -3.6, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Reino Unido", "v": 360.0, "pl": 6.53, "q": 5.8, "rk": 6, "yoy": 18.4, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Brasil", "v": 261.0, "pl": 1.57, "q": 4.2, "rk": 7, "yoy": -3.0, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Países Baixos", "v": 135.0, "pl": 2.99, "q": 2.2, "rk": 8, "yoy": 694.1, "cagr": null}, {"ano": 2022, "cat": "Outros/Mostos", "m": "Bélgica", "v": 53.0, "pl": 2.07, "q": 0.9, "rk": 9, "yoy": 71.0, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "França", "v": 1772.0, "pl": 2.3, "q": 28.9, "rk": 1, "yoy": 20.5, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Canadá", "v": 1221.0, "pl": 2.85, "q": 19.9, "rk": 2, "yoy": 41.2, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "E.U.A.", "v": 1073.0, "pl": 5.74, "q": 17.5, "rk": 3, "yoy": -23.1, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Alemanha", "v": 794.0, "pl": 3.45, "q": 12.9, "rk": 4, "yoy": -27.8, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Suíça", "v": 533.0, "pl": 2.04, "q": 8.7, "rk": 5, "yoy": 0.6, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Reino Unido", "v": 376.0, "pl": 4.61, "q": 6.1, "rk": 6, "yoy": 4.4, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Brasil", "v": 304.0, "pl": 1.79, "q": 5.0, "rk": 7, "yoy": 16.5, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Países Baixos", "v": 41.0, "pl": 2.47, "q": 0.7, "rk": 8, "yoy": -69.6, "cagr": null}, {"ano": 2023, "cat": "Outros/Mostos", "m": "Bélgica", "v": 26.0, "pl": 3.38, "q": 0.4, "rk": 9, "yoy": -50.9, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "França", "v": 1725.0, "pl": 2.41, "q": 25.3, "rk": 1, "yoy": -2.7, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Canadá", "v": 1321.0, "pl": 2.68, "q": 19.4, "rk": 2, "yoy": 8.2, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Alemanha", "v": 1298.0, "pl": 4.2, "q": 19.0, "rk": 3, "yoy": 63.5, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "E.U.A.", "v": 1211.0, "pl": 6.75, "q": 17.7, "rk": 4, "yoy": 12.9, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Suíça", "v": 397.0, "pl": 2.02, "q": 5.8, "rk": 5, "yoy": -25.5, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Reino Unido", "v": 374.0, "pl": 5.25, "q": 5.5, "rk": 6, "yoy": -0.5, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Brasil", "v": 285.0, "pl": 1.91, "q": 4.2, "rk": 7, "yoy": -6.3, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Bélgica", "v": 169.0, "pl": 3.94, "q": 2.5, "rk": 8, "yoy": 550.0, "cagr": null}, {"ano": 2024, "cat": "Outros/Mostos", "m": "Países Baixos", "v": 43.0, "pl": 2.36, "q": 0.6, "rk": 9, "yoy": 4.9, "cagr": null}, {"ano": 2025, "cat": "Outros/Mostos", "m": "França", "v": 1643.0, "pl": 2.28, "q": 26.7, "rk": 1, "yoy": -4.8, "cagr": -6.5}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Canadá", "v": 1167.0, "pl": 2.8, "q": 19.0, "rk": 2, "yoy": -11.7, "cagr": 11.1}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Países Baixos", "v": 1014.0, "pl": 1.4, "q": 16.5, "rk": 3, "yoy": 2258.1, "cagr": 177.9}, {"ano": 2025, "cat": "Outros/Mostos", "m": "E.U.A.", "v": 912.0, "pl": 6.12, "q": 14.8, "rk": 4, "yoy": -24.7, "cagr": 1.4}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Suíça", "v": 457.0, "pl": 2.14, "q": 7.4, "rk": 5, "yoy": 15.1, "cagr": -4.5}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Alemanha", "v": 361.0, "pl": 2.22, "q": 5.9, "rk": 6, "yoy": -72.2, "cagr": -29.8}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Reino Unido", "v": 263.0, "pl": 5.76, "q": 4.3, "rk": 7, "yoy": -29.7, "cagr": -3.6}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Brasil", "v": 209.0, "pl": 1.66, "q": 3.4, "rk": 8, "yoy": -26.7, "cagr": -6.1}, {"ano": 2025, "cat": "Outros/Mostos", "m": "Bélgica", "v": 120.0, "pl": 0.95, "q": 2.0, "rk": 9, "yoy": -29.0, "cagr": 40.3}, {"ano": 2021, "cat": "Sem DO/IG", "m": "França", "v": 14153.0, "pl": 1.19, "q": 22.1, "rk": 1, "yoy": 9.6, "cagr": 10.5}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Brasil", "v": 10159.0, "pl": 1.56, "q": 15.8, "rk": 2, "yoy": 8.6, "cagr": 19.1}, {"ano": 2021, "cat": "Sem DO/IG", "m": "E.U.A.", "v": 9319.0, "pl": 2.18, "q": 14.5, "rk": 3, "yoy": 39.4, "cagr": 19.5}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Reino Unido", "v": 8562.0, "pl": 1.73, "q": 13.3, "rk": 4, "yoy": -44.8, "cagr": -2.0}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Suíça", "v": 6346.0, "pl": 1.76, "q": 9.9, "rk": 5, "yoy": 13.6, "cagr": 13.8}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Alemanha", "v": 5790.0, "pl": 0.92, "q": 9.0, "rk": 6, "yoy": -0.2, "cagr": -6.0}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Bélgica", "v": 4693.0, "pl": 2.08, "q": 7.3, "rk": 7, "yoy": -20.7, "cagr": -0.2}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Canadá", "v": 3100.0, "pl": 2.02, "q": 4.8, "rk": 8, "yoy": 0.0, "cagr": 18.6}, {"ano": 2021, "cat": "Sem DO/IG", "m": "Países Baixos", "v": 2054.0, "pl": 1.73, "q": 3.2, "rk": 9, "yoy": -23.9, "cagr": 8.3}, {"ano": 2022, "cat": "Sem DO/IG", "m": "França", "v": 13998.0, "pl": 1.35, "q": 22.1, "rk": 1, "yoy": -1.1, "cagr": -0.6}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Brasil", "v": 9487.0, "pl": 1.68, "q": 15.0, "rk": 2, "yoy": -6.6, "cagr": 17.1}, {"ano": 2022, "cat": "Sem DO/IG", "m": "E.U.A.", "v": 9311.0, "pl": 2.87, "q": 14.7, "rk": 3, "yoy": -0.1, "cagr": 18.8}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Reino Unido", "v": 7780.0, "pl": 1.8, "q": 12.3, "rk": 4, "yoy": -9.1, "cagr": -6.8}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Suíça", "v": 6310.0, "pl": 1.94, "q": 10.0, "rk": 5, "yoy": -0.6, "cagr": 17.3}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Alemanha", "v": 5848.0, "pl": 0.88, "q": 9.2, "rk": 6, "yoy": 1.0, "cagr": -13.6}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Bélgica", "v": 5152.0, "pl": 2.19, "q": 8.1, "rk": 7, "yoy": 9.8, "cagr": 0.2}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Canadá", "v": 3317.0, "pl": 1.98, "q": 5.2, "rk": 8, "yoy": 7.0, "cagr": 5.8}, {"ano": 2022, "cat": "Sem DO/IG", "m": "Países Baixos", "v": 2085.0, "pl": 1.6, "q": 3.3, "rk": 9, "yoy": 1.5, "cagr": 8.7}, {"ano": 2023, "cat": "Sem DO/IG", "m": "França", "v": 13220.0, "pl": 1.42, "q": 21.9, "rk": 1, "yoy": -5.6, "cagr": -1.9}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Brasil", "v": 10930.0, "pl": 1.83, "q": 18.1, "rk": 2, "yoy": 15.2, "cagr": 14.4}, {"ano": 2023, "cat": "Sem DO/IG", "m": "E.U.A.", "v": 7921.0, "pl": 2.9, "q": 13.1, "rk": 3, "yoy": -14.9, "cagr": 9.3}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Alemanha", "v": 6966.0, "pl": 0.88, "q": 11.6, "rk": 4, "yoy": 19.1, "cagr": -3.5}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Reino Unido", "v": 6792.0, "pl": 2.04, "q": 11.3, "rk": 5, "yoy": -12.7, "cagr": -12.5}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Suíça", "v": 6564.0, "pl": 1.91, "q": 10.9, "rk": 6, "yoy": 4.0, "cagr": 18.3}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Bélgica", "v": 3128.0, "pl": 2.16, "q": 5.2, "rk": 7, "yoy": -39.3, "cagr": -12.7}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Canadá", "v": 2605.0, "pl": 2.3, "q": 4.3, "rk": 8, "yoy": -21.5, "cagr": -3.0}, {"ano": 2023, "cat": "Sem DO/IG", "m": "Países Baixos", "v": 2178.0, "pl": 1.18, "q": 3.6, "rk": 9, "yoy": 4.5, "cagr": 4.2}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Brasil", "v": 12536.0, "pl": 1.92, "q": 20.3, "rk": 1, "yoy": 14.7, "cagr": 7.6}, {"ano": 2024, "cat": "Sem DO/IG", "m": "França", "v": 11773.0, "pl": 1.45, "q": 19.1, "rk": 2, "yoy": -10.9, "cagr": -2.3}, {"ano": 2024, "cat": "Sem DO/IG", "m": "E.U.A.", "v": 9226.0, "pl": 3.15, "q": 15.0, "rk": 3, "yoy": 16.5, "cagr": 8.4}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Reino Unido", "v": 6931.0, "pl": 2.11, "q": 11.2, "rk": 4, "yoy": 2.0, "cagr": -18.2}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Alemanha", "v": 6146.0, "pl": 0.84, "q": 10.0, "rk": 5, "yoy": -11.8, "cagr": 1.5}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Suíça", "v": 5731.0, "pl": 1.93, "q": 9.3, "rk": 6, "yoy": -12.7, "cagr": 0.7}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Países Baixos", "v": 3361.0, "pl": 2.13, "q": 5.5, "rk": 7, "yoy": 54.3, "cagr": 5.6}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Canadá", "v": 3078.0, "pl": 2.13, "q": 5.0, "rk": 8, "yoy": 18.2, "cagr": -0.2}, {"ano": 2024, "cat": "Sem DO/IG", "m": "Bélgica", "v": 2833.0, "pl": 2.25, "q": 4.6, "rk": 9, "yoy": -9.4, "cagr": -16.8}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Brasil", "v": 11032.0, "pl": 1.86, "q": 20.9, "rk": 1, "yoy": -12.0, "cagr": 2.1}, {"ano": 2025, "cat": "Sem DO/IG", "m": "França", "v": 10862.0, "pl": 1.49, "q": 20.6, "rk": 2, "yoy": -7.7, "cagr": -6.4}, {"ano": 2025, "cat": "Sem DO/IG", "m": "E.U.A.", "v": 6406.0, "pl": 2.62, "q": 12.1, "rk": 3, "yoy": -30.6, "cagr": -8.9}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Alemanha", "v": 5845.0, "pl": 0.85, "q": 11.1, "rk": 4, "yoy": -4.9, "cagr": 0.2}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Reino Unido", "v": 5299.0, "pl": 2.11, "q": 10.0, "rk": 5, "yoy": -23.5, "cagr": -11.3}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Suíça", "v": 4783.0, "pl": 1.86, "q": 9.1, "rk": 6, "yoy": -16.5, "cagr": -6.8}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Canadá", "v": 3104.0, "pl": 2.18, "q": 5.9, "rk": 7, "yoy": 0.8, "cagr": 0.0}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Países Baixos", "v": 2783.0, "pl": 2.29, "q": 5.3, "rk": 8, "yoy": -17.2, "cagr": 7.9}, {"ano": 2025, "cat": "Sem DO/IG", "m": "Bélgica", "v": 2680.0, "pl": 2.13, "q": 5.1, "rk": 9, "yoy": -5.4, "cagr": -13.1}];
+const $=(s,r=document)=>r.querySelector(s);
+const nf=new Intl.NumberFormat('pt-PT');
+const eur=k=>{ const v=k*1000; if(v>=1e6) return '€'+(v/1e6).toLocaleString('pt-PT',{maximumFractionDigits:2})+'M'; if(v>=1e3) return '€'+(v/1e3).toLocaleString('pt-PT',{maximumFractionDigits:0})+'k'; return '€'+nf.format(Math.round(v)); };
+const pl=v=>v==null?'—':'€'+v.toLocaleString('pt-PT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pctS=v=>v==null?'—':(v>0?'+':'')+v.toLocaleString('pt-PT',{maximumFractionDigits:1})+'%';
+
+const LABEL={"Licoroso Porto":"Porto","Licoroso Madeira":"Madeira","DO":"DOP","IG":"IGP","Sem DO/IG":"Sem DO/IG","Espumantes":"Espumante","Outros Licorosos":"Outros licorosos","Outros/Mostos":"Outros / mostos"};
+const YEARS=[...new Set(RAW.map(d=>d.ano))].sort();
+const METRICS=[{k:'v',t:'Valor'},{k:'pl',t:'Preço €/L'},{k:'cagr',t:'Crescimento'}];
+// order types by 2025 value desc
+const CATS=[...new Set(RAW.map(d=>d.cat))].map(c=>({c, tot:RAW.filter(d=>d.cat===c&&d.ano===2025).reduce((s,d)=>s+(d.v||0),0)})).sort((a,b)=>b.tot-a.tot).map(x=>x.c);
+
+const state={cat:CATS[0], year:YEARS[YEARS.length-1], metric:'v', sort:'v', dir:-1, hot:null};
+
+/* build controls */
+const chipsEl=$('#chips');
+CATS.forEach(c=>{
+  const b=document.createElement('button'); b.className='chip'; b.dataset.c=c;
+  const tot=RAW.filter(d=>d.cat===c&&d.ano===2025).reduce((s,d)=>s+(d.v||0),0);
+  b.innerHTML=`${LABEL[c]||c} <small>${eur(tot)}</small>`;
+  b.setAttribute('aria-pressed', c===state.cat);
+  b.onclick=()=>{ state.cat=c; state.hot=null; [...chipsEl.children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.c===c)); render(); };
+  chipsEl.appendChild(b);
+});
+const yEl=$('#years');
+YEARS.forEach(y=>{ const b=document.createElement('button'); b.textContent=y; b.dataset.y=y; b.setAttribute('aria-pressed',y===state.year);
+  b.onclick=()=>{ state.year=y; state.hot=null; [...yEl.children].forEach(x=>x.setAttribute('aria-pressed',+x.dataset.y===y)); render(); }; yEl.appendChild(b); });
+const mEl=$('#metric');
+METRICS.forEach(m=>{ const b=document.createElement('button'); b.textContent=m.t; b.dataset.m=m.k; b.setAttribute('aria-pressed',m.k===state.metric);
+  b.onclick=()=>{ state.metric=m.k; state.sort=m.k; state.dir=-1; state.hot=null; [...mEl.children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===m.k)); render(); }; mEl.appendChild(b); });
+
+/* theme */
+const themeBtn=$('#theme');
+try{const t=localStorage.getItem('radar-theme'); if(t) document.documentElement.setAttribute('data-theme',t);}catch(e){}
+themeBtn.onclick=()=>{ const cur=document.documentElement.getAttribute('data-theme'); const md=matchMedia('(prefers-color-scheme:dark)').matches;
+  const next=cur?(cur==='dark'?'light':'dark'):(md?'light':'dark'); document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('radar-theme',next);}catch(e){} render(); };
+
+/* data slice */
+const cur=()=>RAW.filter(d=>d.cat===state.cat && d.ano===state.year);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+/* bar chart */
+const NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); return e;};
+const metricVal=(d,m)=> m==='v'?d.v : m==='pl'?d.pl : d.cagr;
+const W=720, PL=138, PR=636, TOP=16;
+
+function drawBars(set){
+  const svg=$('#svg'); svg.innerHTML=''; const m=state.metric;
+  const rows=[...set].filter(d=>metricVal(d,m)!=null).sort((a,b)=>metricVal(b,m)-metricVal(a,m));
+  const bh=Math.min(30, (400-TOP-24)/Math.max(rows.length,1)); const band=(400-TOP-24)/Math.max(rows.length,1);
+  const vals=rows.map(d=>metricVal(d,m));
+  const dmin=Math.min(0,...vals), dmax=Math.max(0,...vals,0.0001);
+  const X=v=>PL+(v-dmin)/(dmax-dmin)*(PR-PL);
+  const xz=X(0), g=el('g',{}); svg.appendChild(g);
+  // zero axis + a couple gridlines
+  const div = m==='v'? null : null;
+  g.appendChild(el('line',{class:'axis0', x1:xz,y1:TOP-6,x2:xz,y2:TOP+band*rows.length}));
+  const H=state.hot;
+  rows.forEach((d,i)=>{
+    const val=metricVal(d,m), y=TOP+band*i+(band-bh)/2;
+    const x1=Math.min(xz,X(val)), w=Math.max(2,Math.abs(X(val)-xz));
+    const pos = m==='cagr' ? val>=0 : true;
+    const fill = m==='cagr' ? (val>=0?css('--good'):css('--accent-strong')) : css('--mark');
+    const r=el('rect',{class:'bar'+(H&&H!==d.m?' dim':''), x:x1, y, width:w, height:bh, rx:4, fill, 'fill-opacity':.85}); r.__m=d.m;
+    r.addEventListener('mouseenter',ev=>{state.hot=d.m; showTip(ev,d); mark();});
+    r.addEventListener('mousemove',moveTip);
+    r.addEventListener('mouseleave',()=>{state.hot=null; hideTip(); mark();});
+    g.appendChild(r);
+    // name (left)
+    const nm=el('text',{class:'bl-name', x:PL-10, y:y+bh/2+4, 'text-anchor':'end'}); nm.textContent=d.m; nm.__m=d.m; g.appendChild(nm);
+    // value label at end
+    const vt = m==='v'?eur(val): m==='pl'?pl(val)+'/L': pctS(val);
+    const lx = val<0 ? xz+6 : X(val)+6;   // negatives labelled just right of the zero axis, clear of names
+    const vl=el('text',{class:'bl-val', x:lx, y:y+bh/2+4, 'text-anchor':'start'}); vl.textContent=vt; g.appendChild(vl);
+  });
+  svg.setAttribute('viewBox',`0 0 ${W} ${Math.max(120, TOP+band*rows.length+16)}`);
+}
+
+/* tooltip */
+const tip=$('#tip');
+function showTip(ev,d){
+  tip.innerHTML=`<div class="tn">${d.m}</div>
+   <div class="row"><span>Valor</span><b>${eur(d.v)}</b></div>
+   <div class="row"><span>Preço</span><b>${pl(d.pl)}/L</b></div>
+   <div class="row"><span>Quota do tipo</span><b>${d.q!=null?d.q.toLocaleString('pt-PT',{maximumFractionDigits:1})+'%':'—'}</b></div>
+   <div class="row"><span>No ano</span><b class="${(d.yoy||0)>=0?'up':'dn'}">${pctS(d.yoy)}</b></div>
+   <div class="row"><span>Crescimento 4a</span><b class="${(d.cagr||0)>=0?'up':'dn'}">${pctS(d.cagr)}</b></div>`;
+  tip.classList.add('on'); moveTip(ev);
+}
+function moveTip(ev){ const w=tip.parentElement.getBoundingClientRect(); let x=ev.clientX-w.left+14,y=ev.clientY-w.top+14; const tw=tip.offsetWidth,th=tip.offsetHeight; if(x+tw>w.width)x=ev.clientX-w.left-tw-14; if(y+th>w.height)y=w.height-th-6; tip.style.left=Math.max(4,x)+'px'; tip.style.top=Math.max(4,y)+'px'; }
+function hideTip(){ tip.classList.remove('on'); }
+
+/* KPIs */
+function drawKPIs(set){
+  const tot=set.reduce((s,d)=>s+(d.v||0),0);
+  const top=[...set].sort((a,b)=>b.v-a.v)[0];
+  const withL=set.filter(d=>d.pl!=null && d.v>0);
+  const wPrice=withL.reduce((s,d)=>s+d.pl*d.v,0)/(withL.reduce((s,d)=>s+d.v,0)||1);
+  const priciest=[...withL].sort((a,b)=>b.pl-a.pl)[0];
+  const grow=set.filter(d=>d.cagr!=null).sort((a,b)=>b.cagr-a.cagr)[0];
+  const items=[
+    ['Valor do tipo', eur(tot), `${LABEL[state.cat]||state.cat} · ${state.year}`],
+    ['Maior mercado', top?top.m:'—', top?eur(top.v)+` · ${top.q}%`:''],
+    ['Quem paga mais', priciest?pl(priciest.pl)+'/L':'—', priciest?priciest.m:''],
+    ['Cresce mais (4a)', grow?pctS(grow.cagr):'—', grow?grow.m:''],
+  ];
+  $('#kpis').innerHTML=items.map(([k,v,d])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join('');
+}
+
+/* table */
+const COLS=[
+  {k:'m',t:'Mercado',get:d=>d.m,s:d=>d.rk,dir:1},
+  {k:'v',t:'Valor',get:d=>eur(d.v),s:d=>d.v,dir:-1},
+  {k:'pl',t:'€/L',get:d=>pl(d.pl),s:d=>d.pl==null?-1:d.pl,dir:-1},
+  {k:'q',t:'Quota',get:d=>d.q!=null?d.q.toLocaleString('pt-PT',{maximumFractionDigits:1})+'%':'—',s:d=>d.q||0,dir:-1},
+  {k:'cagr',t:'Cresc.4a',get:d=>d.cagr==null?'—':`<span class="pill ${d.cagr>=0?'u':'d'}">${pctS(d.cagr)}</span>`,s:d=>d.cagr==null?-999:d.cagr,dir:-1},
+];
+function drawTable(set){
+  const th=$('#thead'); th.innerHTML='';
+  COLS.forEach(c=>{ const e=document.createElement('th'); e.innerHTML=c.t+(state.sort===c.k?` <span style="font-size:9px">${state.dir>0?'▲':'▼'}</span>`:''); if(state.sort===c.k)e.className='sorted';
+    e.onclick=()=>{ if(state.sort===c.k)state.dir*=-1; else{state.sort=c.k; state.dir=c.dir;} render(); }; th.appendChild(e); });
+  const col=COLS.find(c=>c.k===state.sort)||COLS[1];
+  const rows=[...set].sort((a,b)=>(col.s(a)-col.s(b))*state.dir);
+  const tb=$('#tbody'); tb.innerHTML='';
+  rows.forEach(d=>{ const tr=document.createElement('tr'); tr.__m=d.m; if(state.hot===d.m)tr.className='hot';
+    tr.innerHTML=COLS.map(c=>`<td>${c.get(d)}</td>`).join('');
+    tr.onmouseenter=()=>{state.hot=d.m; mark();}; tr.onmouseleave=()=>{state.hot=null; mark();}; tb.appendChild(tr); });
+}
+
+function mark(){
+  const h=state.hot;
+  document.querySelectorAll('#svg .bar').forEach(b=>b.classList.toggle('dim', !!h&&b.__m!==h));
+  document.querySelectorAll('#tbody tr').forEach(tr=>tr.classList.toggle('hot', tr.__m===h));
+}
+
+function render(){
+  const set=cur();
+  drawBars(set); drawKPIs(set); drawTable(set);
+  $('#chartT').textContent = ({v:'Quem compra mais',pl:'Quem paga mais por litro',cagr:'Quem está a crescer'})[state.metric];
+  $('#chartSub').textContent = `${LABEL[state.cat]||state.cat} · ${state.year}`;
+  const withL=set.filter(d=>d.pl!=null&&d.v>0);
+  const priciest=[...withL].sort((a,b)=>b.pl-a.pl)[0];
+  const grow=set.filter(d=>d.cagr!=null).sort((a,b)=>b.cagr-a.cagr)[0];
+  const top=[...set].sort((a,b)=>b.v-a.v)[0];
+  $('#readline').innerHTML = `<span>Maior comprador: <b>${top?top.m:'—'}</b> (${top?top.q+'% do tipo':''}).</span>`+
+    `<span class="up">Paga mais: <b>${priciest?priciest.m:'—'}</b> ${priciest?pl(priciest.pl)+'/L':''}.</span>`+
+    (grow&&grow.cagr>0?`<span class="up">Cresce mais: <b>${grow.m}</b> ${pctS(grow.cagr)}/ano.</span>`:`<span class="dn">Nenhum mercado deste tipo está a crescer em 4 anos.</span>`);
+  $('#foot').innerHTML=`<b>Fonte:</b> IVV — Instituto da Vinha e do Vinho · exportação por tipo, anual · valores nominais. `+
+    `Preço = €/litro. "Crescimento 4a" = taxa anual composta sobre 4 anos. `+
+    `<b>Cobertura:</b> o detalhe por tipo do IVV cobre, em 2021–2025, os 9 mercados principais (≈100% do valor registado deste tipo). `+
+    `Protótipo · dados reais, verificados.`;
+}
+render();
+
+</script>
