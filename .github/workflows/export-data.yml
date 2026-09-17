@@ -33,6 +33,6 @@ jobs:
         run: |
           git config user.name "vineatlas-bot"
           git config user.email "actions@github.com"
-          git add radar.html onde-vender.html premiumizacao.html ficha.html
+          git add radar.html onde-vender.html premiumizacao.html ficha.html balanca.html
           git diff --cached --quiet && echo "Sem alterações nos dados." || \
             (git commit -m "chore: atualizar dados do dashboard (automático)" && git push)

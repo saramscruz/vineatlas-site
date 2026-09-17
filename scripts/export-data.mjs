@@ -5,21 +5,29 @@
  * Liga-se ao Supabase (utilizador só-de-leitura `looker_ro`), lê as views
  * de consumo, e substitui a constante de dados embebida em cada página
  * HTML do site (radar.html, onde-vender.html, premiumizacao.html,
- * ficha.html). Corre localmente (`node scripts/export-data.mjs`) ou via
- * GitHub Actions (ver .github/workflows/export-data.yml).
+ * ficha.html, balanca.html). Corre localmente (`node scripts/export-data.mjs`)
+ * ou via GitHub Actions (ver .github/workflows/export-data.yml).
  *
  * Requisitos:
  *   - variável de ambiente DATABASE_URL com a connection string do
  *     utilizador looker_ro (Session pooler, porta 5432, SSL ativo)
  *   - `npm install pg`
  *
- * IMPORTANTE — balanca.html:
- *   Esta página ainda NÃO está incluída aqui. O padrão de autoria das
- *   outras 4 páginas (uma única `const RAW = [...]` ou `const D = {...}`
- *   logo no início do <script>) é consistente, mas balanca.html não foi
- *   inspecionado ainda. Antes de a adicionar: abrir o ficheiro, confirmar
- *   o nome da variável e os campos abreviados, e acrescentar uma entrada
- *   a PAGES abaixo seguindo o mesmo padrão.
+ * balanca.html (acrescentado 2026-09-17):
+ *   Ao contrário das outras 4 páginas, os 4 blocos de dados de
+ *   balanca.html (BAL, ES, CATS, PAISES) não usam nenhuma das views `v_*`
+ *   listadas no dicionário como "usar sempre" — três vêm de tabelas de
+ *   facto diretas (fact_importacoes_acondicionamento, fact_importacoes_tipo,
+ *   fact_importacoes) e BAL usa v_balanca_comercial_vinho, que não consta
+ *   dessa lista mas é a view certa para este caso (é a única que já soma
+ *   exportação e importação pela mesma chave). Todas as 4 queries foram
+ *   corridas contra a base real (kflwylllrmvlsssegxch) em 2026-09-17 e os
+ *   resultados batem exatamente (ao cêntimo/kg) com os valores hardcoded
+ *   que já estavam no ficheiro, para os 16 anos 2010-2025 onde aplicável.
+ *   Ver comentários em cada função fetchBalanca*() para o detalhe da
+ *   validação. Ainda assim, antes do primeiro commit: correr localmente
+ *   e conferir o diff do balanca.html, porque a validação foi feita numa
+ *   sessão de leitura direta à base, não através deste próprio script.
  *
  * NOTA DE ROBUSTEZ:
  *   A substituição usa uma expressão regular que apanha desde
@@ -59,9 +67,11 @@ function replaceConst(filePath, varName, newValue) {
   const full = path.join(SITE_DIR, filePath);
   const src = readFileSync(full, 'utf8');
 
-  // Aceita tanto `[` (array) como `{` (objeto) a seguir ao `=`.
+  // Aceita tanto `[` (array) como `{` (objeto) a seguir ao `=`, e
+  // qualquer espaçamento à volta do `=` (ex.: balanca.html tem
+  // "const BAL = [" mas "const CATS=[", sem espaço).
   const re = new RegExp(
-    `const ${varName} = (\\[[\\s\\S]*?\\]|\\{[\\s\\S]*?\\});`
+    `const ${varName}\\s*=\\s*(\\[[\\s\\S]*?\\]|\\{[\\s\\S]*?\\});`
   );
 
   if (!re.test(src)) {
@@ -262,6 +272,186 @@ async function fetchCambioFicha(client, anoAtual) {
 }
 
 // ---------------------------------------------------------------------
+// balanca.html (acrescentado 2026-09-17 — ver caveat no topo do ficheiro)
+// ---------------------------------------------------------------------
+
+/**
+ * Determina o último ano com os 12 meses presentes em fact_importacoes
+ * (que hoje se estende até um mês de 2026, portanto parcial nesse ano).
+ * Usa contagem de meses distintos em vez de uma data fixa, para que o
+ * script continue correto quando 2026 fechar e passar a ter 12 meses
+ * também. VALIDADO 2026-09-17: devolve 2025 (12 meses distintos; 2026
+ * tinha só 7 à data da validação), consistente com o valor hardcoded
+ * que já estava em PAISES.
+ *
+ * Nota de implementação: usar count(distinct mes_ano), não count(*) —
+ * fact_importacoes tem grão (mes_ano, codigo_origem), portanto count(*)
+ * conta ~316 linhas por mês (grelha densa por destino), não meses.
+ */
+async function getAnoCompletoImportacoes(client) {
+  const { rows } = await client.query(`
+    select extract(year from mes_ano)::int as ano,
+           count(distinct mes_ano) as meses
+    from fact_importacoes
+    group by 1
+    having count(distinct mes_ano) = 12
+    order by 1 desc
+    limit 1
+  `);
+  if (rows.length === 0) {
+    throw new Error('getAnoCompletoImportacoes: nenhum ano com 12 meses completos em fact_importacoes.');
+  }
+  return rows[0].ano;
+}
+
+/**
+ * BAL — série anual 2010-atual, exportação vs importação (kg e €).
+ *
+ * VALIDADO 2026-09-17 contra a base real (16 anos, 2010-2025, ao cêntimo
+ * e ao kg — corresponde exatamente aos valores já hardcoded no ficheiro).
+ *
+ * A primeira versão desta função somava a linha
+ * dim_destino.tipo='total_mundial' (MUNDO) das tabelas de facto — essa
+ * abordagem estava ERRADA: confirmou-se que v_balanca_comercial_vinho
+ * não tem nenhuma linha MUNDO (é FULL OUTER JOIN só de codigo com
+ * dim_destino.tipo='pais_territorio', 252 códigos). A soma direta desta
+ * view é a fonte certa. Só inclui anos com os 12 meses presentes
+ * (count(distinct mes_ano) = 12), para nunca misturar o ano corrente
+ * parcial (2026, só 7 meses à data da validação) com anos fechados.
+ */
+async function fetchBalancaBAL(client) {
+  const { rows } = await client.query(`
+    select extract(year from mes_ano)::int as ano,
+           sum(volume_kg_exportado) as exp_kg,
+           sum(volume_kg_importado) as imp_kg,
+           sum(valor_eur_exportado) as exp_eur,
+           sum(valor_eur_importado) as imp_eur,
+           count(distinct mes_ano) as meses
+    from v_balanca_comercial_vinho
+    group by 1
+    having count(distinct mes_ano) = 12
+    order by 1
+  `);
+  return rows.map((row) => ({
+    ano: row.ano,
+    exp_kg: r(row.exp_kg, 0),
+    imp_kg: r(row.imp_kg, 0),
+    exp_eur: r(row.exp_eur, 0),
+    imp_eur: r(row.imp_eur, 0),
+  }));
+}
+
+/**
+ * ES — importação de Espanha por tamanho de recipiente (HL), granel
+ * (>10L) vs engarrafado (<=2L), série anual completa. Fonte:
+ * fact_importacoes_acondicionamento. Note-se a lacuna documentada:
+ * Itália 2023 falta o ano inteiro nesta tabela (não afeta Espanha), e a
+ * faixa 2-10L só existe a partir de 2017 — nenhuma das duas afeta este
+ * cálculo (só usa >10L e <=2L de Espanha).
+ */
+async function fetchBalancaES(client) {
+  const { rows } = await client.query(`
+    select ano,
+           sum(case when faixa = '>10L' then valor end) as granel,
+           sum(case when faixa = '<=2L' then valor end) as eng
+    from fact_importacoes_acondicionamento
+    where pais = 'Espanha' and medida = 'Volume_HL'
+    group by ano
+    order by ano
+  `);
+  return rows.map((row) => ({
+    ano: row.ano,
+    granel: r(row.granel, 2),
+    eng: r(row.eng, 2),
+  }));
+}
+
+/**
+ * CATS — composição por categoria da importação nacional (HL), no ano
+ * mais recente disponível em fact_importacoes_tipo para 'Total Nacional'.
+ * Exclui a meta-categoria 'Total' (regra 4 do dicionário: nunca somar
+ * incluindo o Total). Rótulos amigáveis abaixo — CATEGORIA_LABEL —
+ * mapeiam 'Sem DO/IG' e 'Residual não especificado' para os nomes que já
+ * apareciam no balanca.html hardcoded ('Sem DO/IG (granel/mesa)' e
+ * 'Não alocado'). ESTE MAPEAMENTO NÃO ESTÁ CONFIRMADO NO SCHEMA — foi
+ * inferido por os valores em HL baterem com os já existentes no
+ * ficheiro. Confirmar antes do commit.
+ */
+const CATEGORIA_LABEL = {
+  'Sem DO/IG': 'Sem DO/IG (granel/mesa)',
+  'Residual não especificado': 'Não alocado',
+  Espumantes: 'Espumantes',
+  IG: 'IG',
+  DO: 'DO',
+  Licoroso: 'Licoroso',
+};
+
+async function fetchBalancaCATS(client) {
+  const { rows } = await client.query(`
+    select categoria, valor
+    from fact_importacoes_tipo
+    where pais = 'Total Nacional'
+      and medida = 'Volume_HL'
+      and categoria <> 'Total'
+      and ano = (
+        select max(ano) from fact_importacoes_tipo where pais = 'Total Nacional'
+      )
+    order by valor desc
+  `);
+  return rows.map((row) => ({
+    nome: CATEGORIA_LABEL[row.categoria] ?? row.categoria,
+    hl: r(row.valor, 2),
+  }));
+}
+
+/**
+ * dim_destino.nome usa a forma oficial longa do INE (confirmado
+ * 2026-09-17 contra a base — o mesmo padrão aparece em v_radar_mercados,
+ * portanto não é um problema desta tabela em particular). O balanca.html
+ * hardcoded já usava as formas curtas para estes 3; mapeamento explícito
+ * para manter a mesma convenção. Nomes fora deste mapa passam tal como
+ * vêm da base — rever esta lista se um país novo com nome oficial longo
+ * entrar no top-10 num ano futuro.
+ */
+const PAIS_LABEL_CURTO = {
+  'Estados Unidos da América': 'Estados Unidos',
+  'Países Baixos (Reino dos)': 'Países Baixos',
+  'Reino Unido (não incluindo a Irlanda do Norte)': 'Reino Unido',
+};
+
+/**
+ * PAISES — top-10 países de origem da importação (INE, fact_importacoes)
+ * por valor em €, no último ano com os 12 meses completos (ver
+ * getAnoCompletoImportacoes). Filtra dim_destino.tipo='pais_territorio'
+ * (regra 10 do dicionário — mesma regra de fact_exportacoes).
+ *
+ * VALIDADO 2026-09-17: os 10 valores em € batem exatamente com os já
+ * hardcoded no ficheiro para 2025. Os nomes vêm longos da base (ver
+ * PAIS_LABEL_CURTO acima) — sem o mapeamento, 3 dos 10 nomes seriam
+ * diferentes dos que já estavam no balanca.html.
+ */
+async function fetchBalancaPAISES(client) {
+  const ano = await getAnoCompletoImportacoes(client);
+  const { rows } = await client.query(
+    `
+    select dd.nome as pais, sum(fi.valor_eur) as eur
+    from fact_importacoes fi
+    join dim_destino dd on dd.codigo = fi.codigo_origem
+    where dd.tipo = 'pais_territorio'
+      and extract(year from fi.mes_ano) = $1
+    group by dd.nome
+    order by eur desc
+    limit 10
+  `,
+    [ano]
+  );
+  return rows.map((row) => ({
+    nome: PAIS_LABEL_CURTO[row.pais] ?? row.pais,
+    eur: r(row.eur, 0),
+  }));
+}
+
+// ---------------------------------------------------------------------
 // Configuração das páginas
 //
 // Cada entrada em `targets` é uma `const NOME = ...;` diferente dentro do
@@ -291,8 +481,17 @@ const PAGES = [
       { varName: 'CAMBIO', fetch: (client) => getAnoAtualFicha(client).then((ano) => fetchCambioFicha(client, ano)) },
     ],
   },
-  // TODO: balanca.html — inspecionar o ficheiro, confirmar variável(is) e
-  // campos, e acrescentar aqui { file, targets: [...] } antes de ativar.
+  {
+    // Acrescentado 2026-09-17, validado contra a base real. Ver caveat
+    // no topo do ficheiro para o detalhe das fontes de cada bloco.
+    file: 'balanca.html',
+    targets: [
+      { varName: 'BAL', fetch: fetchBalancaBAL },
+      { varName: 'ES', fetch: fetchBalancaES },
+      { varName: 'CATS', fetch: fetchBalancaCATS },
+      { varName: 'PAISES', fetch: fetchBalancaPAISES },
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------

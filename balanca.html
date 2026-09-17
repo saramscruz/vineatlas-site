@@ -275,48 +275,10 @@ function drawChart(svg, tip, cfg){
 }
 function legend(elm, series){ elm.innerHTML=series.map(s=>`<span class="lg"><span class="sw" style="background:${css(s.color)}"></span>${s.name}</span>`).join(''); }
 
-const BAL = [
- {ano:2010,exp_kg:267388599,imp_kg:181074279,exp_eur:611504283,imp_eur:89311069},
- {ano:2011,exp_kg:308651885,imp_kg:163482840,exp_eur:653456254,imp_eur:81914569},
- {ano:2012,exp_kg:337133598,imp_kg:130461774,exp_eur:699746806,imp_eur:86371300},
- {ano:2013,exp_kg:304449361,imp_kg:160669784,exp_eur:716060846,imp_eur:122399001},
- {ano:2014,exp_kg:283545805,imp_kg:233141072,exp_eur:721522552,imp_eur:125153991},
- {ano:2015,exp_kg:279825704,imp_kg:216970865,exp_eur:730688872,imp_eur:116754909},
- {ano:2016,exp_kg:278047133,imp_kg:181166198,exp_eur:718579892,imp_eur:110190536},
- {ano:2017,exp_kg:298003788,imp_kg:215726695,exp_eur:770874182,imp_eur:137205926},
- {ano:2018,exp_kg:295667922,imp_kg:202561296,exp_eur:793467656,imp_eur:158104392},
- {ano:2019,exp_kg:296101614,imp_kg:293568124,exp_eur:810591476,imp_eur:169208338},
- {ano:2020,exp_kg:315750628,imp_kg:274603898,exp_eur:853195469,imp_eur:166254713},
- {ano:2021,exp_kg:329613587,imp_kg:296922786,exp_eur:923002625,imp_eur:172866039},
- {ano:2022,exp_kg:325693890,imp_kg:297647983,exp_eur:927094290,imp_eur:205343675},
- {ano:2023,exp_kg:319248867,imp_kg:289375249,exp_eur:911033334,imp_eur:197575767},
- {ano:2024,exp_kg:344425840,imp_kg:194886290,exp_eur:948913506,imp_eur:153578532},
- {ano:2025,exp_kg:339250516,imp_kg:187082315,exp_eur:935326265,imp_eur:165001320}
-];
-const ES = [
- {ano:2010,granel:1274492.81,eng:450625.32},{ano:2011,granel:1180829.93,eng:365747.11},
- {ano:2012,granel:917060.39,eng:290943.72},{ano:2013,granel:1211236.86,eng:303554.83},
- {ano:2014,granel:1824428.54,eng:389136.19},{ano:2015,granel:1689414.4,eng:378463.31},
- {ano:2016,granel:1353740.15,eng:359896.05},{ano:2017,granel:1462829.12,eng:420412.03},
- {ano:2018,granel:1395170.29,eng:399077.08},{ano:2019,granel:2184660.98,eng:439524.43},
- {ano:2020,granel:2103886.35,eng:470904.64},{ano:2021,granel:2211968.31,eng:561724.91},
- {ano:2022,granel:2257810.61,eng:519694.52},{ano:2023,granel:2187088.32,eng:531242.61},
- {ano:2024,granel:1225643.9,eng:547185.57},{ano:2025,granel:1325755.42,eng:508829.96}
-];
-const CATS=[
-  {nome:'Sem DO/IG (granel/mesa)', hl:1694598.15},
-  {nome:'Não alocado', hl:131694.88},
-  {nome:'Espumantes', hl:67701.23},
-  {nome:'IG', hl:46947.21},
-  {nome:'DO', hl:38858.28},
-  {nome:'Licoroso', hl:5994.55}
-];
-const PAISES=[
-  {nome:'Espanha', eur:109220273},{nome:'França', eur:30185584},{nome:'Itália', eur:14940679},
-  {nome:'Alemanha', eur:4072591},{nome:'Países Baixos', eur:1593844},{nome:'Dinamarca', eur:1150703},
-  {nome:'Bélgica', eur:1036449},{nome:'Reino Unido', eur:988764},{nome:'Estados Unidos', eur:482457},
-  {nome:'Nova Zelândia', eur:185895}
-];
+const BAL = [{"ano":2010,"exp_kg":267388599,"imp_kg":181074279,"exp_eur":611504283,"imp_eur":89311069},{"ano":2011,"exp_kg":308651885,"imp_kg":163482840,"exp_eur":653456254,"imp_eur":81914569},{"ano":2012,"exp_kg":337133598,"imp_kg":130461774,"exp_eur":699746806,"imp_eur":86371300},{"ano":2013,"exp_kg":304449361,"imp_kg":160669784,"exp_eur":716060846,"imp_eur":122399001},{"ano":2014,"exp_kg":283545805,"imp_kg":233141072,"exp_eur":721522552,"imp_eur":125153991},{"ano":2015,"exp_kg":279825704,"imp_kg":216970865,"exp_eur":730688872,"imp_eur":116754909},{"ano":2016,"exp_kg":278047133,"imp_kg":181166198,"exp_eur":718579892,"imp_eur":110190536},{"ano":2017,"exp_kg":298003788,"imp_kg":215726695,"exp_eur":770874182,"imp_eur":137205926},{"ano":2018,"exp_kg":295667922,"imp_kg":202561296,"exp_eur":793467656,"imp_eur":158104392},{"ano":2019,"exp_kg":296101614,"imp_kg":293568124,"exp_eur":810591476,"imp_eur":169208338},{"ano":2020,"exp_kg":315750628,"imp_kg":274603898,"exp_eur":853195469,"imp_eur":166254713},{"ano":2021,"exp_kg":329613587,"imp_kg":296922786,"exp_eur":923002625,"imp_eur":172866039},{"ano":2022,"exp_kg":325693890,"imp_kg":297647983,"exp_eur":927094290,"imp_eur":205343675},{"ano":2023,"exp_kg":319248867,"imp_kg":289375249,"exp_eur":911033334,"imp_eur":197575767},{"ano":2024,"exp_kg":344425840,"imp_kg":194886290,"exp_eur":948913506,"imp_eur":153578532},{"ano":2025,"exp_kg":339250516,"imp_kg":187082315,"exp_eur":935326265,"imp_eur":165001320}];
+const ES = [{"ano":2010,"granel":1274492.81,"eng":450625.32},{"ano":2011,"granel":1180829.93,"eng":365747.11},{"ano":2012,"granel":917060.39,"eng":290943.72},{"ano":2013,"granel":1211236.86,"eng":303554.83},{"ano":2014,"granel":1824428.54,"eng":389136.19},{"ano":2015,"granel":1689414.4,"eng":378463.31},{"ano":2016,"granel":1353740.15,"eng":359896.05},{"ano":2017,"granel":1462829.12,"eng":420412.03},{"ano":2018,"granel":1395170.29,"eng":399077.08},{"ano":2019,"granel":2184660.98,"eng":439524.43},{"ano":2020,"granel":2103886.35,"eng":470904.64},{"ano":2021,"granel":2211968.31,"eng":561724.91},{"ano":2022,"granel":2257810.61,"eng":519694.52},{"ano":2023,"granel":2187088.32,"eng":531242.61},{"ano":2024,"granel":1225643.9,"eng":547185.57},{"ano":2025,"granel":1325755.42,"eng":508829.96}];
+const CATS = [{"nome":"Sem DO/IG (granel/mesa)","hl":1694598.15},{"nome":"Não alocado","hl":131694.88},{"nome":"Espumantes","hl":67701.23},{"nome":"IG","hl":46947.21},{"nome":"DO","hl":38858.28},{"nome":"Licoroso","hl":5994.55}];
+const PAISES = [{"nome":"Espanha","eur":109220273},{"nome":"França","eur":30185584},{"nome":"Itália","eur":14940679},{"nome":"Alemanha","eur":4072591},{"nome":"Países Baixos","eur":1593844},{"nome":"Dinamarca","eur":1150703},{"nome":"Bélgica","eur":1036449},{"nome":"Reino Unido","eur":988764},{"nome":"Estados Unidos","eur":482457},{"nome":"Nova Zelândia","eur":185895}];
 
 const stateBal={metric:'kg'};
 const mBEl=$('#metricBal');
