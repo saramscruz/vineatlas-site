@@ -165,11 +165,13 @@ async function fetchPremiumizacao(client) {
  * principais da página (nunca desalinhados um do outro).
  */
 async function getAnoAtualFicha(client) {
+  // v_ficha_mercado_anual não tem coluna ano_completo (verificado
+  // 2026-09-17, após falha real em produção: "column ano_completo does
+  // not exist"). A view já só devolve anos fechados por construção —
+  // max(ano) confirmado = 2025, sem o 2026 parcial aparecer.
   const { rows } = await client.query(`
-    select max(ano) as ano from v_ficha_mercado_anual where ano_completo = true
+    select max(ano) as ano from v_ficha_mercado_anual
   `);
-  // nota: confirmar que v_ficha_mercado_anual tem ano_completo; se não tiver,
-  // ajustar para "select max(ano) from v_ficha_mercado_anual" simplesmente.
   return rows[0].ano;
 }
 
