@@ -1,0 +1,38 @@
+name: Exportar dados do Supabase para o site
+
+on:
+  schedule:
+    # Todas as segundas-feiras às 08:00 UTC — depois do freshness-check
+    # do Supabase (07:00 UTC) e do ciclo mensal do INE (dia 5).
+    - cron: '0 8 * * 1'
+  workflow_dispatch: {} # permite correr manualmente a partir do separador Actions
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # necessário para o commit automático
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm install pg
+
+      - name: Correr a exportação
+        env:
+          DATABASE_URL: ${{ secrets.LOOKER_RO_DATABASE_URL }}
+        run: node scripts/export-data.mjs
+
+      - name: Commit e push se houver alterações
+        run: |
+          git config user.name "vineatlas-bot"
+          git config user.email "actions@github.com"
+          git add radar.html onde-vender.html premiumizacao.html ficha.html
+          git diff --cached --quiet && echo "Sem alterações nos dados." || \
+            (git commit -m "chore: atualizar dados do dashboard (automático)" && git push)
