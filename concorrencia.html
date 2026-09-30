@@ -249,6 +249,13 @@ svg.chart{width:100%; height:auto; display:block}
     {v:"220422", n:"Bag-in-box"},
     {v:"220410", n:"Espumante"}
   ];
+  // preposição + artigo para cada mercado ("dos Estados Unidos", "do Brasil", "de Angola")
+  var PREP = {US:"dos",NL:"dos",GB:"do",CA:"do",JP:"do",BR:"do",LU:"do",
+    DE:"da",CN:"da",CH:"da",BE:"da",RU:"da",SE:"da",DK:"da",NO:"da",PL:"da",KR:"da",IE:"da",CZ:"da",AT:"da",FI:"da",
+    RO:"da",LV:"da",EE:"da",LT:"da",SK:"da",GR:"da",HR:"da",BG:"da",SI:"da",HU:"da",
+    FR:"de",IT:"de",ES:"de",AO:"de",CY:"de",MT:"de",PT:"de"};
+  function porMercado(cod, nome){ var a = {dos:"pelos",do:"pelo",da:"pela",de:"por"}[PREP[cod] || "de"]; return a + " " + nome; }
+  function deMercado(cod, nome){ return (PREP[cod] || "de") + " " + nome; }
   var st = {mercado:null, tipo:"2204", ano:null, med:"valor", linhas:[], mercados:[]};
   var $ = function(id){ return document.getElementById(id); };
 
@@ -395,12 +402,12 @@ svg.chart{width:100%; height:auto; display:block}
     var posPT = pt ? paises.indexOf(pt) + 1 : null;
     var html;
     if (pt){
-      html = "Em " + st.ano + ", Portugal é o <strong>" + ordinal(posPT) + " fornecedor</strong> de " + esc(m.mercado_nome || st.mercado)
+      html = "Em " + st.ano + ", Portugal é o <strong>" + ordinal(posPT) + " fornecedor</strong> " + esc(deMercado(st.mercado, m.mercado_nome || st.mercado))
            + " em " + tipoNome + ", com <strong>" + pct(quota(pt)) + "</strong> do " + (st.med === "valor" ? "valor" : "volume") + " importado"
            + (pt.preco_eur_kg ? ", a " + nf2.format(pt.preco_eur_kg) + " €/kg" : "") + ". "
            + '<span class="quiet">O mercado importou ' + eurCurto(total) + " nesse ano.</span>";
     } else {
-      html = "Em " + st.ano + ", Portugal não aparece entre as origens de " + tipoNome + " importado por " + esc(m.mercado_nome || st.mercado) + ". "
+      html = "Em " + st.ano + ", Portugal não aparece entre as origens de " + tipoNome + " importado " + esc(porMercado(st.mercado, m.mercado_nome || st.mercado)) + ". "
            + '<span class="quiet">O mercado importou ' + eurCurto(total) + " nesse ano.</span>";
     }
     $("lede").innerHTML = html;
