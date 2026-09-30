@@ -466,10 +466,10 @@ const PAGES = [
     file: 'radar.html',
     targets: [{ varName: 'RAW', fetch: fetchRadar }],
   },
-  {
-    file: 'onde-vender.html',
-    targets: [{ varName: 'RAW', fetch: fetchOndeVender }],
-  },
+  // onde-vender.html saiu desta lista a 2026-09-30: a página foi refeita e lê
+  // os dados em direto do Supabase (vista site_onde_vender, chave pública só
+  // com acesso às vistas site_*). Já não tem a constante RAW embebida.
+  // fetchOndeVender() fica no ficheiro mas deixou de ser chamada.
   {
     file: 'premiumizacao.html',
     targets: [{ varName: 'D', fetch: fetchPremiumizacao }],
