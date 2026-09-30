@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Economia do Setor — VineAtlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bordo-700: #7C1F3E;
+  --bordo-400: #DA6E8B;
+  --verde-700: #2F7D57;
+  --verde-400: #5FBE8E;
+  --azul-700: #3F6DA6;
+  --azul-400: #5E8FD0;
+  --bg: #FAF7F8;
+  --bg-card: #FFFFFF;
+  --bg-raised: #F3EDEF;
+  --text: #241419;
+  --text-dim: #6B5560;
+  --border: #E7DCE0;
+  --font-display: 'Spectral', Georgia, serif;
+  --font-ui: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1B1116; --bg-card: #241419; --bg-raised: #2E1B22;
+    --text: #F3EAEC; --text-dim: #B99AA5; --border: #3A2530;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1B1116; --bg-card: #241419; --bg-raised: #2E1B22;
+  --text: #F3EAEC; --text-dim: #B99AA5; --border: #3A2530;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); scroll-behavior: smooth; }
+body { font-family: var(--font-ui); background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+
+header.site {
+  position: sticky; top: 0; z-index: 20;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner { max-width: 1180px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.brand-mark { font-size: 1.3rem; }
+.theme-btn {
+  border: 1px solid var(--border); background: var(--bg-card); color: var(--text);
+  width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 0.95rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+main { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+.hero { padding: 44px 0 30px; border-bottom: 1px solid var(--border); }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--bordo-700); letter-spacing: 0.02em; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.7rem); margin: 6px 0 14px; max-width: 22ch; }
+.lede { color: var(--text-dim); max-width: 62ch; font-size: 1.02rem; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 28px; }
+.kpi { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+.kpi .label { font-size: 0.78rem; color: var(--text-dim); }
+.kpi .value { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 600; margin-top: 4px; }
+.kpi .sub { font-size: 0.78rem; margin-top: 4px; color: var(--text-dim); }
+
+section.panel { padding: 46px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 90px; }
+section.panel:last-of-type { border-bottom: none; }
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.panel-head h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; display: flex; align-items: center; gap: 8px; }
+.panel-head p.desc { color: var(--text-dim); max-width: 60ch; margin-top: 6px; font-size: 0.95rem; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--bg-card); }
+.seg button { border: none; background: transparent; color: var(--text-dim); font-family: var(--font-ui); font-size: 0.82rem; padding: 7px 13px; cursor: pointer; }
+.seg button.active { background: var(--bordo-700); color: #fff; }
+
+.info-btn {
+  width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text-dim); font-family: var(--font-mono); font-size: 0.75rem;
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.info-panel {
+  display: none; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; max-width: 68ch;
+}
+.info-panel.open { display: block; }
+.info-panel strong { color: var(--text); }
+
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px 14px; }
+.card + .card { margin-top: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
+.chart-wrap { width: 100%; overflow-x: auto; }
+svg.chart { width: 100%; height: auto; display: block; font-family: var(--font-mono); }
+svg.chart text { fill: var(--text-dim); font-size: 10.5px; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 0.8rem; color: var(--text-dim); }
+.legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+h3.sub-title { font-family: var(--font-ui); font-weight: 600; font-size: 0.92rem; margin-bottom: 10px; }
+
+.note { font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; }
+.loading, .error { color: var(--text-dim); font-size: 0.9rem; padding: 30px 0; text-align: center; }
+.error { color: var(--bordo-700); }
+
+footer { padding: 34px 0 60px; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
+footer a.brand-link { color: var(--bordo-700); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 640px) { .panel-head { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">🍷</span> VineAtlas</a>
+    <button class="theme-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">◐</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">VineAtlas · Vinho de Portugal</div>
+    <h1>A economia por trás da garrafa</h1>
+    <p class="lede">Empresas, explorações, preços à produção e estrutura do setor — Portugal ao lado de Espanha, França e Itália, com as ressalvas que estas comparações exigem.</p>
+    <div class="kpi-row" id="kpiRow"><div class="loading">A carregar…</div></div>
+  </section>
+
+  <!-- EMPRESAS / SBS -->
+  <section class="panel" id="empresas">
+    <div class="panel-head">
+      <div>
+        <h2>Empresas de produção de vinho
+          <button class="info-btn" data-info="info-sbs">?</button>
+        </h2>
+        <p class="desc">Valor acrescentado bruto (VAB) das empresas cuja atividade principal é fazer vinho (NACE C11.02), Portugal e os três maiores vizinhos.</p>
+      </div>
+      <div class="controls">
+        <div class="seg" data-target="sbsMetric">
+          <button class="active" data-val="vab_meur">VAB (M€)</button>
+          <button data-val="empresas">N.º empresas</button>
+          <button data-val="pessoas_ao_servico">Pessoas ao serviço</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel" id="info-sbs">
+      <strong>Duas ressalvas importantes:</strong> (1) o Eurostat mudou de fonte estatística em 2021 — a quebra visível nesse ano é sobretudo metodológica, não um salto real no setor. (2) Este código NACE cobre só quem faz vinho, não quem cultiva a vinha (essa atividade está classificada como agricultura) — por isso o número de empresas não é comparável entre países com estruturas diferentes: a França tem menos empresas nesta contagem do que Portugal em 2024, o que reflete classificação, não dimensão do setor francês.
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartSbs"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendSbs"></div>
+  </section>
+
+  <!-- PREÇOS À PRODUÇÃO -->
+  <section class="panel" id="precos">
+    <div class="panel-head">
+      <div>
+        <h2>Preços à produção (Portugal)
+          <button class="info-btn" data-info="info-precos">?</button>
+        </h2>
+        <p class="desc">O que o produtor recebe pela uva e pelo vinho, antes de distribuição, retalho ou exportação.</p>
+      </div>
+    </div>
+    <div class="info-panel" id="info-precos">
+      <strong>Ler as tendências, não os níveis.</strong> O Eurostat não define no rótulo o que cada categoria de vinho inclui — "vinho de mesa" custar seis vezes mais que "outro vinho de mesa" sugere que as categorias não significam o mesmo em todos os anos ou não estão claramente distintas. Útil para ver a direção do preço em cada categoria, não para comparar categorias entre si.
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="sub-title">Uva para vinho (€/100 kg)</h3>
+        <div class="chart-wrap" id="chartPrecoUva"><div class="loading">A carregar…</div></div>
+      </div>
+      <div class="card">
+        <h3 class="sub-title">Vinho, por categoria (€/100 L)</h3>
+        <div class="chart-wrap" id="chartPrecoVinho"><div class="loading">A carregar…</div></div>
+        <div class="legend" id="legendPrecoVinho"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORAÇÕES / FSDN -->
+  <section class="panel" id="exploracoes">
+    <div class="panel-head">
+      <div>
+        <h2>Explorações vitícolas
+          <button class="info-btn" data-info="info-fsdn">?</button>
+        </h2>
+        <p class="desc">Valor acrescentado líquido por unidade de trabalho (UTA) — o que uma exploração média gera por pessoa a tempo inteiro, Portugal e vizinhos.</p>
+      </div>
+    </div>
+    <div class="info-panel" id="info-fsdn">
+      <strong>Amostra, não universo.</strong> Estes dados vêm de uma rede de contabilidade agrícola europeia (FSDN, ex-RICA) que só cobre explorações comerciais acima de um limiar mínimo — em Portugal, cerca de 14.000 explorações representadas, uma fração do total de viticultores. Os subsídios pesam de forma muito diferente por país: cerca de 19-21% do valor acrescentado em Portugal, contra só 3-10% em França.
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="sub-title">Valor acrescentado por UTA (€)</h3>
+        <div class="chart-wrap" id="chartFsdnVal"><div class="loading">A carregar…</div></div>
+        <div class="legend" id="legendFsdnVal"></div>
+      </div>
+      <div class="card">
+        <h3 class="sub-title">Subsídios em % do valor acrescentado (Portugal)</h3>
+        <div class="chart-wrap" id="chartFsdnSub"><div class="loading">A carregar…</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTRUTURA ASSOCIATIVA -->
+  <section class="panel" id="estrutura">
+    <div class="panel-head">
+      <div>
+        <h2>Associada vs. Não Associada
+          <button class="info-btn" data-info="info-estrutura">?</button>
+        </h2>
+        <p class="desc">Peso de cada tipo de produtor no volume total produzido, campanha a campanha.</p>
+      </div>
+    </div>
+    <div class="info-panel" id="info-estrutura">
+      <strong>Termo não confirmado pela fonte.</strong> O IVV não define "Associada" no ficheiro — no setor costuma referir-se a produção de cooperativas e associados, mas isto não está confirmado. Não interpretar como "cooperativas" sem verificar com o IVV.
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartEstrutura"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendEstrutura"></div>
+  </section>
+
+  <footer>
+    Fontes: Eurostat (SBS NACE C1102, preços à produção), FSDN/ex-RICA (Comissão Europeia), IVV (estrutura empresarial).
+    <br><a class="brand-link" href="index.html">🍷 VineAtlas</a>
+  </footer>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://kflwylllrmvlsssegxch.supabase.co/rest/v1/';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmbHd5bGxscm12bHNzc2VneGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTEwODAsImV4cCI6MjEwMzMyNzA4MH0.6hKYYB8DVzSSFPyTmlaDjptf_L35hExz94UYNGgodjM';
+
+(function initTheme() {
+  const saved = localStorage.getItem('radar-theme');
+  if (saved === 'light' || saved === 'dark') document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('radar-theme', next);
+  });
+})();
+
+document.querySelectorAll('.info-btn').forEach(btn => {
+  btn.addEventListener('click', () => document.getElementById(btn.dataset.info).classList.toggle('open'));
+});
+
+async function fetchView(name, query = '') {
+  const res = await fetch(`${SUPABASE_URL}${name}?${query}`, {
+    headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` }
+  });
+  if (!res.ok) throw new Error(`${name}: ${res.status}`);
+  return res.json();
+}
+
+const fmtNum = (n, d = 0) => n == null ? '—' : n.toLocaleString('pt-PT', { maximumFractionDigits: d, minimumFractionDigits: d });
+const COLORS = { bordo: '#7C1F3E', bordoLight: '#DA6E8B', verde: '#2F7D57', verdeLight: '#5FBE8E', azul: '#3F6DA6', azulLight: '#5E8FD0', grey: '#B99AA5' };
+
+function drawLineChart(container, series, opts = {}) {
+  const width = container.clientWidth || 500;
+  const height = opts.height || 260;
+  const padL = opts.padL || 46, padR = 16, padT = 16, padB = 26;
+  const allX = series[0].points.map(p => p.x);
+  const allY = series.flatMap(s => s.points.map(p => p.y)).filter(v => v != null);
+  const minY = opts.minY !== undefined ? opts.minY : Math.min(0, ...allY);
+  const maxY = opts.maxY !== undefined ? opts.maxY : Math.max(...allY) * 1.12;
+  const xScale = i => padL + (i / (allX.length - 1)) * (width - padL - padR);
+  const yScale = v => height - padB - ((v - minY) / (maxY - minY || 1)) * (height - padT - padB);
+
+  let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+  const gridN = 4;
+  for (let i = 0; i <= gridN; i++) {
+    const v = minY + (i / gridN) * (maxY - minY);
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="currentColor" stroke-opacity="0.08"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 3}" text-anchor="end">${opts.yFmt ? opts.yFmt(v) : Math.round(v)}</text>`;
+  }
+  const step = Math.ceil(allX.length / (width > 700 ? 12 : 6));
+  allX.forEach((x, i) => {
+    if (i % step === 0 || i === allX.length - 1) {
+      svg += `<text x="${xScale(i)}" y="${height - 6}" text-anchor="middle">${x}</text>`;
+    }
+  });
+  series.forEach(s => {
+    const pts = s.points.map((p, i) => p.y == null ? null : `${xScale(i)},${yScale(p.y)}`).filter(Boolean);
+    svg += `<polyline fill="none" stroke="${s.color}" stroke-width="2.4" points="${pts.join(' ')}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    s.points.forEach((p, i) => {
+      if (p.y == null) return;
+      svg += `<circle cx="${xScale(i)}" cy="${yScale(p.y)}" r="2.4" fill="${s.color}"/>`;
+    });
+  });
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+function drawStackedBarPct(container, xLabels, seriesList, opts = {}) {
+  const width = container.clientWidth || 900;
+  const height = opts.height || 280;
+  const padL = 46, padR = 16, padT = 16, padB = 30;
+  const n = xLabels.length;
+  const gap = (width - padL - padR) / n;
+  const barW = gap * 0.62;
+  const yScale = v => height - padB - (v / 100) * (height - padT - padB);
+
+  let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+  [0, 25, 50, 75, 100].forEach(v => {
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="currentColor" stroke-opacity="0.08"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 3}" text-anchor="end">${v}%</text>`;
+  });
+  const step = Math.ceil(n / (width > 700 ? 18 : 8));
+  xLabels.forEach((label, i) => {
+    const x0 = padL + i * gap + (gap - barW) / 2;
+    let acc = 0;
+    seriesList.forEach(s => {
+      const v = s.values[i] || 0;
+      const y0 = yScale(acc + v), y1 = yScale(acc);
+      svg += `<rect x="${x0}" y="${y0}" width="${barW}" height="${Math.max(y1 - y0, 0)}" fill="${s.color}"/>`;
+      acc += v;
+    });
+    if (i % step === 0 || i === n - 1) {
+      svg += `<text x="${x0 + barW / 2}" y="${height - 8}" text-anchor="middle">${label}</text>`;
+    }
+  });
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+function legendHTML(items) {
+  return items.map(it => `<span><span class="dot" style="background:${it.color}"></span>${it.label}</span>`).join('');
+}
+function errorBox(container, msg) { container.innerHTML = `<div class="error">Não foi possível carregar os dados (${msg}).</div>`; }
+
+const GEO_META = [
+  { geo: 'PT', label: 'Portugal', color: COLORS.bordo },
+  { geo: 'ES', label: 'Espanha', color: COLORS.azul },
+  { geo: 'FR', label: 'França', color: COLORS.verde },
+  { geo: 'IT', label: 'Itália', color: COLORS.grey },
+];
+
+// ================= SBS =================
+let sbsData = [];
+async function loadSbs() {
+  const el = document.getElementById('chartSbs');
+  try {
+    sbsData = await fetchView('site_economia_sbs', 'select=*&order=ano.asc');
+    renderSbs();
+  } catch (e) { errorBox(el, e.message); }
+}
+function renderSbs() {
+  const metric = document.querySelector('#empresas [data-target="sbsMetric"] .active').dataset.val;
+  const years = [...new Set(sbsData.map(d => d.ano))].sort();
+  const series = GEO_META.map(g => ({
+    label: g.label, color: g.color,
+    points: years.map(y => ({ x: y, y: (sbsData.find(d => d.ano === y && d.geo === g.geo) || {})[metric] ?? null }))
+  }));
+  drawLineChart(document.getElementById('chartSbs'), series, {
+    yFmt: v => metric === 'vab_meur' ? Math.round(v) : fmtNum(v)
+  });
+  document.getElementById('legendSbs').innerHTML = legendHTML(GEO_META);
+}
+document.querySelectorAll('#empresas .seg button').forEach(b => b.addEventListener('click', e => {
+  e.target.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active'); renderSbs();
+}));
+
+// ================= PREÇOS PRODUTOR =================
+async function loadPrecos() {
+  const elUva = document.getElementById('chartPrecoUva');
+  const elVinho = document.getElementById('chartPrecoVinho');
+  try {
+    const data = await fetchView('site_economia_precos_produtor', 'select=*&geo=eq.PT&order=ano.asc');
+    const uva = data.filter(d => d.produto === '06490000');
+    const uvaYears = uva.map(d => d.ano);
+    drawLineChart(elUva, [{ label: 'Uva', color: COLORS.bordo, points: uva.map(d => ({ x: d.ano, y: d.preco_eur })) }],
+      { yFmt: v => Math.round(v) });
+
+    const catMeta = [
+      { produto: '07110000', label: 'Vinho de mesa', color: COLORS.bordo },
+      { produto: '07190000', label: 'Outro vinho de mesa', color: COLORS.azul },
+      { produto: '07200000', label: 'Vinho de qualidade', color: COLORS.verde },
+    ];
+    const years = [...new Set(data.filter(d => d.produto !== '06490000').map(d => d.ano))].sort();
+    const series = catMeta.map(c => ({
+      label: c.label, color: c.color,
+      points: years.map(y => ({ x: y, y: (data.find(d => d.ano === y && d.produto === c.produto) || {}).preco_eur ?? null }))
+    }));
+    drawLineChart(elVinho, series, { yFmt: v => Math.round(v) });
+    document.getElementById('legendPrecoVinho').innerHTML = legendHTML(catMeta);
+  } catch (e) { errorBox(elUva, e.message); errorBox(elVinho, e.message); }
+}
+
+// ================= FSDN =================
+async function loadFsdn() {
+  const elVal = document.getElementById('chartFsdnVal');
+  const elSub = document.getElementById('chartFsdnSub');
+  try {
+    const data = await fetchView('site_economia_fsdn', 'select=*&order=ano.asc');
+    const years = [...new Set(data.map(d => d.ano))].sort();
+    const series = GEO_META.map(g => ({
+      label: g.label, color: g.color,
+      points: years.map(y => ({ x: y, y: (data.find(d => d.ano === y && d.geo === g.geo) || {}).val_por_uta_eur ?? null }))
+    }));
+    drawLineChart(elVal, series, { yFmt: v => Math.round(v / 1000) + 'k' });
+    document.getElementById('legendFsdnVal').innerHTML = legendHTML(GEO_META);
+
+    const pt = data.filter(d => d.geo === 'PT');
+    drawLineChart(elSub, [{ label: 'Subsídios (%)', color: COLORS.bordo, points: pt.map(d => ({ x: d.ano, y: d.subsidios_em_pct_val })) }],
+      { minY: 0, yFmt: v => v.toFixed(0) + '%' });
+  } catch (e) { errorBox(elVal, e.message); errorBox(elSub, e.message); }
+}
+
+// ================= ESTRUTURA =================
+async function loadEstrutura() {
+  const el = document.getElementById('chartEstrutura');
+  try {
+    const data = await fetchView('site_economia_estrutura', 'select=campanha,ano_inicio,tipo_producao,quota_total_tipo_pct&order=ano_inicio.asc');
+    const seen = new Set();
+    const rows = data.filter(d => {
+      const key = d.campanha + '|' + d.tipo_producao;
+      if (seen.has(key)) return false;
+      seen.add(key); return true;
+    });
+    const campanhas = [...new Set(rows.map(d => d.campanha))];
+    const get = (tipo, c) => (rows.find(d => d.campanha === c && d.tipo_producao === tipo) || {}).quota_total_tipo_pct || 0;
+    const series = [
+      { label: 'Associada', color: COLORS.bordo, values: campanhas.map(c => get('Associada', c)) },
+      { label: 'Não Associada', color: COLORS.grey, values: campanhas.map(c => get('Não Associada', c)) },
+    ];
+    drawStackedBarPct(el, campanhas, series);
+    document.getElementById('legendEstrutura').innerHTML = legendHTML(series);
+  } catch (e) { errorBox(el, e.message); }
+}
+
+// ================= KPIs =================
+async function loadKpis() {
+  const el = document.getElementById('kpiRow');
+  try {
+    const sbs = await fetchView('site_economia_sbs', 'select=*&geo=eq.PT&order=ano.desc&limit=1');
+    const latest = sbs[0];
+    const estrutura = await fetchView('site_economia_estrutura', 'select=campanha,tipo_producao,quota_total_tipo_pct&order=ano_inicio.desc&limit=8');
+    const assoc = estrutura.find(d => d.tipo_producao === 'Associada');
+    el.innerHTML = `
+      <div class="kpi"><div class="label">Ano mais recente (SBS)</div><div class="value">${latest.ano}</div></div>
+      <div class="kpi"><div class="label">VAB do setor (PT)</div><div class="value">${fmtNum(latest.vab_meur, 1)} M€</div></div>
+      <div class="kpi"><div class="label">Pessoas ao serviço</div><div class="value">${fmtNum(latest.pessoas_ao_servico)}</div></div>
+      <div class="kpi"><div class="label">Quota Associada${assoc ? ` (${assoc.campanha})` : ''}</div><div class="value">${assoc ? assoc.quota_total_tipo_pct.toFixed(1) + '%' : '—'}</div></div>
+    `;
+  } catch (e) { errorBox(el, e.message); }
+}
+
+Promise.all([loadKpis(), loadSbs(), loadPrecos(), loadFsdn(), loadEstrutura()]);
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (sbsData.length) renderSbs();
+  }, 150);
+});
+</script>
+</body>
+</html>
