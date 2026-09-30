@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concorrência por mercado · VineAtlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57; --good-soft:rgba(47,125,87,.09);
+  --bad:#B4533A;
+  --other:#C9C1D2; --other-strong:#A99FB5;
+  --blue:#3F6DA6;
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 6px 28px rgba(36,30,41,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.12);
+  --bad:#E08A6F;
+  --other:#4A3F58; --other-strong:#65587A;
+  --blue:#5E8FD0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.12);
+  --bad:#E08A6F;
+  --other:#4A3F58; --other-strong:#65587A;
+  --blue:#5E8FD0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px; margin:0 auto; padding:22px clamp(14px,3vw,30px) 48px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent-strong); outline-offset:2px}
+
+/* Cabeçalho */
+header.top{display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:20px}
+.brand{display:flex; flex-direction:column; gap:5px}
+.eyebrow{font-size:12.5px; color:var(--accent); font-weight:600; text-decoration:none}
+.eyebrow:hover{text-decoration:underline}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(27px,4.4vw,40px); line-height:1.02; margin:0; letter-spacing:-.01em; text-wrap:balance}
+.sub{color:var(--muted); max-width:62ch; font-size:14.5px; margin:0}
+.head-right{display:flex; align-items:center; gap:12px}
+.fresh{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:7px 11px; border-radius:999px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px var(--good-soft)}
+.dot.off{background:var(--faint); box-shadow:none}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+
+/* Navegação */
+.nav{display:inline-flex; flex-wrap:wrap; gap:3px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; box-shadow:var(--shadow); margin-bottom:18px}
+.nav a{font:600 13.5px "Hanken Grotesk",sans-serif; color:var(--muted); text-decoration:none; padding:8px 14px; border-radius:8px; white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .nav a[aria-current="page"]{color:#1a121f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav a[aria-current="page"]{color:#1a121f}}
+.nav a:not([aria-current]):hover{color:var(--ink); background:var(--surface-2)}
+.nav a.brandtab{font-weight:700; color:var(--ink)}
+
+/* Controlos */
+.controls{display:flex; align-items:center; gap:14px 20px; flex-wrap:wrap; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); margin-bottom:18px}
+.ctl{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.ctl-lab{font-size:12.5px; color:var(--faint); font-weight:600}
+select{appearance:none; font:600 14px "Hanken Grotesk",sans-serif; color:var(--ink); background:var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2398909E' stroke-width='1.6' fill='none'/%3E%3C/svg%3E") no-repeat right 11px center; border:1px solid var(--line); border-radius:10px; padding:8px 32px 8px 11px; cursor:pointer; max-width:100%}
+.seg{display:inline-flex; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px}
+.seg button{appearance:none; border:0; background:transparent; color:var(--muted); font:600 13px/1 "Hanken Grotesk",sans-serif; padding:8px 11px; border-radius:7px; cursor:pointer; white-space:nowrap}
+.seg.mono button{font-family:"IBM Plex Mono",monospace}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#1a121f}}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+/* Frase-resumo */
+.lede{font-family:"Spectral",Georgia,serif; font-size:clamp(19px,2.3vw,24px); line-height:1.35; margin:4px 0 20px; max-width:62ch}
+.lede strong{color:var(--accent); font-weight:700}
+.lede .quiet{color:var(--muted)}
+
+/* Grelha e cartões */
+.grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:18px}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); min-width:0}
+.card-h{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:15px 18px 4px}
+.card-t{font-family:"Spectral",serif; font-weight:600; font-size:17px; margin:0}
+.card-s{font-size:12.5px; color:var(--muted)}
+.card-b{padding:8px 18px 16px}
+
+/* Ranking de fornecedores */
+.rank{list-style:none; margin:0; padding:0}
+.rank li{display:grid; grid-template-columns:22px minmax(92px,150px) minmax(0,1fr) 62px; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--line)}
+.rank li:last-child{border-bottom:0}
+.rank .pos{font:600 12px "IBM Plex Mono",monospace; color:var(--faint); text-align:right}
+.rank .nm{font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.rank .bar{position:relative; height:18px; background:var(--surface-2); border-radius:5px; overflow:hidden}
+.rank .fill{position:absolute; inset:0 auto 0 0; background:var(--other); border-radius:5px; transition:width .35s ease}
+.rank .val{font:600 13px "IBM Plex Mono",monospace; text-align:right}
+.rank li.pt .nm{color:var(--accent)}
+.rank li.pt .fill{background:var(--accent)}
+.rank li.pt{background:var(--accent-soft); margin:0 -8px; padding-left:8px; padding-right:8px; border-radius:8px; border-bottom-color:transparent}
+.rank li.outros .nm{color:var(--muted); font-weight:500}
+.rank li.outros .fill{background:repeating-linear-gradient(45deg,var(--other),var(--other) 4px,transparent 4px,transparent 7px)}
+.rank .sub2{grid-column:2 / -1; font-size:12px; color:var(--muted); margin-top:-3px}
+@media (prefers-reduced-motion:reduce){.rank .fill{transition:none}}
+
+/* Preço vs quota */
+.pricebox{padding:4px 18px 16px}
+.pr-row{display:grid; grid-template-columns:minmax(92px,150px) minmax(0,1fr) 64px; align-items:center; gap:10px; padding:5px 0}
+.pr-row .nm{font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.pr-row.pt .nm{color:var(--accent); font-weight:700}
+.pr-track{position:relative; height:18px}
+.pr-track::before{content:""; position:absolute; left:0; right:0; top:50%; border-top:1px solid var(--line)}
+.pr-dot{position:absolute; top:50%; width:11px; height:11px; border-radius:50%; background:var(--other-strong); transform:translate(-50%,-50%)}
+.pr-row.pt .pr-dot{background:var(--accent); width:14px; height:14px; box-shadow:0 0 0 3px var(--accent-soft)}
+.pr-dot.cut{border-radius:3px; width:9px; clip-path:polygon(0 0,100% 50%,0 100%)}
+.pr-mean{position:absolute; top:0; bottom:0; border-left:2px dashed var(--faint)}
+.pr-row .val{font:600 12.5px "IBM Plex Mono",monospace; text-align:right}
+.pr-legend{font-size:12px; color:var(--muted); padding:0 18px 12px}
+
+/* Evolução */
+svg.chart{width:100%; height:auto; display:block}
+.axis text{fill:var(--faint); font:500 10.5px "IBM Plex Mono",monospace}
+.axis line,.gridline{stroke:var(--line)}
+.series{fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round}
+.s-pt{stroke:var(--accent); stroke-width:3}
+.s-c1{stroke:var(--blue)} .s-c2{stroke:var(--good)} .s-c3{stroke:var(--other-strong)}
+.leg{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--muted); padding:0 18px 14px}
+.leg i{display:inline-block; width:14px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px}
+.full{grid-column:1 / -1}
+
+/* Estados e notas */
+.state{padding:26px 18px; color:var(--muted); font-size:14px}
+.state.err{color:var(--bad)}
+.notes{margin-top:18px; font-size:12.5px; color:var(--muted); max-width:90ch}
+.notes p{margin:6px 0}
+
+/* Botão "?" e painel */
+.info-btn{appearance:none; border:1px solid var(--line-strong); background:var(--surface-2); color:var(--muted); width:22px; height:22px; border-radius:50%; font:700 12px "Hanken Grotesk",sans-serif; cursor:pointer; display:inline-grid; place-items:center; vertical-align:middle; margin-left:6px}
+.info-btn:hover{color:var(--accent); border-color:var(--accent)}
+.info-panel{display:none; margin:6px 18px 12px; padding:12px 14px; background:var(--surface-2); border:1px solid var(--line); border-radius:11px; font-size:13px; color:var(--ink); max-width:70ch}
+.info-panel.on{display:block}
+.info-panel p{margin:0 0 7px} .info-panel p:last-child{margin:0}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <a class="eyebrow" href="index.html">🍷 VineAtlas · Vinho de Portugal</a>
+      <h1>Concorrência por mercado</h1>
+      <p class="sub">Quem vende vinho a cada país, com que quota e a que preço, e onde fica Portugal nessa fila.</p>
+    </div>
+    <div class="head-right">
+      <div class="fresh" id="fresh"><span class="dot off" id="freshDot"></span><span id="freshTxt">A carregar dados…</span></div>
+      <button class="tbtn" id="themeBtn" aria-label="Mudar tema claro/escuro">◐</button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Ecrãs">
+    <a class="brandtab" href="index.html">🍷 VineAtlas</a>
+    <a href="radar.html">Radar de Mercados</a>
+    <a href="onde-vender.html">Onde vender o meu tipo de vinho</a>
+    <a href="premiumizacao.html">Premiumização &amp; termos reais</a>
+    <a href="ficha.html">Ficha de mercado</a>
+    <a href="balanca.html">Balança comercial</a>
+    <a href="#" aria-current="page">Concorrência por mercado</a>
+  </nav>
+
+  <div class="controls" role="group" aria-label="Filtros">
+    <label class="ctl"><span class="ctl-lab">Mercado</span>
+      <select id="selMercado" aria-label="Mercado"></select></label>
+    <div class="ctl"><span class="ctl-lab" id="labTipo">Tipo de vinho</span>
+      <div class="seg" id="segTipo" role="group" aria-labelledby="labTipo"></div></div>
+    <div class="ctl"><span class="ctl-lab" id="labAno">Ano</span>
+      <div class="seg mono" id="segAno" role="group" aria-labelledby="labAno"></div></div>
+    <div class="ctl"><span class="ctl-lab" id="labMed">Medir por</span>
+      <div class="seg" id="segMed" role="group" aria-labelledby="labMed">
+        <button data-v="valor" aria-pressed="true">Valor</button>
+        <button data-v="volume" aria-pressed="false">Volume</button>
+      </div></div>
+  </div>
+
+  <p class="lede" id="lede" aria-live="polite">&nbsp;</p>
+
+  <div class="grid">
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Fornecedores do mercado<button class="info-btn" data-info="iRank" aria-expanded="false" aria-controls="iRank">?</button></h2><span class="card-s" id="rankSub"></span></div>
+      <div class="info-panel" id="iRank">
+        <p>Cada barra é a parte de cada país de origem no vinho que este mercado importou no ano escolhido. Aparecem os dez maiores fornecedores; Portugal aparece sempre, mesmo quando está abaixo do 10.º lugar. O resto junta-se em "Outros".</p>
+        <p>Os números vêm do que o país importador declara ter recebido. Por isso podem diferir um pouco das exportações que Portugal declara para esse país.</p>
+      </div>
+      <div class="card-b"><ol class="rank" id="rank"></ol><div class="state" id="rankState">A carregar…</div></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Preço médio por origem<button class="info-btn" data-info="iPreco" aria-expanded="false" aria-controls="iPreco">?</button></h2><span class="card-s">€ por kg</span></div>
+      <div class="info-panel" id="iPreco">
+        <p>Preço médio implícito: valor importado ÷ quilos importados. Mostra o posicionamento de cada origem, não o preço na prateleira.</p>
+        <p>A linha tracejada é a média de todo o mercado. Mistura de produtos diferentes (por exemplo, Porto e vinho de mesa) puxa o preço médio de um país para cima ou para baixo; escolher "Engarrafado" ou "Granel" torna a comparação mais justa.</p>
+      </div>
+      <div class="pricebox" id="price"></div>
+      <div class="pr-legend" id="priceLeg"></div>
+    </section>
+
+    <section class="card full">
+      <div class="card-h"><h2 class="card-t">Quota ao longo do tempo<button class="info-btn" data-info="iEvo" aria-expanded="false" aria-controls="iEvo">?</button></h2><span class="card-s" id="evoSub"></span></div>
+      <div class="info-panel" id="iEvo">
+        <p>Quota de Portugal e dos três maiores fornecedores do último ano disponível, em cada ano da série.</p>
+        <p>Antes de 2017 não existia a categoria "2–10 L": esse vinho estava dentro de "Granel". Por isso as séries de Granel e Bag-in-box têm uma quebra em 2017.</p>
+      </div>
+      <div class="card-b" id="evo"></div>
+      <div class="leg" id="evoLeg"></div>
+    </section>
+  </div>
+
+  <div class="notes" id="notes">
+    <p><b>Fontes.</b> Mercados da União Europeia: Eurostat, Comext (importações declaradas pelo país, em euros). Mercados fora da UE (EUA, Reino Unido, Brasil, Canadá, Angola, Suíça, Noruega, Japão, China, Coreia do Sul, Rússia): Nações Unidas, UN Comtrade (valores em dólares, convertidos para euros pela taxa média anual do BCE — conversão aproximada). A Rússia não publica dados desde 2022.</p>
+    <p>Dados atualizados todos os meses a partir das fontes oficiais.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // Ligação só-de-leitura: esta chave pública só tem acesso às vistas do site (site_*).
+  var SB_URL = "https://kflwylllrmvlsssegxch.supabase.co/rest/v1/";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmbHd5bGxscm12bHNzc2VneGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTEwODAsImV4cCI6MjEwMzMyNzA4MH0.6hKYYB8DVzSSFPyTmlaDjptf_L35hExz94UYNGgodjM";
+
+  var TIPOS = [
+    {v:"2204",   n:"Todo o vinho"},
+    {v:"220421", n:"Engarrafado"},
+    {v:"220429", n:"Granel"},
+    {v:"220422", n:"Bag-in-box"},
+    {v:"220410", n:"Espumante"}
+  ];
+  var st = {mercado:null, tipo:"2204", ano:null, med:"valor", linhas:[], mercados:[]};
+  var $ = function(id){ return document.getElementById(id); };
+
+  // ---------- tema ----------
+  try { var t = localStorage.getItem("radar-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch(e){}
+  $("themeBtn").addEventListener("click", function(){
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var nx = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nx);
+    try { localStorage.setItem("radar-theme", nx); } catch(e){}
+  });
+
+  // ---------- painéis "?" ----------
+  document.querySelectorAll(".info-btn").forEach(function(b){
+    b.addEventListener("click", function(){
+      var p = $(b.getAttribute("data-info")); var on = !p.classList.contains("on");
+      p.classList.toggle("on", on); b.setAttribute("aria-expanded", on ? "true" : "false");
+    });
+  });
+
+  // ---------- formatação ----------
+  var nf1 = new Intl.NumberFormat("pt-PT",{minimumFractionDigits:1, maximumFractionDigits:1});
+  var nf2 = new Intl.NumberFormat("pt-PT",{minimumFractionDigits:2, maximumFractionDigits:2});
+  function eurCurto(v){
+    if (v == null) return "—";
+    if (v >= 1e9) return nf1.format(v/1e9) + " mil M€";
+    if (v >= 1e6) return nf1.format(v/1e6) + " M€";
+    if (v >= 1e3) return nf1.format(v/1e3) + " mil €";
+    return Math.round(v) + " €";
+  }
+  function kgCurto(v){
+    if (v == null) return "—";
+    var l = v/100; // ≈ 1 hl por 100 kg de vinho
+    if (l >= 1e6) return nf1.format(l/1e6) + " milhões de hl";
+    if (l >= 1e3) return nf1.format(l/1e3) + " mil hl";
+    return Math.round(l) + " hl";
+  }
+  function pct(v){ return v == null ? "—" : nf1.format(v) + "%"; }
+  function ordinal(n){ return n + ".º"; }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+
+  // ---------- dados ----------
+  function pedir(caminho){
+    return fetch(SB_URL + caminho, {headers:{apikey:SB_KEY, Authorization:"Bearer " + SB_KEY}})
+      .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+  }
+
+  function carregarMercados(){
+    return pedir("site_concorrencia_mercados?select=mercado,mercado_nome,fonte,ano_inicio,ano_fim,total_ultimo_ano_eur,quota_pt_ultimo_ano&order=total_ultimo_ano_eur.desc.nullslast")
+      .then(function(rows){
+        st.mercados = rows;
+        var sel = $("selMercado");
+        sel.innerHTML = rows.map(function(m){
+          return '<option value="' + esc(m.mercado) + '">' + esc(m.mercado_nome) + '</option>';
+        }).join("");
+        var qs = new URLSearchParams(location.search).get("mercado");
+        st.mercado = (qs && rows.some(function(m){ return m.mercado === qs; })) ? qs : (rows[0] && rows[0].mercado);
+        sel.value = st.mercado;
+        $("freshDot").classList.remove("off");
+        var anoMax = Math.max.apply(null, rows.map(function(m){ return m.ano_fim; }));
+        $("freshTxt").textContent = "Dados até " + anoMax;
+      });
+  }
+
+  function carregarLinhas(){
+    $("rankState").textContent = "A carregar…"; $("rankState").style.display = "";
+    $("rankState").classList.remove("err");
+    return pedir("site_concorrencia?select=ano,origem,origem_nome,rank_origem,valor_eur,volume_kg,preco_eur_kg,quota_valor_pct,quota_volume_pct,mercado_total_eur,fonte"
+               + "&mercado=eq." + encodeURIComponent(st.mercado) + "&produto=eq." + st.tipo + "&order=ano.asc")
+      .then(function(rows){
+        st.linhas = rows;
+        var anos = uniq(rows.map(function(r){ return r.ano; })).sort(function(a,b){ return a-b; });
+        if (!anos.length){ st.ano = null; } else if (st.ano == null || anos.indexOf(st.ano) < 0){ st.ano = anos[anos.length-1]; }
+        desenharAnos(anos);
+        desenhar();
+      })
+      .catch(falha);
+  }
+
+  function falha(e){
+    var s = $("rankState"); s.style.display = ""; s.classList.add("err");
+    s.textContent = "Não foi possível obter os dados (" + e.message + "). Verifique a ligação à internet e recarregue a página.";
+    $("freshTxt").textContent = "Sem ligação aos dados"; $("freshDot").classList.add("off");
+  }
+
+  function uniq(a){ var o = {}; return a.filter(function(x){ if (o[x]) return false; o[x] = 1; return true; }); }
+
+  // ---------- controlos ----------
+  function segmento(id, itens, atual, aoMudar){
+    var el = $(id);
+    el.innerHTML = itens.map(function(it){
+      return '<button data-v="' + esc(it.v) + '" aria-pressed="' + (String(it.v) === String(atual)) + '">' + esc(it.n) + '</button>';
+    }).join("");
+    el.querySelectorAll("button").forEach(function(b){
+      b.addEventListener("click", function(){
+        el.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        aoMudar(b.getAttribute("data-v"));
+      });
+    });
+  }
+  function desenharAnos(anos){
+    var mostrar = anos.slice(-6); // últimos seis anos no seletor
+    segmento("segAno", mostrar.map(function(a){ return {v:a, n:String(a)}; }), st.ano, function(v){ st.ano = +v; desenhar(); });
+  }
+  segmento("segTipo", TIPOS, st.tipo, function(v){ st.tipo = v; carregarLinhas(); });
+  $("segMed").querySelectorAll("button").forEach(function(b){
+    b.addEventListener("click", function(){
+      $("segMed").querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      st.med = b.getAttribute("data-v"); desenhar();
+    });
+  });
+  $("selMercado").addEventListener("change", function(e){
+    st.mercado = e.target.value;
+    var u = new URL(location.href); u.searchParams.set("mercado", st.mercado); history.replaceState(null, "", u);
+    carregarLinhas();
+  });
+
+  // ---------- desenho ----------
+  function quota(r){ return st.med === "valor" ? r.quota_valor_pct : r.quota_volume_pct; }
+
+  function desenhar(){
+    var m = st.mercados.filter(function(x){ return x.mercado === st.mercado; })[0] || {};
+    var doAno = st.linhas.filter(function(r){ return r.ano === st.ano; });
+    var tipoNome = TIPOS.filter(function(t){ return t.v === st.tipo; })[0].n.toLowerCase();
+
+    if (!doAno.length){
+      $("rank").innerHTML = ""; $("price").innerHTML = ""; $("priceLeg").textContent = "";
+      $("rankState").style.display = ""; $("rankState").classList.remove("err");
+      $("rankState").textContent = "Não há registos de " + tipoNome + " para este mercado. Escolha outro tipo de vinho ou outro mercado.";
+      $("lede").innerHTML = "&nbsp;"; $("evo").innerHTML = ""; $("evoLeg").innerHTML = ""; $("rankSub").textContent = "";
+      return;
+    }
+    $("rankState").style.display = "none";
+
+    var paises = doAno.filter(function(r){ return r.origem !== "ZZ"; })
+                      .sort(function(a,b){ return (quota(b)||0) - (quota(a)||0); });
+    var outros = doAno.filter(function(r){ return r.origem === "ZZ"; })[0];
+    var pt = doAno.filter(function(r){ return r.origem === "PT"; })[0];
+    var total = doAno[0].mercado_total_eur;
+    var maxQ = Math.max.apply(null, doAno.map(function(r){ return quota(r) || 0; })) || 1;
+
+    // frase-resumo
+    var posPT = pt ? paises.indexOf(pt) + 1 : null;
+    var html;
+    if (pt){
+      html = "Em " + st.ano + ", Portugal é o <strong>" + ordinal(posPT) + " fornecedor</strong> de " + esc(m.mercado_nome || st.mercado)
+           + " em " + tipoNome + ", com <strong>" + pct(quota(pt)) + "</strong> do " + (st.med === "valor" ? "valor" : "volume") + " importado"
+           + (pt.preco_eur_kg ? ", a " + nf2.format(pt.preco_eur_kg) + " €/kg" : "") + ". "
+           + '<span class="quiet">O mercado importou ' + eurCurto(total) + " nesse ano.</span>";
+    } else {
+      html = "Em " + st.ano + ", Portugal não aparece entre as origens de " + tipoNome + " importado por " + esc(m.mercado_nome || st.mercado) + ". "
+           + '<span class="quiet">O mercado importou ' + eurCurto(total) + " nesse ano.</span>";
+    }
+    $("lede").innerHTML = html;
+    $("rankSub").textContent = st.ano + " · " + (st.med === "valor" ? "quota em valor" : "quota em volume");
+
+    // ranking
+    var lista = paises.slice();
+    if (outros) lista.push(outros);
+    $("rank").innerHTML = lista.map(function(r, i){
+      var q = quota(r) || 0, cls = r.origem === "PT" ? "pt" : (r.origem === "ZZ" ? "outros" : "");
+      var pos = r.origem === "ZZ" ? "" : (i + 1);
+      var det = st.med === "valor" ? eurCurto(r.valor_eur) : kgCurto(r.volume_kg);
+      return '<li class="' + cls + '"><span class="pos">' + pos + '</span>'
+        + '<span class="nm" title="' + esc(r.origem_nome) + '">' + esc(r.origem_nome) + '</span>'
+        + '<span class="bar" aria-hidden="true"><span class="fill" style="width:' + (100*q/maxQ).toFixed(1) + '%"></span></span>'
+        + '<span class="val">' + pct(q) + '</span>'
+        + '<span class="sub2">' + det + '</span></li>';
+    }).join("");
+
+    // preço por origem (só países com preço; até 8 maiores + Portugal)
+    var comPreco = paises.filter(function(r){ return r.preco_eur_kg != null && r.volume_kg > 0; });
+    var sel = comPreco.slice(0, 8);
+    if (pt && pt.preco_eur_kg != null && sel.indexOf(pt) < 0) sel.push(pt);
+    var totalKg = doAno.reduce(function(s,r){ return s + (r.volume_kg || 0); }, 0);
+    var media = totalKg > 0 ? total / totalKg : null;
+    // escala limitada: casos extremos (ex.: >100 €/kg) ficam na ponta, marcados com um triângulo
+    var pBruto = Math.max.apply(null, sel.map(function(r){ return r.preco_eur_kg; }).concat(media || 0));
+    var ptP = pt && pt.preco_eur_kg ? pt.preco_eur_kg : 0;
+    var pmax = Math.min(pBruto, Math.max((media || 0) * 4, ptP * 2, 1)) * 1.08;
+    var cortados = 0;
+    $("price").innerHTML = sel.length ? sel.map(function(r){
+      var cut = r.preco_eur_kg > pmax; if (cut) cortados++;
+      var x = cut ? 98 : (100 * r.preco_eur_kg / pmax);
+      return '<div class="pr-row' + (r.origem === "PT" ? " pt" : "") + '"><span class="nm">' + esc(r.origem_nome) + '</span>'
+        + '<span class="pr-track">' + (media ? '<span class="pr-mean" style="left:' + (100*media/pmax).toFixed(1) + '%"></span>' : "")
+        + '<span class="pr-dot' + (cut ? ' cut' : '') + '" style="left:' + x.toFixed(1) + '%"></span></span>'
+        + '<span class="val">' + nf2.format(r.preco_eur_kg) + '</span></div>';
+    }).join("") : '<div class="state">Sem volumes declarados para calcular preços.</div>';
+    $("priceLeg").textContent = (media ? "Média do mercado: " + nf2.format(media) + " €/kg (linha tracejada)." : "")
+      + (cortados ? " Os triângulos marcam preços fora de escala; o valor exato está à direita." : "");
+
+    desenharEvolucao(paises);
+  }
+
+  function desenharEvolucao(paisesAno){
+    var anos = uniq(st.linhas.map(function(r){ return r.ano; })).sort(function(a,b){ return a-b; });
+    var ultimo = anos[anos.length-1];
+    var top = st.linhas.filter(function(r){ return r.ano === ultimo && r.origem !== "ZZ" && r.origem !== "PT"; })
+                       .sort(function(a,b){ return (quota(b)||0) - (quota(a)||0); }).slice(0,3)
+                       .map(function(r){ return {c:r.origem, n:r.origem_nome}; });
+    var series = [{c:"PT", n:"Portugal", cls:"s-pt", cor:"var(--accent)"}]
+      .concat(top.map(function(t,i){ return {c:t.c, n:t.n, cls:"s-c" + (i+1), cor:["var(--blue)","var(--good)","var(--other-strong)"][i]}; }));
+    series.forEach(function(s){
+      s.pts = anos.map(function(a){
+        var r = st.linhas.filter(function(x){ return x.ano === a && x.origem === s.c; })[0];
+        return {a:a, q: r ? quota(r) : null};
+      });
+    });
+    var W = 1000, H = 280, L = 44, R = 16, T = 12, B = 30;
+    var qmax = Math.max(5, Math.max.apply(null, series.map(function(s){ return Math.max.apply(null, s.pts.map(function(p){ return p.q || 0; })); })));
+    var passo = [1,2,5,10,20,25].filter(function(s){ return qmax / s <= 5; })[0] || 25;
+    qmax = Math.ceil(qmax / passo) * passo;
+    var nTicks = Math.round(qmax / passo);
+    var xs = function(a){ return L + (anos.length > 1 ? (W - L - R) * (anos.indexOf(a)) / (anos.length - 1) : (W-L-R)/2); };
+    var ys = function(q){ return T + (H - T - B) * (1 - q / qmax); };
+    var g = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Quota ao longo do tempo">';
+    for (var k = 0; k <= nTicks; k++){
+      var qv = passo * k, y = ys(qv);
+      g += '<line class="gridline" x1="' + L + '" x2="' + (W-R) + '" y1="' + y + '" y2="' + y + '"/>';
+      g += '<g class="axis"><text x="' + (L-8) + '" y="' + (y+4) + '" text-anchor="end">' + Math.round(qv) + '%</text></g>';
+    }
+    anos.forEach(function(a, i){
+      if (anos.length > 9 && i % 2 && i !== anos.length-1) return;
+      g += '<g class="axis"><text x="' + xs(a) + '" y="' + (H-8) + '" text-anchor="middle">' + a + '</text></g>';
+    });
+    series.slice().reverse().forEach(function(s){
+      var d = "", aberto = false;
+      s.pts.forEach(function(p){
+        if (p.q == null){ aberto = false; return; }
+        d += (aberto ? "L" : "M") + xs(p.a).toFixed(1) + " " + ys(p.q).toFixed(1) + " "; aberto = true;
+      });
+      if (d) g += '<path class="series ' + s.cls + '" d="' + d + '"><title>' + esc(s.n) + '</title></path>';
+    });
+    if (st.ano != null && anos.indexOf(st.ano) >= 0){
+      g += '<line x1="' + xs(st.ano) + '" x2="' + xs(st.ano) + '" y1="' + T + '" y2="' + (H-B) + '" stroke="var(--faint)" stroke-dasharray="3 4"/>';
+    }
+    g += '</svg>';
+    $("evo").innerHTML = g;
+    $("evoSub").textContent = anos[0] + "–" + ultimo + " · " + (st.med === "valor" ? "valor" : "volume");
+    $("evoLeg").innerHTML = series.map(function(s){
+      var ult = s.pts[s.pts.length-1].q;
+      return '<span><i style="background:' + s.cor + '"></i>' + esc(s.n) + (ult != null ? ' <span class="mono">' + pct(ult) + '</span>' : '') + '</span>';
+    }).join("");
+  }
+
+  // ---------- arranque ----------
+  carregarMercados().then(carregarLinhas).catch(falha);
+})();
+</script>
+</body>
+</html>
