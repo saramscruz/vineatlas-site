@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinha e produção por região · VineAtlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F5F3F7; --surface:#FFFFFF; --surface-2:#FBFAFC;
+  --ink:#241E29; --muted:#6E6675; --faint:#98909E;
+  --line:#E7E2EC; --line-strong:#D8D1E0;
+  --accent:#7C1F3E; --accent-strong:#A62C51; --accent-soft:#F3E4EA;
+  --good:#2F7D57; --good-soft:rgba(47,125,87,.09);
+  --bad:#B4533A;
+  --other:#C9C1D2; --other-strong:#A99FB5;
+  --blue:#3F6DA6;
+  --shadow:0 1px 2px rgba(36,30,41,.04),0 8px 24px rgba(36,30,41,.06);
+  --shadow-pop:0 6px 28px rgba(36,30,41,.16);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.12);
+  --bad:#E08A6F;
+  --other:#4A3F58; --other-strong:#65587A;
+  --blue:#5E8FD0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}}
+:root[data-theme="dark"]{
+  --bg:#161119; --surface:#1F1826; --surface-2:#251D2E;
+  --ink:#F2ECF4; --muted:#A99FB2; --faint:#7C7186;
+  --line:#332942; --line-strong:#40344F;
+  --accent:#DA6E8B; --accent-strong:#EE89A3; --accent-soft:#3A2230;
+  --good:#5FBE8E; --good-soft:rgba(95,190,142,.12);
+  --bad:#E08A6F;
+  --other:#4A3F58; --other-strong:#65587A;
+  --blue:#5E8FD0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+  --shadow-pop:0 6px 30px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font-family:"Hanken Grotesk",system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px; margin:0 auto; padding:22px clamp(14px,3vw,30px) 48px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent-strong); outline-offset:2px}
+
+/* Cabeçalho */
+header.top{display:flex; align-items:flex-start; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:20px}
+.brand{display:flex; flex-direction:column; gap:5px}
+.eyebrow{font-size:12.5px; color:var(--accent); font-weight:600; text-decoration:none}
+.eyebrow:hover{text-decoration:underline}
+h1{font-family:"Spectral",Georgia,serif; font-weight:700; font-size:clamp(27px,4.4vw,40px); line-height:1.02; margin:0; letter-spacing:-.01em; text-wrap:balance}
+.sub{color:var(--muted); max-width:62ch; font-size:14.5px; margin:0}
+.head-right{display:flex; align-items:center; gap:12px}
+.fresh{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:7px 11px; border-radius:999px; box-shadow:var(--shadow)}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 0 3px var(--good-soft)}
+.dot.off{background:var(--faint); box-shadow:none}
+.tbtn{appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; display:grid; place-items:center; box-shadow:var(--shadow)}
+
+/* Navegação */
+.nav{display:inline-flex; flex-wrap:wrap; gap:3px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; box-shadow:var(--shadow); margin-bottom:18px}
+.nav a{font:600 13.5px "Hanken Grotesk",sans-serif; color:var(--muted); text-decoration:none; padding:8px 14px; border-radius:8px; white-space:nowrap}
+.nav a[aria-current="page"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .nav a[aria-current="page"]{color:#1a121f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav a[aria-current="page"]{color:#1a121f}}
+.nav a:not([aria-current]):hover{color:var(--ink); background:var(--surface-2)}
+.nav a.brandtab{font-weight:700; color:var(--ink)}
+
+/* Controlos */
+.controls{display:flex; align-items:center; gap:14px 20px; flex-wrap:wrap; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); margin-bottom:18px}
+.ctl{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.ctl-lab{font-size:12.5px; color:var(--faint); font-weight:600}
+select{appearance:none; font:600 14px "Hanken Grotesk",sans-serif; color:var(--ink); background:var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2398909E' stroke-width='1.6' fill='none'/%3E%3C/svg%3E") no-repeat right 11px center; border:1px solid var(--line); border-radius:10px; padding:8px 32px 8px 11px; cursor:pointer; max-width:100%}
+.seg{display:inline-flex; flex-wrap:wrap; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:3px; gap:2px}
+.seg button{appearance:none; border:0; background:transparent; color:var(--muted); font:600 13px/1 "Hanken Grotesk",sans-serif; padding:8px 11px; border-radius:7px; cursor:pointer; white-space:nowrap}
+.seg.mono button{font-family:"IBM Plex Mono",monospace}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#1a121f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#1a121f}}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+
+/* Frase-resumo */
+.lede{font-family:"Spectral",Georgia,serif; font-size:clamp(19px,2.3vw,24px); line-height:1.35; margin:4px 0 20px; max-width:62ch}
+.lede strong{color:var(--accent); font-weight:700}
+.lede .quiet{color:var(--muted)}
+
+/* Grelha e cartões */
+.grid{display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:18px}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); min-width:0}
+.card-h{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:15px 18px 4px}
+.card-t{font-family:"Spectral",serif; font-weight:600; font-size:17px; margin:0}
+.card-s{font-size:12.5px; color:var(--muted)}
+.card-b{padding:8px 18px 16px}
+
+/* Ranking de fornecedores */
+.rank{list-style:none; margin:0; padding:0}
+.rank li{display:grid; grid-template-columns:22px minmax(92px,150px) minmax(0,1fr) 62px; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--line)}
+.rank li:last-child{border-bottom:0}
+.rank .pos{font:600 12px "IBM Plex Mono",monospace; color:var(--faint); text-align:right}
+.rank .nm{font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.rank .bar{position:relative; height:18px; background:var(--surface-2); border-radius:5px; overflow:hidden}
+.rank .fill{position:absolute; inset:0 auto 0 0; background:var(--other); border-radius:5px; transition:width .35s ease}
+.rank .val{font:600 13px "IBM Plex Mono",monospace; text-align:right}
+.rank li.pt .nm{color:var(--accent)}
+.rank li.pt .fill{background:var(--accent)}
+.rank li.pt{background:var(--accent-soft); margin:0 -8px; padding-left:8px; padding-right:8px; border-radius:8px; border-bottom-color:transparent}
+.rank li.outros .nm{color:var(--muted); font-weight:500}
+.rank li.outros .fill{background:repeating-linear-gradient(45deg,var(--other),var(--other) 4px,transparent 4px,transparent 7px)}
+.rank .sub2{grid-column:2 / -1; font-size:12px; color:var(--muted); margin-top:-3px}
+@media (prefers-reduced-motion:reduce){.rank .fill{transition:none}}
+
+/* Preço vs quota */
+.pricebox{padding:4px 18px 16px}
+.pr-row{display:grid; grid-template-columns:minmax(92px,150px) minmax(0,1fr) 64px; align-items:center; gap:10px; padding:5px 0}
+.pr-row .nm{font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.pr-row.pt .nm{color:var(--accent); font-weight:700}
+.pr-track{position:relative; height:18px}
+.pr-track::before{content:""; position:absolute; left:0; right:0; top:50%; border-top:1px solid var(--line)}
+.pr-dot{position:absolute; top:50%; width:11px; height:11px; border-radius:50%; background:var(--other-strong); transform:translate(-50%,-50%)}
+.pr-row.pt .pr-dot{background:var(--accent); width:14px; height:14px; box-shadow:0 0 0 3px var(--accent-soft)}
+.pr-dot.cut{border-radius:3px; width:9px; clip-path:polygon(0 0,100% 50%,0 100%)}
+.pr-mean{position:absolute; top:0; bottom:0; border-left:2px dashed var(--faint)}
+.pr-row .val{font:600 12.5px "IBM Plex Mono",monospace; text-align:right}
+.pr-legend{font-size:12px; color:var(--muted); padding:0 18px 12px}
+
+/* Evolução */
+svg.chart{width:100%; height:auto; display:block}
+.axis text{fill:var(--faint); font:500 10.5px "IBM Plex Mono",monospace}
+.axis line,.gridline{stroke:var(--line)}
+.series{fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round}
+.s-pt{stroke:var(--accent); stroke-width:3}
+.s-c1{stroke:var(--blue)} .s-c2{stroke:var(--good)} .s-c3{stroke:var(--other-strong)}
+.leg{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; color:var(--muted); padding:0 18px 14px}
+.leg i{display:inline-block; width:14px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px}
+.full{grid-column:1 / -1}
+
+/* Estados e notas */
+.state{padding:26px 18px; color:var(--muted); font-size:14px}
+.state.err{color:var(--bad)}
+.notes{margin-top:18px; font-size:12.5px; color:var(--muted); max-width:90ch}
+.notes p{margin:6px 0}
+
+/* Botão "?" e painel */
+.info-btn{appearance:none; border:1px solid var(--line-strong); background:var(--surface-2); color:var(--muted); width:22px; height:22px; border-radius:50%; font:700 12px "Hanken Grotesk",sans-serif; cursor:pointer; display:inline-grid; place-items:center; vertical-align:middle; margin-left:6px}
+.info-btn:hover{color:var(--accent); border-color:var(--accent)}
+.info-panel{display:none; margin:6px 18px 12px; padding:12px 14px; background:var(--surface-2); border:1px solid var(--line); border-radius:11px; font-size:13px; color:var(--ink); max-width:70ch}
+.info-panel.on{display:block}
+.info-panel p{margin:0 0 7px} .info-panel p:last-child{margin:0}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+/* Tabela */
+.tbl{width:100%; border-collapse:collapse; font-size:14px}
+.tbl th{font:600 12px "Hanken Grotesk",sans-serif; color:var(--faint); text-align:right; padding:8px 8px; border-bottom:1px solid var(--line-strong); white-space:nowrap}
+.tbl th:nth-child(2){text-align:left}
+.tbl th button{appearance:none; background:none; border:0; font:inherit; color:inherit; cursor:pointer; padding:0}
+.tbl th button[aria-pressed="true"]{color:var(--accent)}
+.tbl td{padding:7px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap}
+.tbl td.nm{text-align:left; font-weight:600; white-space:normal}
+.tbl td.pos{color:var(--faint); font:600 12px "IBM Plex Mono",monospace; width:28px}
+.tbl td.num{font-family:"IBM Plex Mono",monospace; font-size:13px}
+.tbl td.qbar{width:26%}
+.qb{display:flex; align-items:center; gap:8px; justify-content:flex-end}
+.qb .bar{flex:1; max-width:160px; height:12px; background:var(--surface-2); border-radius:4px; overflow:hidden}
+.qb .fill{display:block; height:100%; background:var(--accent); opacity:.75; border-radius:4px}
+.up{color:var(--good)} .down{color:var(--bad)}
+.hi{color:var(--good)} .lo{color:var(--muted)}
+.tbl a.cmp{font-size:11.5px; font-weight:500; margin-left:7px; white-space:nowrap; color:var(--faint); text-decoration:none; border-bottom:1px dotted var(--line-strong)}
+.tbl a.cmp:hover{color:var(--accent); border-bottom-color:var(--accent)}
+.tblwrap{overflow-x:auto}
+.more{appearance:none; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); font:600 13px "Hanken Grotesk",sans-serif; border-radius:9px; padding:8px 13px; cursor:pointer; margin-top:12px}
+.search{display:flex; align-items:center; gap:8px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:7px 11px; min-width:180px}
+.search input{border:0; background:transparent; color:var(--ink); font:400 14px "Hanken Grotesk",sans-serif; width:100%; outline:none}
+.seg.wrap-lg{max-width:100%}
+@media (max-width:700px){.tbl .hide-sm{display:none}}
+
+.tbl tr.sel td{background:var(--accent-soft)}
+.tbl tr.pt td{font-weight:700; border-bottom:1px solid var(--line-strong)}
+.tbl tbody tr{cursor:pointer}
+.tbl tbody tr:hover td{background:var(--surface-2)}
+.tbl tbody tr.sel:hover td{background:var(--accent-soft)}
+.bars rect.b-dop{fill:var(--accent)} .bars rect.b-igp{fill:var(--blue)} .bars rect.b-casta{fill:var(--good)} .bars rect.b-sem{fill:var(--other-strong)}
+.dash{stroke-dasharray:5 5}
+.flag{fill:var(--faint)}
+.tbl th:first-child{text-align:left}
+.note-list{font-size:12.5px; color:var(--muted); padding:0 18px 14px; margin:0; list-style:none}
+.note-list li{margin:3px 0}
+.kv{display:flex; gap:22px; flex-wrap:wrap; padding:2px 18px 14px; font-size:13px; color:var(--muted)}
+.kv b{display:block; font:600 18px "IBM Plex Mono",monospace; color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <a class="eyebrow" href="index.html">🍷 VineAtlas · Vinho de Portugal</a>
+      <h1>Vinha e produção por região</h1>
+      <p class="sub">Quanta vinha tem cada região, quanto vinho produz e de que tipo, quanto certifica, e como isso mudou ao longo do tempo.</p>
+    </div>
+    <div class="head-right">
+      <div class="fresh"><span class="dot off" id="freshDot"></span><span id="freshTxt">A carregar dados…</span></div>
+      <button class="tbtn" id="themeBtn" aria-label="Mudar tema claro/escuro">◐</button>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Ecrãs">
+    <a class="brandtab" href="index.html">🍷 VineAtlas</a>
+    <a href="radar.html">Radar de Mercados</a>
+    <a href="onde-vender.html">Onde vender o meu tipo de vinho</a>
+    <a href="premiumizacao.html">Premiumização &amp; termos reais</a>
+    <a href="ficha.html">Ficha de mercado</a>
+    <a href="balanca.html">Balança comercial</a>
+    <a href="concorrencia.html">Concorrência por mercado</a>
+    <a href="#" aria-current="page">Vinha e produção</a>
+  </nav>
+
+  <div class="controls" role="group" aria-label="Região">
+    <label class="ctl"><span class="ctl-lab">Região</span><select id="selRegiao" aria-label="Região"></select></label>
+  </div>
+
+  <p class="lede" id="lede" aria-live="polite">&nbsp;</p>
+
+  <div class="grid">
+    <section class="card full">
+      <div class="card-h"><h2 class="card-t">As 14 regiões lado a lado<button class="info-btn" data-info="iTab" aria-expanded="false" aria-controls="iTab">?</button></h2><span class="card-s" id="tabSub">clique numa região para ver o detalhe</span></div>
+      <div class="info-panel" id="iTab">
+        <p><b>Área</b>: vinha a 31 de julho do último ano. <b>Produção</b>: última campanha declarada ao IVV. A mais recente é provisória. <b>Face à média</b>: comparação com a média das cinco campanhas anteriores. Em regiões pequenas, como os Açores ou o Algarve, estas percentagens mudam muito com pouco volume.</p>
+        <p><b>hl por hectare</b>: produção ÷ área. É um rendimento aparente: a vinha não é toda produtiva no mesmo ano, e as fronteiras das regiões nas duas fontes só coincidem desde 2024.</p>
+        <p><b>Certificado</b>: volume certificado pela entidade certificadora da região, em DO e IG. Não existe para os Açores nem para a Madeira. No Douro exclui o Vinho do Porto.</p>
+      </div>
+      <div class="card-b tblwrap">
+        <table class="tbl" id="tbl">
+          <thead><tr><th>Região</th><th>Área (ha)</th><th class="hide-sm">% do país</th><th id="thProd">Produção (hl)</th><th>% DOP</th><th class="hide-sm">Face à média</th><th class="hide-sm">hl/ha</th><th class="hide-sm">Certificado DO / IG (hl)</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="state" id="state">A carregar…</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Área de vinha<button class="info-btn" data-info="iArea" aria-expanded="false" aria-controls="iArea">?</button></h2><span class="card-s" id="areaSub">hectares</span></div>
+      <div class="info-panel" id="iArea">
+        <p>Série do IVV desde 1989. As linhas a tracejado marcam anos em que a região aparece com o nome de hoje mas com valores que coincidem com a região de Indicação Geográfica (mais larga) — muito provavelmente uma mudança de delimitação, não vinha arrancada. Até 2013 o Douro e Trás-os-Montes aparecem juntos, e até 2015 a Bairrada, o Dão, a Beira Interior e Távora-Varosa formam uma única região ("Beiras"), por isso a série destas regiões começa mais tarde.</p>
+        <p>Entre 2014 e 2015 o total nacional cai cerca de 20 mil hectares num ano, o que sugere uma revisão do cadastro de vinha. Também não está confirmado.</p>
+      </div>
+      <div class="card-b" id="areaChart"></div>
+      <ul class="note-list" id="areaNotas"></ul>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Produção por categoria<button class="info-btn" data-info="iProd" aria-expanded="false" aria-controls="iProd">?</button></h2><span class="card-s">milhares de hl por campanha</span></div>
+      <div class="info-panel" id="iProd">
+        <p>Vinho declarado em cada campanha (a campanha de 2025/26 corresponde à vindima de 2025), separado em DOP, IGP, vinho com indicação de ano/casta e vinho sem DO/IG. A campanha mais recente é provisória.</p>
+      </div>
+      <div class="card-b" id="prodChart"></div>
+      <div class="leg"><span><i style="background:var(--accent)"></i>DOP</span><span><i style="background:var(--blue)"></i>IGP</span><span><i style="background:var(--good)"></i>Ano/Casta</span><span><i style="background:var(--other-strong)"></i>Sem DO/IG</span></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Vinho certificado<button class="info-btn" data-info="iCert" aria-expanded="false" aria-controls="iCert">?</button></h2><span class="card-s">milhares de hl</span></div>
+      <div class="info-panel" id="iCert">
+        <p>Volume certificado pela entidade certificadora da região (Comissões Vitivinícolas e IVDP), em Denominação de Origem e em Indicação Geográfica. Certificado não é o mesmo que produzido: parte do vinho é certificado noutro ano ou nunca chega a ser certificado.</p>
+        <p>No Douro exclui o Vinho do Porto. A área de atuação de algumas entidades em IG não coincide exatamente com a região DOC.</p>
+      </div>
+      <div class="card-b" id="certChart"></div>
+      <div class="leg"><span><i style="background:var(--accent)"></i>DO</span><span><i style="background:var(--blue)"></i>IG</span></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h"><h2 class="card-t">Novas autorizações de plantação<button class="info-btn" data-info="iNap" aria-expanded="false" aria-controls="iNap">?</button></h2><span class="card-s">Portugal · hectares</span></div>
+      <div class="info-panel" id="iNap">
+        <p>Área que o Estado autoriza plantar de novo em cada ano (despachos publicados em Diário da República) e área efetivamente atribuída. Até 2023 a procura esgotou sempre a área disponível. Em 2024 ficou área por atribuir (sem números publicados), em 2025 foi atribuído só 37% e em 2026 a área disponível foi reduzida para 616 ha.</p>
+        <p>Autorização não é plantação: parte das autorizações nunca chega a ser plantada, e os prazos foram prorrogados em vários anos.</p>
+      </div>
+      <div class="card-b" id="napChart"></div>
+      <div class="leg"><span><i style="background:var(--other-strong)"></i>Disponível</span><span><i style="background:var(--accent)"></i>Atribuída</span></div>
+    </section>
+  </div>
+
+  <div class="notes">
+    <p><b>Fontes.</b> Instituto da Vinha e do Vinho (IVV): evolução da área total de vinha, declarações de colheita e produção por região, volumes certificados por entidade certificadora (SIvv); Diário da República: despachos anuais das novas autorizações de plantação.</p>
+    <p>Estes dados são atualizados uma vez por ano, quando o IVV publica os ficheiros novos.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var SB_URL = "https://kflwylllrmvlsssegxch.supabase.co/rest/v1/";
+  var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmbHd5bGxscm12bHNzc2VneGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTEwODAsImV4cCI6MjEwMzMyNzA4MH0.6hKYYB8DVzSSFPyTmlaDjptf_L35hExz94UYNGgodjM";
+  // nomes por extenso e preposição, para as frases
+  var NOMES = {"P. Setúbal":["Península de Setúbal","a"], "T. Montes":["Trás-os-Montes","e"], "Verdes":["Vinhos Verdes","os"],
+    "Açores":["Açores","os"], "Alentejo":["Alentejo","o"], "Algarve":["Algarve","o"], "Bairrada":["Bairrada","a"], "Beira Interior":["Beira Interior","a"],
+    "Dão":["Dão","o"], "Douro":["Douro","o"], "Lisboa":["Lisboa",""], "Madeira":["Madeira","a"], "Távora-Varosa":["Távora-Varosa",""], "Tejo":["Tejo","o"], "Portugal":["Portugal",""]};
+  function nomeLongo(r){ return (NOMES[r] || [r])[0]; }
+  function plural(r){ var a = (NOMES[r] || [r,""])[1]; return a === "os" || a === "as"; }
+  function sujeito(r){ var n = NOMES[r] || [r,""]; var a = n[1] === "e" ? "" : n[1]; return (a ? a.charAt(0).toUpperCase() + a.slice(1) + " " : "") + n[0]; }
+  var st = {regiao:"Portugal", resumo:[], area:[], prod:[], cert:[], nap:[]};
+  var $ = function(id){ return document.getElementById(id); };
+
+  try { var t = localStorage.getItem("radar-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch(e){}
+  $("themeBtn").addEventListener("click", function(){
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var nx = dark ? "light" : "dark"; document.documentElement.setAttribute("data-theme", nx);
+    try { localStorage.setItem("radar-theme", nx); } catch(e){}
+  });
+  document.querySelectorAll(".info-btn").forEach(function(b){
+    b.addEventListener("click", function(){ var p = $(b.getAttribute("data-info")); var on = !p.classList.contains("on");
+      p.classList.toggle("on", on); b.setAttribute("aria-expanded", on ? "true" : "false"); });
+  });
+
+  var nf0 = new Intl.NumberFormat("pt-PT",{maximumFractionDigits:0});
+  var nf1 = new Intl.NumberFormat("pt-PT",{minimumFractionDigits:1, maximumFractionDigits:1});
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+  function pct(v, s){ return v == null ? "—" : (s && v > 0 ? "+" : "") + nf1.format(v) + "%"; }
+  function num(v){ return v == null ? "—" : nf0.format(v); }
+  function campanha(a){ return a + "/" + String(a+1).slice(2); }
+
+  function pedir(q){ return fetch(SB_URL + q, {headers:{apikey:SB_KEY, Authorization:"Bearer " + SB_KEY}}).then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }); }
+  function falha(e){ var s = $("state"); s.style.display = ""; s.classList.add("err");
+    s.textContent = "Não foi possível obter os dados (" + e.message + "). Verifique a ligação à internet e recarregue a página.";
+    $("freshTxt").textContent = "Sem ligação aos dados"; $("freshDot").classList.add("off"); }
+
+  Promise.all([
+    pedir("site_regioes_resumo?select=*"),
+    pedir("site_vinha_area?select=regiao,ano,area_ha,provavel_delimitacao_ig,nota&order=ano.asc"),
+    pedir("site_producao_regiao?select=regiao,ano,categoria,volume_hl&order=ano.asc"),
+    pedir("site_certificacao_regiao?select=regiao,ano,do_hl,ig_hl&order=ano.asc"),
+    pedir("site_nap?select=*&order=ano.asc")
+  ]).then(function(r){
+    st.resumo = r[0]; st.area = r[1]; st.prod = r[2]; st.cert = r[3]; st.nap = r[4];
+    var pt = st.resumo.filter(function(x){ return x.regiao === "Portugal"; })[0];
+    $("freshDot").classList.remove("off");
+    $("freshTxt").textContent = "Área " + pt.ano_area + " · produção " + campanha(pt.ano_producao);
+    $("thProd").textContent = "Produção " + campanha(pt.ano_producao) + " (hl)";
+    var regs = st.resumo.slice().sort(function(a,b){ return (b.area_ha||0) - (a.area_ha||0); });
+    $("selRegiao").innerHTML = regs.map(function(x){ return '<option value="' + esc(x.regiao) + '">' + esc(x.regiao === "Portugal" ? "Portugal (todas as regiões)" : nomeLongo(x.regiao)) + '</option>'; }).join("");
+    var qs = new URLSearchParams(location.search).get("regiao");
+    if (qs && regs.some(function(x){ return x.regiao === qs; })) st.regiao = qs;
+    $("selRegiao").value = st.regiao;
+    $("state").style.display = "none";
+    tabela(); desenhar();
+  }).catch(falha);
+
+  var rz; window.addEventListener("resize", function(){ clearTimeout(rz); rz = setTimeout(function(){ if (st.resumo.length) desenhar(); }, 200); });
+  $("selRegiao").addEventListener("change", function(e){ escolher(e.target.value); });
+  function escolher(r){ st.regiao = r; $("selRegiao").value = r;
+    var u = new URL(location.href); u.searchParams.set("regiao", r); history.replaceState(null, "", u); tabela(); desenhar(); }
+
+  function tabela(){
+    var rows = st.resumo.slice().sort(function(a,b){ if (a.regiao === "Portugal") return 1; if (b.regiao === "Portugal") return -1; return (b.area_ha||0) - (a.area_ha||0); });
+    var tb = $("tbl").querySelector("tbody");
+    tb.innerHTML = rows.map(function(x){
+      var cls = (x.regiao === st.regiao ? "sel " : "") + (x.regiao === "Portugal" ? "pt" : "");
+      var hlha = x.prod_hl && x.area_ha ? nf0.format(x.prod_hl / x.area_ha) : "—";
+      var vcls = x.var_vs_media5_pct == null ? "" : (x.var_vs_media5_pct >= 0 ? "up" : "down");
+      var cert = (x.do_hl == null && x.ig_hl == null) ? "—" : num(x.do_hl) + " / " + num(x.ig_hl);
+      return '<tr class="' + cls + '" data-r="' + esc(x.regiao) + '" tabindex="0"><td class="nm">' + esc(x.regiao === "Portugal" ? "Portugal" : nomeLongo(x.regiao)) + '</td>'
+        + '<td class="num">' + num(x.area_ha) + '</td><td class="num hide-sm">' + pct(x.quota_area_pct) + '</td>'
+        + '<td class="num">' + num(x.prod_hl) + '</td><td class="num">' + pct(x.dop_pct) + '</td>'
+        + '<td class="num hide-sm ' + vcls + '">' + pct(x.var_vs_media5_pct, true) + '</td>'
+        + '<td class="num hide-sm">' + hlha + '</td><td class="num hide-sm">' + cert + '</td></tr>';
+    }).join("");
+    tb.querySelectorAll("tr").forEach(function(tr){
+      tr.addEventListener("click", function(){ escolher(tr.getAttribute("data-r")); });
+      tr.addEventListener("keydown", function(e){ if (e.key === "Enter") escolher(tr.getAttribute("data-r")); });
+    });
+  }
+
+  function desenhar(){
+    var r = st.regiao, x = st.resumo.filter(function(y){ return y.regiao === r; })[0];
+    var pt = st.resumo.filter(function(y){ return y.regiao === "Portugal"; })[0];
+    var h;
+    if (r === "Portugal"){
+      h = "Portugal tinha <strong>" + num(x.area_ha) + " ha</strong> de vinha a 31 de julho de " + x.ano_area + ". Na campanha " + campanha(x.ano_producao)
+        + " produziu <strong>" + new Intl.NumberFormat("pt-PT",{minimumFractionDigits:2, maximumFractionDigits:2}).format(x.prod_hl/1e6) + " milhões de hl</strong>, " + pct(x.dop_pct) + " em DOP"
+        + (x.var_vs_media5_pct != null ? ' <span class="quiet">(' + pct(x.var_vs_media5_pct, true) + " face à média das cinco campanhas anteriores; dados provisórios)</span>" : "") + ".";
+    } else {
+      h = sujeito(r) + (plural(r) ? " têm" : " tem") + " <strong>" + num(x.area_ha) + " ha</strong> de vinha, " + pct(x.quota_area_pct) + " do país. Na campanha " + campanha(x.ano_producao)
+        + (plural(r) ? " produziram" : " produziu") + " <strong>" + num(x.prod_hl) + " hl</strong>, " + pct(x.dop_pct) + " em DOP"
+        + (x.var_vs_media5_pct != null ? ' <span class="quiet">(' + pct(x.var_vs_media5_pct, true) + " face à média das cinco campanhas anteriores)</span>" : "") + ".";
+      if (x.prod_hl && pt.prod_hl) h += ' <span class="quiet">' + (plural(r) ? "São " : "É ") + pct(100 * x.prod_hl / pt.prod_hl) + " da produção nacional.</span>";
+    }
+    $("lede").innerHTML = h;
+    grafArea(r); grafProd(r); grafCert(r); grafNap();
+  }
+
+  // ---------- gráficos ----------
+  var W = 520, H = 260, L = 58, R = 12, T = 12, B = 28;
+  function medir(id){ var w = $(id).clientWidth; W = Math.max(280, Math.round(w || 520)); H = W < 420 ? 220 : 260; }
+  function escala(max){ var ps = [1,2,5,10,20,25,50,100,200,250,500,1000,2000,2500,5000,10000,20000,25000,50000,100000];
+    var p = ps.filter(function(s){ return max / s <= 5; })[0] || 100000; return {passo:p, max:Math.max(p, Math.ceil(max/p)*p)}; }
+  function eixoY(sc, ys, fmt){ var g = ""; for (var k = 0; k * sc.passo <= sc.max; k++){ var v = k*sc.passo, y = ys(v);
+      g += '<line class="gridline" x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'"/><g class="axis"><text x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end">'+fmt(v)+'</text></g>'; } return g; }
+  function vazio(id, msg){ $(id).innerHTML = '<div class="state">' + msg + '</div>'; }
+
+  function grafArea(r){
+    medir("areaChart");
+    var s = st.area.filter(function(a){ return a.regiao === r; });
+    if (!s.length){ vazio("areaChart","Sem série de área para esta região."); $("areaNotas").innerHTML = ""; return; }
+    var anos = s.map(function(a){ return a.ano; }), a0 = anos[0], a1 = anos[anos.length-1];
+    var sc = escala(Math.max.apply(null, s.map(function(a){ return a.area_ha; })));
+    var xs = function(a){ return L + (W-L-R) * (a - a0) / Math.max(1, a1 - a0); }, ys = function(v){ return T + (H-T-B) * (1 - v / sc.max); };
+    var g = '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Área de vinha">' + eixoY(sc, ys, function(v){ return v >= 1000 ? nf0.format(v/1000) + " mil" : v; });
+    [a0, 2000, 2010, 2020, a1].filter(function(a, i, arr){ return a >= a0 && a <= a1 && arr.indexOf(a) === i; })
+      .forEach(function(a){ g += '<g class="axis"><text x="'+xs(a)+'" y="'+(H-8)+'" text-anchor="middle">'+a+'</text></g>'; });
+    var dSolid = "", dDash = "";
+    for (var i = 1; i < s.length; i++){
+      var seg = "M" + xs(s[i-1].ano).toFixed(1) + " " + ys(s[i-1].area_ha).toFixed(1) + " L" + xs(s[i].ano).toFixed(1) + " " + ys(s[i].area_ha).toFixed(1) + " ";
+      if (s[i].provavel_delimitacao_ig && s[i-1].provavel_delimitacao_ig) dDash += seg; else dSolid += seg;
+    }
+    g += '<path class="series s-pt" d="'+dSolid+'"/>';
+    if (dDash) g += '<path class="series s-pt dash" style="opacity:.7" d="'+dDash+'"/>';
+    s.forEach(function(a){ if (a.nota) g += '<circle class="flag" cx="'+xs(a.ano)+'" cy="'+ys(a.area_ha)+'" r="3.5"><title>'+esc(a.ano+": "+a.nota)+'</title></circle>'; });
+    g += '</svg>';
+    $("areaChart").innerHTML = g;
+    var first = s[0], last = s[s.length-1];
+    $("areaSub").textContent = first.ano + "–" + last.ano + " · hectares";
+    var notas = [];
+    notas.push("De " + nf0.format(first.area_ha) + " ha em " + first.ano + " para " + nf0.format(last.area_ha) + " ha em " + last.ano + " (" + pct(100*(last.area_ha/first.area_ha - 1), true) + "). Parte da variação pode ser metodológica (explicação no botão ?).");
+    if (s.some(function(a){ return a.provavel_delimitacao_ig; })) notas.push("Tracejado: anos em que os valores coincidem com a região de Indicação Geográfica, mais larga.");
+    if (s.some(function(a){ return a.nota; })) notas.push("Os pontos cinzentos marcam anos com ressalvas da fonte; passe o cursor por cima para as ler.");
+    $("areaNotas").innerHTML = notas.map(function(n){ return "<li>" + esc(n) + "</li>"; }).join("");
+  }
+
+  function grafProd(r){
+    medir("prodChart");
+    var cats = [["DOP","b-dop"],["IGP","b-igp"],["Ano/Casta","b-casta"],["Sem DO/IG","b-sem"]];
+    var s = st.prod.filter(function(p){ return p.regiao === r; });
+    if (!s.length){ vazio("prodChart","Sem dados de produção para esta região."); return; }
+    var anos = []; s.forEach(function(p){ if (anos.indexOf(p.ano) < 0) anos.push(p.ano); }); anos.sort(function(a,b){ return a-b; });
+    var tot = anos.map(function(a){ return s.filter(function(p){ return p.ano === a; }).reduce(function(t,p){ return t + (+p.volume_hl||0); }, 0); });
+    var sc = escala(Math.max.apply(null, tot) / 1000);
+    var bw = (W-L-R) / anos.length, ys = function(v){ return T + (H-T-B) * (1 - v / sc.max); };
+    var g = '<svg class="chart bars" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Produção por categoria">' + eixoY(sc, ys, function(v){ return nf0.format(v); });
+    anos.forEach(function(a, i){
+      var y0 = 0, x = L + i*bw + bw*0.15;
+      cats.forEach(function(c){ var p = s.filter(function(q){ return q.ano === a && q.categoria === c[0]; })[0]; var v = p ? p.volume_hl/1000 : 0;
+        if (v > 0){ g += '<rect class="'+c[1]+'" x="'+x.toFixed(1)+'" width="'+(bw*0.7).toFixed(1)+'" y="'+ys(y0+v).toFixed(1)+'" height="'+(ys(y0)-ys(y0+v)).toFixed(1)+'"><title>'+campanha(a)+' · '+c[0]+': '+nf0.format(v*1000)+' hl</title></rect>'; }
+        y0 += v; });
+      if (bw > 34 || i % 2 === 0 || i === anos.length-1) g += '<g class="axis"><text x="'+(x+bw*0.35).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle">'+String(a).slice(2)+'/'+String(a+1).slice(2)+'</text></g>';
+    });
+    $("prodChart").innerHTML = g + '</svg>';
+  }
+
+  function grafCert(r){
+    medir("certChart");
+    var s = st.cert.filter(function(c){ return c.regiao === r; });
+    if (!s.length){ vazio("certChart", "Não há dados de certificação por entidade para " + nomeLongo(r) + " na fonte."); return; }
+    var anos = s.map(function(c){ return c.ano; }), a0 = anos[0], a1 = anos[anos.length-1];
+    var sc = escala(Math.max.apply(null, s.map(function(c){ return Math.max(+c.do_hl||0, +c.ig_hl||0); })) / 1000);
+    var xs = function(a){ return L + (W-L-R) * (a - a0) / Math.max(1, a1 - a0); }, ys = function(v){ return T + (H-T-B) * (1 - v / sc.max); };
+    var g = '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Vinho certificado">' + eixoY(sc, ys, function(v){ return nf0.format(v); });
+    anos.forEach(function(a){ g += '<g class="axis"><text x="'+xs(a)+'" y="'+(H-8)+'" text-anchor="middle">'+a+'</text></g>'; });
+    [["do_hl","var(--accent)",3],["ig_hl","var(--blue)",2]].forEach(function(k){
+      var d = ""; s.forEach(function(c, i){ if (c[k[0]] == null) return; d += (d ? "L" : "M") + xs(c.ano).toFixed(1) + " " + ys(c[k[0]]/1000).toFixed(1) + " "; });
+      if (d) g += '<path class="series" style="stroke:'+k[1]+'; stroke-width:'+k[2]+'" d="'+d+'"/>';
+    });
+    $("certChart").innerHTML = g + '</svg>';
+  }
+
+  function grafNap(){
+    medir("napChart");
+    var s = st.nap; if (!s.length){ vazio("napChart","Sem dados."); return; }
+    var sc = escala(Math.max.apply(null, s.map(function(n){ return +n.area_max_nacional_ha || 0; })));
+    var bw = (W-L-R) / s.length, ys = function(v){ return T + (H-T-B) * (1 - v / sc.max); };
+    var g = '<svg class="chart bars" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Novas autorizações de plantação">' + eixoY(sc, ys, function(v){ return nf0.format(v); });
+    s.forEach(function(n, i){
+      var x = L + i*bw;
+      g += '<rect class="b-sem" x="'+(x+bw*0.12).toFixed(1)+'" width="'+(bw*0.36).toFixed(1)+'" y="'+ys(n.area_max_nacional_ha).toFixed(1)+'" height="'+(ys(0)-ys(n.area_max_nacional_ha)).toFixed(1)+'"><title>'+n.ano+' · disponível: '+nf0.format(n.area_max_nacional_ha)+' ha</title></rect>';
+      if (n.area_atribuida_total_ha != null) g += '<rect class="b-dop" x="'+(x+bw*0.52).toFixed(1)+'" width="'+(bw*0.36).toFixed(1)+'" y="'+ys(n.area_atribuida_total_ha).toFixed(1)+'" height="'+(ys(0)-ys(n.area_atribuida_total_ha)).toFixed(1)+'"><title>'+n.ano+' · atribuída: '+nf0.format(n.area_atribuida_total_ha)+' ha</title></rect>';
+      else g += '<text x="'+(x+bw*0.7).toFixed(1)+'" y="'+(ys(0)-6)+'" text-anchor="middle" class="axis" style="fill:var(--faint); font:500 10px IBM Plex Mono,monospace">s/d</text>';
+      g += '<g class="axis"><text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle">'+n.ano+'</text></g>';
+    });
+    $("napChart").innerHTML = g + '</svg>';
+  }
+})();
+</script>
+</body>
+</html>
