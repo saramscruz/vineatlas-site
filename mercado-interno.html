@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mercado Interno — VineAtlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bordo-700: #7C1F3E;
+  --bordo-400: #DA6E8B;
+  --verde-700: #2F7D57;
+  --verde-400: #5FBE8E;
+  --azul-700: #3F6DA6;
+  --azul-400: #5E8FD0;
+  --bg: #FAF7F8;
+  --bg-card: #FFFFFF;
+  --bg-raised: #F3EDEF;
+  --text: #241419;
+  --text-dim: #6B5560;
+  --border: #E7DCE0;
+  --font-display: 'Spectral', Georgia, serif;
+  --font-ui: 'Hanken Grotesk', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1B1116;
+    --bg-card: #241419;
+    --bg-raised: #2E1B22;
+    --text: #F3EAEC;
+    --text-dim: #B99AA5;
+    --border: #3A2530;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1B1116;
+  --bg-card: #241419;
+  --bg-raised: #2E1B22;
+  --text: #F3EAEC;
+  --text-dim: #B99AA5;
+  --border: #3A2530;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); scroll-behavior: smooth; }
+body {
+  font-family: var(--font-ui);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+
+/* Header */
+header.site {
+  position: sticky; top: 0; z-index: 20;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 1180px; margin: 0 auto; padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.brand-mark { font-size: 1.3rem; }
+.theme-btn {
+  border: 1px solid var(--border); background: var(--bg-card); color: var(--text);
+  width: 34px; height: 34px; border-radius: 9px; cursor: pointer; font-size: 0.95rem;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Layout */
+main { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+.hero { padding: 44px 0 30px; border-bottom: 1px solid var(--border); }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; color: var(--bordo-700); letter-spacing: 0.02em; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.9rem, 4vw, 2.7rem); margin: 6px 0 14px; max-width: 20ch; }
+.lede { color: var(--text-dim); max-width: 62ch; font-size: 1.02rem; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 28px; }
+.kpi {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+}
+.kpi .label { font-size: 0.78rem; color: var(--text-dim); }
+.kpi .value { font-family: var(--font-mono); font-size: 1.5rem; font-weight: 600; margin-top: 4px; }
+.kpi .sub { font-size: 0.78rem; margin-top: 4px; color: var(--text-dim); }
+.kpi .sub.up { color: var(--verde-700); }
+.kpi .sub.down { color: var(--bordo-700); }
+
+section.panel { padding: 46px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 90px; }
+section.panel:last-of-type { border-bottom: none; }
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.panel-head h2 { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; display: flex; align-items: center; gap: 8px; }
+.panel-head p.desc { color: var(--text-dim); max-width: 60ch; margin-top: 6px; font-size: 0.95rem; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--bg-card); }
+.seg button {
+  border: none; background: transparent; color: var(--text-dim); font-family: var(--font-ui);
+  font-size: 0.82rem; padding: 7px 13px; cursor: pointer;
+}
+.seg button.active { background: var(--bordo-700); color: #fff; }
+select.sel {
+  font-family: var(--font-ui); font-size: 0.82rem; padding: 7px 10px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--bg-card); color: var(--text);
+}
+
+.info-btn {
+  width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text-dim); font-family: var(--font-mono); font-size: 0.75rem;
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.info-panel {
+  display: none; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; font-size: 0.88rem; color: var(--text-dim); margin-top: 12px; max-width: 68ch;
+}
+.info-panel.open { display: block; }
+.info-panel strong { color: var(--text); }
+
+.card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px 22px 14px;
+}
+.chart-wrap { width: 100%; overflow-x: auto; }
+svg.chart { width: 100%; height: auto; display: block; font-family: var(--font-mono); }
+svg.chart text { fill: var(--text-dim); font-size: 10.5px; }
+svg.chart .val-label { fill: var(--text); font-size: 10.5px; font-weight: 500; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 0.8rem; color: var(--text-dim); }
+.legend .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+.note { font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; }
+.loading, .error { color: var(--text-dim); font-size: 0.9rem; padding: 30px 0; text-align: center; }
+.error { color: var(--bordo-700); }
+
+footer { padding: 34px 0 60px; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
+footer a.brand-link { color: var(--bordo-700); font-weight: 600; text-decoration: none; }
+
+@media (max-width: 640px) {
+  .panel-head { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="brand-mark">🍷</span> VineAtlas</a>
+    <button class="theme-btn" id="themeToggle" aria-label="Alternar tema" title="Alternar tema claro/escuro">◐</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">VineAtlas · Vinho de Portugal</div>
+    <h1>Como se vende vinho em Portugal</h1>
+    <p class="lede">Canal, certificação, região, embalagem, preço e consumo — o retrato do mercado interno, ano a ano, a partir do IVV/Nielsen, Eurostat e INE.</p>
+    <div class="kpi-row" id="kpiRow">
+      <div class="loading">A carregar…</div>
+    </div>
+  </section>
+
+  <!-- CANAL -->
+  <section class="panel" id="canal">
+    <div class="panel-head">
+      <div>
+        <h2>Distribuição vs. Restauração
+          <button class="info-btn" data-info="info-canal">?</button>
+        </h2>
+        <p class="desc">O litro custa quase três vezes mais quando bebido fora de casa. A Restauração já liderava antes da pandemia, foi a mais atingida por ela, e só recuperou a liderança em valor em 2023.</p>
+      </div>
+      <div class="controls">
+        <div class="seg" data-target="canalMetric">
+          <button class="active" data-val="valor_eur">Valor (€)</button>
+          <button data-val="preco_eur_l">€/Litro</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel" id="info-canal">
+      <strong>Porque é que isto não é "a Restauração ultrapassou a Distribuição em 2022"?</strong> Porque já estava à frente em 2016-2019. A pandemia inverteu a ordem em 2020-2022 (em 2022 a Distribuição ainda liderava, 554,4M€ vs 539,0M€) e só em 2023 a Restauração recuperou de forma clara a liderança que já tinha antes.
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartCanal"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendCanal"></div>
+  </section>
+
+  <!-- CERTIFICAÇÃO -->
+  <section class="panel" id="certificacao">
+    <div class="panel-head">
+      <div>
+        <h2>Certificado vs. Não certificado
+          <button class="info-btn" data-info="info-cert">?</button>
+        </h2>
+        <p class="desc">Peso do vinho com Denominação de Origem ou Indicação Geográfica no total vendido, por canal.</p>
+      </div>
+      <div class="controls">
+        <div class="seg" data-target="certCanal">
+          <button class="active" data-val="Total">Total</button>
+          <button data-val="Distribuição">Distribuição</button>
+          <button data-val="Restauração">Restauração</button>
+        </div>
+        <div class="seg" data-target="certMetric">
+          <button class="active" data-val="volume_l">Volume</button>
+          <button data-val="valor_eur">Valor</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel" id="info-cert">
+      <strong>DO/IG (Certificado)</strong> tem denominação de origem ou indicação geográfica reconhecida. <strong>Não certificado</strong> é o resto — vinho de mesa, de casta, sem menção de região. A soma dos dois é o Total.
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartCert"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendCert"></div>
+  </section>
+
+  <!-- REGIÃO -->
+  <section class="panel" id="regiao">
+    <div class="panel-head">
+      <div>
+        <h2>DO/IG por região comercial
+          <button class="info-btn" data-info="info-regiao">?</button>
+        </h2>
+        <p class="desc">Onde é vendido o vinho certificado, por região de venda (classificação Nielsen).</p>
+      </div>
+      <div class="controls">
+        <select class="sel" id="regiaoAno"></select>
+        <div class="seg" data-target="regiaoMetric">
+          <button class="active" data-val="valor_eur">Valor</button>
+          <button data-val="volume_l">Volume</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel" id="info-regiao">
+      <strong>Atenção:</strong> estas são regiões comerciais da Nielsen (onde o vinho é vendido), não as regiões DOC de produção (onde é feito) — apesar de partilharem alguns nomes (Alentejo, Douro, Lisboa…), são universos diferentes.
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartRegiao"><div class="loading">A carregar…</div></div></div>
+  </section>
+
+  <!-- PROVENIÊNCIA -->
+  <section class="panel" id="proveniencia">
+    <div class="panel-head">
+      <div>
+        <h2>Não certificado: nacional vs. importado</h2>
+        <p class="desc">Dentro do vinho sem DO/IG vendido em Portugal, que parte vem de fora.</p>
+      </div>
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartProveniencia"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendProveniencia"></div>
+  </section>
+
+  <!-- ACONDICIONAMENTO -->
+  <section class="panel" id="acondicionamento">
+    <div class="panel-head">
+      <div>
+        <h2>Por tipo de embalagem</h2>
+        <p class="desc">Garrafa continua a dominar, mas o peso de bag-in-box e outras embalagens varia por canal.</p>
+      </div>
+      <div class="controls">
+        <select class="sel" id="acondAno"></select>
+        <div class="seg" data-target="acondCanal">
+          <button class="active" data-val="Total">Total</button>
+          <button data-val="Distribuição">Distribuição</button>
+          <button data-val="Restauração">Restauração</button>
+        </div>
+      </div>
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartAcond"><div class="loading">A carregar…</div></div></div>
+  </section>
+
+  <!-- PREÇO -->
+  <section class="panel" id="preco">
+    <div class="panel-head">
+      <div>
+        <h2>Preço no consumidor
+          <button class="info-btn" data-info="info-preco">?</button>
+        </h2>
+        <p class="desc">Índice harmonizado de preços (HICP), base 2015=100 — o vinho ficou mais barato que o cabaz geral em Portugal.</p>
+      </div>
+    </div>
+    <div class="info-panel" id="info-preco">
+      <strong>2015-2025 em Portugal:</strong> o vinho subiu 15,0% no preço ao consumidor, contra 24,8% do índice geral — ou seja, ficou cerca de 8% mais barato em termos reais. Em Espanha e França o vinho seguiu o cabaz geral quase ao ponto percentual; em Itália ficou bem mais barato que o cabaz (o vinho quase não subiu de preço lá).
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartPreco"><div class="loading">A carregar…</div></div></div>
+    <div class="legend" id="legendPreco"></div>
+  </section>
+
+  <!-- CONSUMO PER CAPITA -->
+  <section class="panel" id="consumo">
+    <div class="panel-head">
+      <div>
+        <h2>Consumo per capita</h2>
+        <p class="desc">Litros de vinho por habitante, por campanha — a série mais longa disponível, 1992/93 a 2024/25.</p>
+      </div>
+    </div>
+    <div class="card"><div class="chart-wrap" id="chartConsumo"><div class="loading">A carregar…</div></div></div>
+    <div class="note" id="noteConsumo"></div>
+  </section>
+
+  <footer>
+    Fontes: IVV/Nielsen (Vendas no Mercado Nacional), Eurostat (HICP), INE (indicadores de aprovisionamento).
+    <br><a class="brand-link" href="index.html">🍷 VineAtlas</a>
+  </footer>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://kflwylllrmvlsssegxch.supabase.co/rest/v1/';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmbHd5bGxscm12bHNzc2VneGNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTEwODAsImV4cCI6MjEwMzMyNzA4MH0.6hKYYB8DVzSSFPyTmlaDjptf_L35hExz94UYNGgodjM';
+
+// ---------- theme ----------
+(function initTheme() {
+  const saved = localStorage.getItem('radar-theme');
+  if (saved === 'light' || saved === 'dark') document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('radar-theme', next);
+  });
+})();
+
+// ---------- info toggles ----------
+document.querySelectorAll('.info-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.info).classList.toggle('open');
+  });
+});
+
+// ---------- fetch helper ----------
+async function fetchView(name, query = '') {
+  const res = await fetch(`${SUPABASE_URL}${name}?${query}`, {
+    headers: { apikey: ANON_KEY, Authorization: `Bearer ${ANON_KEY}` }
+  });
+  if (!res.ok) throw new Error(`${name}: ${res.status}`);
+  return res.json();
+}
+
+const fmtEur = n => n == null ? '—' : new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 0 }).format(n) + ' €';
+const fmtEurM = n => n == null ? '—' : (n / 1e6).toLocaleString('pt-PT', { maximumFractionDigits: 1 }) + ' M€';
+const fmtNum = (n, d = 0) => n == null ? '—' : n.toLocaleString('pt-PT', { maximumFractionDigits: d, minimumFractionDigits: d });
+const COLORS = { bordo: '#7C1F3E', bordoLight: '#DA6E8B', verde: '#2F7D57', verdeLight: '#5FBE8E', azul: '#3F6DA6', azulLight: '#5E8FD0', grey: '#B99AA5' };
+
+// ---------- generic SVG line chart ----------
+function drawLineChart(container, series, opts = {}) {
+  const width = container.clientWidth || 900;
+  const height = opts.height || 300;
+  const padL = opts.padL || 46, padR = 16, padT = 16, padB = 30;
+  const allX = series[0].points.map(p => p.x);
+  const allY = series.flatMap(s => s.points.map(p => p.y)).filter(v => v != null);
+  const minY = opts.minY !== undefined ? opts.minY : Math.min(0, ...allY);
+  const maxY = opts.maxY !== undefined ? opts.maxY : Math.max(...allY) * 1.12;
+  const xScale = i => padL + (i / (allX.length - 1)) * (width - padL - padR);
+  const yScale = v => height - padB - ((v - minY) / (maxY - minY || 1)) * (height - padT - padB);
+
+  let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+  // gridlines
+  const gridN = 4;
+  for (let i = 0; i <= gridN; i++) {
+    const v = minY + (i / gridN) * (maxY - minY);
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="currentColor" stroke-opacity="0.08"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 3}" text-anchor="end">${opts.yFmt ? opts.yFmt(v) : Math.round(v)}</text>`;
+  }
+  // x labels (sparse)
+  const step = Math.ceil(allX.length / (width > 700 ? 12 : 6));
+  allX.forEach((x, i) => {
+    if (i % step === 0 || i === allX.length - 1) {
+      svg += `<text x="${xScale(i)}" y="${height - 8}" text-anchor="middle">${x}</text>`;
+    }
+  });
+  // series
+  series.forEach(s => {
+    const pts = s.points.map((p, i) => p.y == null ? null : `${xScale(i)},${yScale(p.y)}`).filter(Boolean);
+    svg += `<polyline fill="none" stroke="${s.color}" stroke-width="2.4" points="${pts.join(' ')}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    s.points.forEach((p, i) => {
+      if (p.y == null) return;
+      svg += `<circle cx="${xScale(i)}" cy="${yScale(p.y)}" r="2.6" fill="${s.color}"/>`;
+    });
+  });
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+// ---------- generic SVG horizontal bar chart ----------
+function drawHBarChart(container, items, opts = {}) {
+  const width = container.clientWidth || 900;
+  const rowH = opts.rowH || 26;
+  const padL = opts.padL || 150, padR = 60, padT = 8;
+  const height = padT * 2 + items.length * rowH;
+  const maxV = Math.max(...items.map(d => d.value), 1);
+  const xScale = v => (v / maxV) * (width - padL - padR);
+
+  let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+  items.forEach((d, i) => {
+    const y = padT + i * rowH;
+    const w = xScale(d.value);
+    svg += `<text x="${padL - 10}" y="${y + rowH / 2 + 4}" text-anchor="end">${d.label}</text>`;
+    svg += `<rect x="${padL}" y="${y + 4}" width="${Math.max(w,1)}" height="${rowH - 10}" rx="4" fill="${d.color || COLORS.bordo}"/>`;
+    svg += `<text class="val-label" x="${padL + w + 8}" y="${y + rowH / 2 + 4}">${d.valueLabel}</text>`;
+  });
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+// ---------- generic SVG stacked bar chart (vertical) ----------
+function drawStackedBar(container, xLabels, seriesList, opts = {}) {
+  const width = container.clientWidth || 900;
+  const height = opts.height || 300;
+  const padL = 46, padR = 16, padT = 16, padB = 30;
+  const n = xLabels.length;
+  const barW = ((width - padL - padR) / n) * 0.62;
+  const gap = ((width - padL - padR) / n);
+  const totals = xLabels.map((_, i) => seriesList.reduce((a, s) => a + (s.values[i] || 0), 0));
+  const maxV = Math.max(...totals) * 1.08;
+  const yScale = v => height - padB - (v / (maxV || 1)) * (height - padT - padB);
+
+  let svg = `<svg class="chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">`;
+  const gridN = 4;
+  for (let i = 0; i <= gridN; i++) {
+    const v = (i / gridN) * maxV;
+    const y = yScale(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="currentColor" stroke-opacity="0.08"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 3}" text-anchor="end">${opts.yFmt ? opts.yFmt(v) : Math.round(v)}</text>`;
+  }
+  xLabels.forEach((label, i) => {
+    const x0 = padL + i * gap + (gap - barW) / 2;
+    let acc = 0;
+    seriesList.forEach(s => {
+      const v = s.values[i] || 0;
+      const y0 = yScale(acc + v), y1 = yScale(acc);
+      svg += `<rect x="${x0}" y="${y0}" width="${barW}" height="${Math.max(y1 - y0,0)}" fill="${s.color}"/>`;
+      acc += v;
+    });
+    svg += `<text x="${x0 + barW / 2}" y="${height - 8}" text-anchor="middle">${label}</text>`;
+  });
+  svg += `</svg>`;
+  container.innerHTML = svg;
+}
+
+function legendHTML(items) {
+  return items.map(it => `<span><span class="dot" style="background:${it.color}"></span>${it.label}</span>`).join('');
+}
+function errorBox(container, msg) { container.innerHTML = `<div class="error">Não foi possível carregar os dados (${msg}).</div>`; }
+
+// ================= CANAL =================
+let canalData = [];
+async function loadCanal() {
+  const el = document.getElementById('chartCanal');
+  try {
+    canalData = await fetchView('site_mercado_interno_canal', 'select=*&order=ano.asc');
+    renderCanal();
+  } catch (e) { errorBox(el, e.message); }
+}
+function renderCanal() {
+  const metric = document.querySelector('#canal [data-target="canalMetric"] .active').dataset.val;
+  const years = [...new Set(canalData.map(d => d.ano))].sort();
+  const mk = canal => ({
+    label: canal, color: canal === 'Restauração' ? COLORS.bordo : COLORS.azul,
+    points: years.map(y => ({ x: y, y: (canalData.find(d => d.ano === y && d.canal === canal) || {})[metric] ?? null }))
+  });
+  const series = [mk('Distribuição'), mk('Restauração')];
+  drawLineChart(document.getElementById('chartCanal'), series, {
+    yFmt: v => metric === 'preco_eur_l' ? v.toFixed(1) : (v / 1e6).toFixed(0) + 'M'
+  });
+  document.getElementById('legendCanal').innerHTML = legendHTML(series);
+}
+document.querySelectorAll('#canal .seg button').forEach(b => b.addEventListener('click', e => {
+  e.target.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active'); renderCanal();
+}));
+
+// ================= CERTIFICAÇÃO =================
+let certData = [];
+async function loadCert() {
+  const el = document.getElementById('chartCert');
+  try {
+    certData = await fetchView('site_mercado_interno_certificacao', 'select=*&order=ano.asc');
+    renderCert();
+  } catch (e) { errorBox(el, e.message); }
+}
+function renderCert() {
+  const canal = document.querySelector('#certificacao [data-target="certCanal"] .active').dataset.val;
+  const metric = document.querySelector('#certificacao [data-target="certMetric"] .active').dataset.val;
+  const years = [...new Set(certData.map(d => d.ano))].sort();
+  const rows = certData.filter(d => d.canal === canal);
+  const get = (tipo, y) => (rows.find(d => d.ano === y && d.tipo_certificacao === tipo) || {})[metric] || 0;
+  const series = [
+    { label: 'Certificado (DO+IG)', color: COLORS.bordo, values: years.map(y => get('Certificado', y)) },
+    { label: 'Não certificado', color: COLORS.grey, values: years.map(y => get('Não certificado', y)) },
+  ];
+  drawStackedBar(document.getElementById('chartCert'), years, series, {
+    yFmt: v => metric === 'valor_eur' ? (v / 1e6).toFixed(0) + 'M' : (v / 1e6).toFixed(0) + 'M L'
+  });
+  document.getElementById('legendCert').innerHTML = legendHTML(series);
+}
+document.querySelectorAll('#certificacao .seg button').forEach(b => b.addEventListener('click', e => {
+  e.target.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active'); renderCert();
+}));
+
+// ================= REGIÃO =================
+let regiaoData = [];
+async function loadRegiao() {
+  const el = document.getElementById('chartRegiao');
+  try {
+    regiaoData = await fetchView('site_mercado_interno_regiao', 'select=*&canal=eq.Total&order=ano.asc');
+    const years = [...new Set(regiaoData.map(d => d.ano))].sort();
+    const sel = document.getElementById('regiaoAno');
+    sel.innerHTML = years.map(y => `<option value="${y}" ${y === years[years.length - 1] ? 'selected' : ''}>${y}</option>`).join('');
+    sel.addEventListener('change', renderRegiao);
+    renderRegiao();
+  } catch (e) { errorBox(el, e.message); }
+}
+function renderRegiao() {
+  const year = Number(document.getElementById('regiaoAno').value);
+  const metric = document.querySelector('#regiao [data-target="regiaoMetric"] .active').dataset.val;
+  const byRegion = {};
+  regiaoData.filter(d => d.ano === year).forEach(d => {
+    byRegion[d.regiao] = (byRegion[d.regiao] || 0) + (d[metric] || 0);
+  });
+  const items = Object.entries(byRegion)
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, value]) => ({
+      label, value,
+      valueLabel: metric === 'valor_eur' ? fmtEurM(value) : fmtNum(value / 1e6, 1) + 'M L',
+      color: COLORS.bordo
+    }));
+  drawHBarChart(document.getElementById('chartRegiao'), items, { rowH: 28 });
+}
+document.querySelectorAll('#regiao .seg button').forEach(b => b.addEventListener('click', e => {
+  e.target.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active'); renderRegiao();
+}));
+
+// ================= PROVENIÊNCIA =================
+async function loadProveniencia() {
+  const el = document.getElementById('chartProveniencia');
+  try {
+    const data = await fetchView('site_mercado_interno_proveniencia', 'select=*&canal=eq.Total&order=ano.asc');
+    const years = [...new Set(data.map(d => d.ano))].sort();
+    const get = (prov, y) => (data.find(d => d.ano === y && d.proveniencia === prov) || {}).volume_l || 0;
+    const importPct = years.map(y => {
+      const nac = get('Nacional', y), imp = get('Importado', y);
+      return { x: y, y: (nac + imp) ? (100 * imp / (nac + imp)) : null };
+    });
+    drawLineChart(el, [{ label: '% Importado', color: COLORS.bordo, points: importPct }], {
+      minY: 0, maxY: Math.max(...importPct.map(p => p.y || 0)) * 1.3, yFmt: v => v.toFixed(0) + '%'
+    });
+    document.getElementById('legendProveniencia').innerHTML = legendHTML([{ label: '% do volume Não certificado que é importado', color: COLORS.bordo }]);
+  } catch (e) { errorBox(el, e.message); }
+}
+
+// ================= ACONDICIONAMENTO =================
+let acondData = [];
+async function loadAcond() {
+  const el = document.getElementById('chartAcond');
+  try {
+    acondData = await fetchView('site_mercado_interno_acondicionamento', 'select=*&certificacao=eq.Total&order=ano.asc');
+    const years = [...new Set(acondData.map(d => d.ano))].sort();
+    const sel = document.getElementById('acondAno');
+    sel.innerHTML = years.map(y => `<option value="${y}" ${y === years[years.length - 1] ? 'selected' : ''}>${y}</option>`).join('');
+    sel.addEventListener('change', renderAcond);
+    renderAcond();
+  } catch (e) { errorBox(el, e.message); }
+}
+function renderAcond() {
+  const year = Number(document.getElementById('acondAno').value);
+  const canal = document.querySelector('#acondicionamento [data-target="acondCanal"] .active').dataset.val;
+  const rows = acondData.filter(d => d.ano === year && d.canal === canal && d.acondicionamento !== 'Total');
+  const items = rows
+    .map(d => ({ label: d.acondicionamento, value: d.volume_l || 0 }))
+    .filter(d => d.value > 0)
+    .sort((a, b) => b.value - a.value)
+    .map(d => ({ ...d, valueLabel: fmtNum(d.value / 1e6, 2) + 'M L', color: COLORS.bordo }));
+  drawHBarChart(document.getElementById('chartAcond'), items, { rowH: 26 });
+}
+document.querySelectorAll('#acondicionamento .seg button').forEach(b => b.addEventListener('click', e => {
+  e.target.parentElement.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+  e.target.classList.add('active'); renderAcond();
+}));
+
+// ================= PREÇO (HICP) =================
+async function loadPreco() {
+  const el = document.getElementById('chartPreco');
+  try {
+    const data = await fetchView('site_hicp_vinho', 'select=*&coicop=eq.CP0212&order=ano.asc');
+    const years = [...new Set(data.map(d => d.ano))].sort();
+    const geoMeta = [
+      { geo: 'PT', label: 'Portugal', color: COLORS.bordo },
+      { geo: 'ES', label: 'Espanha', color: COLORS.azul },
+      { geo: 'FR', label: 'França', color: COLORS.verde },
+      { geo: 'IT', label: 'Itália', color: COLORS.grey },
+    ];
+    const series = geoMeta.map(g => ({
+      label: g.label, color: g.color,
+      points: years.map(y => ({ x: y, y: (data.find(d => d.ano === y && d.geo === g.geo) || {}).indice_2015 ?? null }))
+    }));
+    drawLineChart(el, series, { minY: 80, yFmt: v => v.toFixed(0) });
+    document.getElementById('legendPreco').innerHTML = legendHTML(geoMeta.map(g => ({ label: g.label, color: g.color })));
+  } catch (e) { errorBox(el, e.message); }
+}
+
+// ================= CONSUMO PER CAPITA =================
+async function loadConsumo() {
+  const el = document.getElementById('chartConsumo');
+  try {
+    const data = await fetchView('site_consumo_per_capita', 'select=*&order=ano_inicio.asc');
+    const points = data.map(d => ({ x: d.campanha, y: d.consumo_per_capita_l }));
+    drawLineChart(el, [{ label: 'Litros / habitante', color: COLORS.bordo, points }], { minY: 0, yFmt: v => v.toFixed(0) });
+    const last = data[data.length - 1];
+    document.getElementById('noteConsumo').textContent =
+      `Última campanha (${last.campanha}${last.provisorio ? ', provisório' : ''}): ${fmtNum(last.consumo_per_capita_l, 1)} L/habitante.`;
+  } catch (e) { errorBox(el, e.message); }
+}
+
+// ================= KPIs =================
+async function loadKpis() {
+  const el = document.getElementById('kpiRow');
+  try {
+    const canal = await fetchView('site_mercado_interno_canal', 'select=*&canal=eq.Total&order=ano.desc&limit=2');
+    const [latest, prev] = canal;
+    const yoy = latest && prev ? ((latest.valor_eur / prev.valor_eur - 1) * 100) : null;
+    el.innerHTML = `
+      <div class="kpi"><div class="label">Ano mais recente</div><div class="value">${latest.ano}</div></div>
+      <div class="kpi"><div class="label">Valor total do mercado</div><div class="value">${fmtEurM(latest.valor_eur)}</div>
+        ${yoy != null ? `<div class="sub ${yoy >= 0 ? 'up' : 'down'}">${yoy >= 0 ? '+' : ''}${yoy.toFixed(1)}% vs. ${prev.ano}</div>` : ''}</div>
+      <div class="kpi"><div class="label">Volume total</div><div class="value">${fmtNum(latest.volume_l / 1e6, 0)}M L</div></div>
+      <div class="kpi"><div class="label">Preço médio</div><div class="value">${latest.preco_eur_l.toFixed(2)} €/L</div></div>
+    `;
+  } catch (e) { errorBox(el, e.message); }
+}
+
+// ================= boot =================
+Promise.all([loadKpis(), loadCanal(), loadCert(), loadRegiao(), loadProveniencia(), loadAcond(), loadPreco(), loadConsumo()]);
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (canalData.length) renderCanal();
+    if (certData.length) renderCert();
+    if (regiaoData.length) renderRegiao();
+    if (acondData.length) renderAcond();
+  }, 150);
+});
+</script>
+</body>
+</html>
